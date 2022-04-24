@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32126.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proiect PAW", "Proiect PAW\Proiect PAW.csproj", "{68C4A3ED-E91A-4E1D-88D2-4E6AAFE068A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auction Tool", "Auction Tool\Auction Tool.csproj", "{68C4A3ED-E91A-4E1D-88D2-4E6AAFE068A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
