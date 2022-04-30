@@ -43,9 +43,7 @@ namespace Proiect_PAW {
                 Articol item = new Articol(nume, descriere, pretBaza, URL);
                 item.serialize();
 
-                List<Articol> articole = Articol.deserialize();
-                ToolStripMenuItem art = main.creeazaOptiuneArticol(articole.Count, item);
-                main.itemTB_load.DropDownItems.Add(art);
+                main.adaugaOptiuneArticol(item);
                 Articol.Cache.Articole.Add(item);
 
                 DialogResult res = MessageBox.Show(

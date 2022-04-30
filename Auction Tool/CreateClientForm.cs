@@ -16,11 +16,27 @@ namespace Proiect_PAW {
         }
 
         public bool checkValidity() {
-            return numeValid() && prenumeValid() && numePrenumeValid();
+            return numeValid() && prenumeValid() && numePrenumeValid() 
+                && numarPersonalValid() && sumaDeclarataValid();
         }
 
         public void Submit() {
+            if(checkValidity()) {
+                string nume = numeClient_tb.Text.Trim();
+                string prenume = prenumeClient_tb.Text.Trim();
+                int numarPersonal = int.Parse(numarLicitatie_tb.Text);
+                float sumaDeclarata = float.Parse(sumaDisp_tb.Text);
+                bool salveazaIst = salveazaIst_ckb.Checked;
 
+                ClientLicitatie client = new ClientLicitatie(
+                    nume, prenume,
+                    numarPersonal, sumaDeclarata,
+                    salveazaIst ? new IstoricClient() : null
+                );
+                client.serialize();
+
+                ClientLicitatie.Cache.Clienti.Add(client);
+            }
         }
 
         private void numarLicitatieInfo_Click(object sender, EventArgs e) {
@@ -30,7 +46,7 @@ namespace Proiect_PAW {
         }
 
         private void sumaDispInfo_Click(object sender, EventArgs e) {
-            MessageBox.Show("Acest număr rațional va fi folosit pentru a valida dacă prețul propus de client" +
+            MessageBox.Show("Acest număr rațional va fi folosit pentru a valida dacă prețul propus de client " +
                 "în timpul unei licitații se află în bugetul acestuia. Dacă suma nu v-a fost comunicată de către client, " +
                 "lăsați acest câmp gol", "Ajutor", MessageBoxButtons.OK);
         }
@@ -100,6 +116,26 @@ namespace Proiect_PAW {
                 errorProvider.SetError(numarLicitatie_tb, null);
                 return true;
             }
+        }
+
+        private bool sumaDeclarataValid() {
+            float suma;
+            bool converted = float.TryParse(sumaDisp_tb.Text, out suma);
+
+            if(!converted) {
+                errorProvider.SetError(sumaDisp_tb, "Acest câmp nu conține un număr rațional pozitiv");
+                return false;
+            } else if(suma < 0) {
+                errorProvider.SetError(sumaDisp_tb, "Suma disponibilă declarată nu poate fi mai mică decât 0");
+                return false;
+            } else {
+                errorProvider.SetError(sumaDisp_tb, null);
+                return true;
+            }
+        }
+
+        private void creeazaClient_btn_Click(object sender, EventArgs e) {
+            Submit();
         }
     }
 }

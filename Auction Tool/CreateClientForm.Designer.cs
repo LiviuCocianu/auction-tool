@@ -33,15 +33,16 @@ namespace Proiect_PAW {
             this.numeClient_tb = new System.Windows.Forms.TextBox();
             this.numeClient = new System.Windows.Forms.Label();
             this.numarLicitatie_pan = new System.Windows.Forms.Panel();
+            this.numarLicitatieInfo = new System.Windows.Forms.Label();
             this.numarLicitatie_tb = new System.Windows.Forms.TextBox();
             this.numarLicitatie = new System.Windows.Forms.Label();
-            this.numarLicitatieInfo = new System.Windows.Forms.Label();
             this.sumaDisp_pan = new System.Windows.Forms.Panel();
             this.sumaDispInfo = new System.Windows.Forms.Label();
             this.sumaDisp_tb = new System.Windows.Forms.TextBox();
             this.sumaDisp = new System.Windows.Forms.Label();
             this.salveazaIst_ckb = new System.Windows.Forms.CheckBox();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             this.numePrenum_pan.SuspendLayout();
             this.numarLicitatie_pan.SuspendLayout();
             this.sumaDisp_pan.SuspendLayout();
@@ -111,6 +112,17 @@ namespace Proiect_PAW {
             this.numarLicitatie_pan.Size = new System.Drawing.Size(371, 47);
             this.numarLicitatie_pan.TabIndex = 4;
             // 
+            // numarLicitatieInfo
+            // 
+            this.numarLicitatieInfo.AutoSize = true;
+            this.numarLicitatieInfo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.numarLicitatieInfo.Location = new System.Drawing.Point(131, 4);
+            this.numarLicitatieInfo.Name = "numarLicitatieInfo";
+            this.numarLicitatieInfo.Size = new System.Drawing.Size(37, 13);
+            this.numarLicitatieInfo.TabIndex = 2;
+            this.numarLicitatieInfo.Text = "[ Info ]";
+            this.numarLicitatieInfo.Click += new System.EventHandler(this.numarLicitatieInfo_Click);
+            // 
             // numarLicitatie_tb
             // 
             this.numarLicitatie_tb.Location = new System.Drawing.Point(9, 21);
@@ -126,17 +138,6 @@ namespace Proiect_PAW {
             this.numarLicitatie.Size = new System.Drawing.Size(129, 13);
             this.numarLicitatie.TabIndex = 0;
             this.numarLicitatie.Text = "Număr personal în licitație";
-            // 
-            // numarLicitatieInfo
-            // 
-            this.numarLicitatieInfo.AutoSize = true;
-            this.numarLicitatieInfo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.numarLicitatieInfo.Location = new System.Drawing.Point(131, 4);
-            this.numarLicitatieInfo.Name = "numarLicitatieInfo";
-            this.numarLicitatieInfo.Size = new System.Drawing.Size(37, 13);
-            this.numarLicitatieInfo.TabIndex = 2;
-            this.numarLicitatieInfo.Text = "[ Info ]";
-            this.numarLicitatieInfo.Click += new System.EventHandler(this.numarLicitatieInfo_Click);
             // 
             // sumaDisp_pan
             // 
@@ -191,11 +192,22 @@ namespace Proiect_PAW {
             // 
             this.errorProvider.ContainerControl = this;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(191, 191);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(163, 23);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Creează";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.creeazaClient_btn_Click);
+            // 
             // CreateClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(400, 226);
+            this.ClientSize = new System.Drawing.Size(400, 227);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.salveazaIst_ckb);
             this.Controls.Add(this.sumaDisp_pan);
             this.Controls.Add(this.numarLicitatie_pan);
@@ -235,5 +247,6 @@ namespace Proiect_PAW {
         private System.Windows.Forms.Label sumaDisp;
         private System.Windows.Forms.CheckBox salveazaIst_ckb;
         private System.Windows.Forms.ErrorProvider errorProvider;
+        private System.Windows.Forms.Button button1;
     }
 }

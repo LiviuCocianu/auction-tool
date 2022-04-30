@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Proiect_PAW {
     [Serializable]
-    public class Articol {
+    public class Articol : IIdentifiable {
         private int id;
         private string nume;
         private string descriere;
@@ -16,24 +16,7 @@ namespace Proiect_PAW {
         private string urlFoto;
 
         public Articol(string nume, string descriere, float pretBaza, string urlFoto) {
-            Random ran = new Random();
-            int random = ran.Next(1, 10001);
-
-            // Generam un ID unic
-            while(true) {
-                int check = random;
-
-                foreach (Articol art in Cache.Articole) {
-                    if (art.Id == random) {
-                        random = ran.Next(1, 10001);
-                        break;
-                    }
-                }
-
-                if (check == random) break;
-            }
-
-            Id = random;
+            Id = Utils.genereazaIdUnic(For.Articol, 10000);
             Nume = nume;
             Descriere = descriere;
             PretBaza = pretBaza;
@@ -79,7 +62,6 @@ namespace Proiect_PAW {
                 FileShare.None)
             ) {
                 list.Add(this);
-
                 bf.Serialize(stream, list);
             }
         }

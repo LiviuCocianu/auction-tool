@@ -7,13 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Proiect_PAW {
-    class ClientLicitatie {
+    public class ClientLicitatie : IIdentifiable {
         private int id;
         private string nume;
         private string prenume;
         private int numar;
         private float sumaDisponibila;
         private IstoricClient istoricLicitatii;
+        private bool salveazaIstoric;
         [NonSerialized]
         private float pretLicitat;
 
@@ -23,7 +24,18 @@ namespace Proiect_PAW {
         public int Numar { get => numar; set => numar = value; }
         public float SumaDisponibila { get => sumaDisponibila; set => sumaDisponibila = value; }
         public IstoricClient IstoricLicitatii { get => istoricLicitatii; set => istoricLicitatii = value; }
+        public bool SalveazaIstoric { get => salveazaIstoric; set => salveazaIstoric = value; }
         public float PretLicitat { get => pretLicitat; set => pretLicitat = value; }
+
+        public ClientLicitatie(string nume, string prenume, int nrLicitatie, float sumaDisp, IstoricClient istoric) {
+            Id = Utils.genereazaIdUnic(For.ClientLicitatie, 10000);
+            Nume = nume;
+            Prenume = prenume;
+            Numar = nrLicitatie;
+            SumaDisponibila = sumaDisp;
+            IstoricLicitatii = istoric;
+            SalveazaIstoric = istoric != null; 
+        }
 
         public void serialize() {
             BinaryFormatter bf = new BinaryFormatter();
@@ -35,7 +47,6 @@ namespace Proiect_PAW {
                 FileShare.None)
             ) {
                 list.Add(this);
-
                 bf.Serialize(stream, list);
             }
         }
@@ -55,6 +66,15 @@ namespace Proiect_PAW {
             }
 
             return list;
+        }
+
+        public static class Cache {
+            private static List<ClientLicitatie> clienti = new List<ClientLicitatie>();
+
+            public static List<ClientLicitatie> Clienti {
+                get { return clienti; }
+                set { clienti = value; }
+            }
         }
     }
 }

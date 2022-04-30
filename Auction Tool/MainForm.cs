@@ -6,6 +6,8 @@ using System.Windows.Forms;
 
 namespace Proiect_PAW {
     public partial class MainForm : Form {
+        private const string searchPlaceholder = "Caută ID client..";
+
         private static string workPath;
         public static string WorkPath {
             get { return workPath; }
@@ -18,23 +20,6 @@ namespace Proiect_PAW {
             seteazaArticoleToolbar();
 
             toolTip1.SetToolTip(denumArticol_out, "Indisponibil");
-        }
-
-        /*
-        var request = WebRequest.Create("http://www.gravatar.com/avatar/6810d91caff032b202c50701dd3af745?d=identicon&r=PG");
-
-        using (var response = request.GetResponse())
-        using (var stream = response.GetResponseStream()) {
-            pictureBox1.Image = Bitmap.FromStream(stream);
-        }
-        */
-
-        private void Form1_Load(object sender, EventArgs e) {
-
-        }
-
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e) {
-
         }
 
         private void testToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -69,25 +54,25 @@ namespace Proiect_PAW {
             this.itemToolbar.ForeColor = Color.Black;
         }
 
-        private void textBox1_MouseClick(object sender, MouseEventArgs e) {
+        private void clientSearch_tb_MouseClick(object sender, MouseEventArgs e) {
             this.clientSearch_tb.Text = "";
         }
 
-        private void textBox1_MouseDoubleClick(object sender, MouseEventArgs e) {
+        private void clientSearch_tb_MouseDoubleClick(object sender, MouseEventArgs e) {
             this.clientSearch_tb.Text = "";
         }
 
-        private void textBox1_Leave(object sender, EventArgs e) {
-            this.clientSearch_tb.Text = "Caută ID client..";
+        private void clientSearch_tb_Leave(object sender, EventArgs e) {
+            this.clientSearch_tb.Text = searchPlaceholder;
         }
 
-        private void textBox1_MouseLeave(object sender, EventArgs e) {
+        private void clientSearch_tb_MouseLeave(object sender, EventArgs e) {
             if (this.clientSearch_tb.Text.Equals(""))
-                this.clientSearch_tb.Text = "Caută ID client..";
+                this.clientSearch_tb.Text = searchPlaceholder;
         }
 
-        private void textBox1_MouseEnter(object sender, EventArgs e) {
-            if (this.clientSearch_tb.Text.Equals("Caută ID client.."))
+        private void clientSearch_tb_MouseEnter(object sender, EventArgs e) {
+            if (this.clientSearch_tb.Text.Equals(searchPlaceholder))
                 this.clientSearch_tb.Text = "";
         }
 
@@ -117,9 +102,13 @@ namespace Proiect_PAW {
                 if (!string.IsNullOrEmpty(art.URLfoto)) {
                     var request = WebRequest.Create(art.URLfoto);
 
-                    using (var response = request.GetResponse())
-                    using (var stream = response.GetResponseStream()) {
-                        fotoArticol_pb.Image = Image.FromStream(stream);
+                    try {
+                        using (var response = request.GetResponse())
+                        using (var stream = response.GetResponseStream()) {
+                            fotoArticol_pb.Image = Image.FromStream(stream);
+                        }
+                    } catch(WebException we) {
+                        MessageBox.Show("Nu s-a putut conecta la internet. Articolul va fi încărcat fără imagine", "Eroare", MessageBoxButtons.OK);
                     }
                 }
             }
@@ -130,6 +119,17 @@ namespace Proiect_PAW {
             if(clicked.Tag != null) {
                 Articol curent = (Articol)clicked.Tag;
                 MessageBox.Show(curent.Descriere, "Descriere", MessageBoxButtons.OK);
+            }
+        }
+
+        private void editTB_create_client_Click(object sender, EventArgs e) {
+            CreateClientForm ccf = new CreateClientForm();
+            ccf.Show();
+        }
+
+        private void clientSearch_tb_KeyPress(object sender, KeyPressEventArgs e) {
+            if(clientSearch_tb.Text.Equals(searchPlaceholder)) {
+                clientSearch_tb.Text = "";
             }
         }
     }
