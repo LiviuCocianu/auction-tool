@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Proiect_PAW {
+namespace Auction_Tool {
     class CreateItemForm : Form, ISubmitter {
         private Label numeArticol;
         private Panel numeArt_pan;
@@ -52,7 +52,7 @@ namespace Proiect_PAW {
                     MessageBoxButtons.OK
                 );
 
-                if(res == DialogResult.OK) {
+                if(res == DialogResult.OK || res == DialogResult.Cancel) {
                     this.Close();
                 }
             }

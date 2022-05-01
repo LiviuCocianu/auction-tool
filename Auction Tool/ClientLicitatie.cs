@@ -6,7 +6,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proiect_PAW {
+namespace Auction_Tool {
+    [Serializable]
     public class ClientLicitatie : IIdentifiable {
         private int id;
         private string nume;

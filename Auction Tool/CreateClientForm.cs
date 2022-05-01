@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Proiect_PAW {
+namespace Auction_Tool {
     public partial class CreateClientForm : Form, ISubmitter {
-        public CreateClientForm() {
+        private MainForm main;
+
+        public CreateClientForm(MainForm main) {
             InitializeComponent();
+            this.main = main;
         }
 
         public bool checkValidity() {
@@ -25,7 +22,8 @@ namespace Proiect_PAW {
                 string nume = numeClient_tb.Text.Trim();
                 string prenume = prenumeClient_tb.Text.Trim();
                 int numarPersonal = int.Parse(numarLicitatie_tb.Text);
-                float sumaDeclarata = float.Parse(sumaDisp_tb.Text);
+                float sumaDeclarata = string.IsNullOrEmpty(sumaDisp_tb.Text) 
+                                        ? float.MaxValue : float.Parse(sumaDisp_tb.Text);
                 bool salveazaIst = salveazaIst_ckb.Checked;
 
                 ClientLicitatie client = new ClientLicitatie(
@@ -36,6 +34,19 @@ namespace Proiect_PAW {
                 client.serialize();
 
                 ClientLicitatie.Cache.Clienti.Add(client);
+
+                main.clientList_panel.Controls.Clear();
+                main.seteazaListaClienti();
+
+                DialogResult res = MessageBox.Show(
+                    "Clientul a fost salvat cu succes!",
+                    "Client creat",
+                    MessageBoxButtons.OK
+                );
+
+                if (res == DialogResult.OK || res == DialogResult.Cancel) {
+                    this.Close();
+                }
             }
         }
 
@@ -88,7 +99,7 @@ namespace Proiect_PAW {
                 if (clienti.Count > 0) {
                     foreach (ClientLicitatie client in clienti) {
                         if (client.Nume == numeClient_tb.Text && client.Prenume == prenumeClient_tb.Text) {
-                            errorProvider.SetError(prenumeClient_tb, $"Acest nume și prenume aparțin deja altui client");
+                            errorProvider.SetError(prenumeClient_tb, "Acest nume și prenume aparțin deja altui client");
                             return false;
                         }
                     }
@@ -112,6 +123,20 @@ namespace Proiect_PAW {
             } else if (numar < 0) {
                 errorProvider.SetError(numarLicitatie_tb, "Prețul de bază nu poate fi mai mic decât 0");
                 return false;
+            } else if (File.Exists($"{MainForm.WorkPath}\\clients.dat")) {
+                List<ClientLicitatie> clienti = ClientLicitatie.deserialize();
+
+                if (clienti.Count > 0) {
+                    foreach (ClientLicitatie client in clienti) {
+                        if(client.Numar == numar) {
+                            errorProvider.SetError(numarLicitatie_tb, "Acest număr aparține deja altui client");
+                            return false;
+                        }
+                    }
+                }
+
+                errorProvider.SetError(numarLicitatie_tb, null);
+                return true;
             } else {
                 errorProvider.SetError(numarLicitatie_tb, null);
                 return true;
@@ -122,7 +147,12 @@ namespace Proiect_PAW {
             float suma;
             bool converted = float.TryParse(sumaDisp_tb.Text, out suma);
 
-            if(!converted) {
+            // Acest câmp este opțional, deci permitem validării să treacă mai departe
+            // în cazul în care este gol
+            if(string.IsNullOrEmpty(sumaDisp_tb.Text)) {
+                errorProvider.SetError(sumaDisp_tb, null);
+                return true;
+            } else if(!converted) {
                 errorProvider.SetError(sumaDisp_tb, "Acest câmp nu conține un număr rațional pozitiv");
                 return false;
             } else if(suma < 0) {

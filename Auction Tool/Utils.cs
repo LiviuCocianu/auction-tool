@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Proiect_PAW {
+namespace Auction_Tool {
     enum For {
         Articol, ClientLicitatie
     }

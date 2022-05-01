@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proiect_PAW {
+namespace Auction_Tool {
     [Serializable]
     public class IstoricClient {
         private string timestamp, numeArticol;

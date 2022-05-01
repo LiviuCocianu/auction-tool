@@ -1,5 +1,5 @@
 ﻿
-namespace Proiect_PAW {
+namespace Auction_Tool {
     partial class CreateClientForm {
         /// <summary>
         /// Required designer variable.

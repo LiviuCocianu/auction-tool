@@ -4,8 +4,10 @@ using System.Drawing;
 using System.Net;
 using System.Windows.Forms;
 
-namespace Proiect_PAW {
+namespace Auction_Tool {
     public partial class MainForm : Form {
+        private float[] clientElemPercs;
+
         private const string searchPlaceholder = "Caută ID client..";
 
         private static string workPath;
@@ -17,7 +19,24 @@ namespace Proiect_PAW {
         public MainForm() {
             cereWorkPath();
             InitializeComponent();
+
+            // Coloanele de tabel din elementele listei de clienti se vor
+            // ajusta după lățimea capului de tabel al listei
+            clientElemPercs = new float[7] {
+                clientListHeader_tlp.ColumnStyles[0].Width,
+                clientListHeader_tlp.ColumnStyles[1].Width,
+                clientListHeader_tlp.ColumnStyles[2].Width,
+                clientListHeader_tlp.ColumnStyles[3].Width,
+                clientListHeader_tlp.ColumnStyles[4].Width,
+                clientListHeader_tlp.ColumnStyles[5].Width,
+                clientListHeader_tlp.ColumnStyles[6].Width,
+            };
+
             seteazaArticoleToolbar();
+            seteazaListaClienti();
+            foreach(Control con in clientList_panel.Controls) {
+                Console.WriteLine("control: " + con.Name); // TODO
+            }
 
             toolTip1.SetToolTip(denumArticol_out, "Indisponibil");
         }
@@ -101,13 +120,12 @@ namespace Proiect_PAW {
 
                 if (!string.IsNullOrEmpty(art.URLfoto)) {
                     var request = WebRequest.Create(art.URLfoto);
-
                     try {
                         using (var response = request.GetResponse())
                         using (var stream = response.GetResponseStream()) {
                             fotoArticol_pb.Image = Image.FromStream(stream);
                         }
-                    } catch(WebException we) {
+                    } catch (WebException) {
                         MessageBox.Show("Nu s-a putut conecta la internet. Articolul va fi încărcat fără imagine", "Eroare", MessageBoxButtons.OK);
                     }
                 }
@@ -123,7 +141,7 @@ namespace Proiect_PAW {
         }
 
         private void editTB_create_client_Click(object sender, EventArgs e) {
-            CreateClientForm ccf = new CreateClientForm();
+            CreateClientForm ccf = new CreateClientForm(this);
             ccf.Show();
         }
 
