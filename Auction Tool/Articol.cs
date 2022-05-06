@@ -52,9 +52,9 @@ namespace Auction_Tool {
             }
         }
 
-        public void serialize() {
+        public void serializeaza() {
             BinaryFormatter bf = new BinaryFormatter();
-            List<Articol> list = deserialize();
+            List<Articol> list = deserializeaza();
 
             using (Stream stream = new FileStream(
                 $"{MainForm.WorkPath}\\items.dat",
@@ -66,7 +66,19 @@ namespace Auction_Tool {
             }
         }
 
-        public static List<Articol> deserialize() {
+        public static void serializeazaTot(List<Articol> list) {
+            BinaryFormatter bf = new BinaryFormatter();
+
+            using (Stream stream = new FileStream(
+                $"{MainForm.WorkPath}\\items.dat",
+                FileMode.OpenOrCreate, FileAccess.Write,
+                FileShare.None)
+            ) {
+                bf.Serialize(stream, list);
+            }
+        }
+
+        public static List<Articol> deserializeaza() {
             BinaryFormatter bf = new BinaryFormatter();
             List<Articol> list = new List<Articol>();
 
@@ -83,17 +95,44 @@ namespace Auction_Tool {
             return list;
         }
 
-        public static Articol gasesteArticol(string nume) {
-            List<Articol> articole = deserialize();
+        public static Articol gasesteArticol(int id) {
+            List<Articol> articole = deserializeaza();
 
             if (articole.Count > 0) {
                 foreach (Articol art in articole) {
-                    if (art.Nume == nume) 
+                    if (art.Id == id) 
                         return art;
                 }
 
                 return null;
             } else return null;
+        }
+
+        public static void stergeArticol(int id) {
+            List<Articol> articole = deserializeaza();
+
+            if (articole.Count > 0) {
+                foreach (Articol art in articole) {
+                    if (art.Id == id) {
+                        Cache.Articole.RemoveAt(articole.IndexOf(art));
+                        articole.Remove(art);
+                        
+                        break;
+                    }
+                }
+
+                serializeazaTot(articole);
+            }
+        }
+
+        public static void stergeTot() {
+            string path = $"{MainForm.WorkPath}\\items.dat";
+
+            if (File.Exists(path)) {
+                File.Delete(path);
+            }
+
+            Cache.Articole.Clear();
         }
 
         public static class Cache {

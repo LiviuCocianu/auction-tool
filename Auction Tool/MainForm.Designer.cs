@@ -77,6 +77,9 @@ namespace Auction_Tool {
             this.clientSearch_tlp = new System.Windows.Forms.TableLayoutPanel();
             this.searchIconBG_pan = new System.Windows.Forms.Panel();
             this.searchIcon_pb = new System.Windows.Forms.PictureBox();
+            this.clientElement_context = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ștergereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.infoGen_pan.SuspendLayout();
             this.infoArticol_pan.SuspendLayout();
@@ -87,6 +90,7 @@ namespace Auction_Tool {
             this.clientSearch_tlp.SuspendLayout();
             this.searchIconBG_pan.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.searchIcon_pb)).BeginInit();
+            this.clientElement_context.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -99,9 +103,9 @@ namespace Auction_Tool {
             this.itemToolbar});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
+            this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
             this.menuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.menuStrip.Size = new System.Drawing.Size(764, 24);
+            this.menuStrip.Size = new System.Drawing.Size(1019, 28);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -112,7 +116,7 @@ namespace Auction_Tool {
             this.editTB_remove});
             this.editToolbar.ForeColor = System.Drawing.Color.White;
             this.editToolbar.Name = "editToolbar";
-            this.editToolbar.Size = new System.Drawing.Size(55, 20);
+            this.editToolbar.Size = new System.Drawing.Size(70, 24);
             this.editToolbar.Text = "Editare";
             this.editToolbar.DropDownClosed += new System.EventHandler(this.testToolStripMenuItem_DropDownClosed);
             this.editToolbar.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
@@ -128,14 +132,14 @@ namespace Auction_Tool {
             this.editTB_create.ForeColor = System.Drawing.Color.Black;
             this.editTB_create.Image = global::Auction_Tool.Properties.Resources.add;
             this.editTB_create.Name = "editTB_create";
-            this.editTB_create.Size = new System.Drawing.Size(115, 22);
+            this.editTB_create.Size = new System.Drawing.Size(224, 26);
             this.editTB_create.Text = "Creează";
             // 
             // editTB_create_item
             // 
             this.editTB_create_item.Image = ((System.Drawing.Image)(resources.GetObject("editTB_create_item.Image")));
             this.editTB_create_item.Name = "editTB_create_item";
-            this.editTB_create_item.Size = new System.Drawing.Size(109, 22);
+            this.editTB_create_item.Size = new System.Drawing.Size(136, 26);
             this.editTB_create_item.Text = "Articol";
             this.editTB_create_item.Click += new System.EventHandler(this.itemToolStripMenuItem_Click_1);
             // 
@@ -143,7 +147,7 @@ namespace Auction_Tool {
             // 
             this.editTB_create_client.Image = global::Auction_Tool.Properties.Resources.bidder;
             this.editTB_create_client.Name = "editTB_create_client";
-            this.editTB_create_client.Size = new System.Drawing.Size(109, 22);
+            this.editTB_create_client.Size = new System.Drawing.Size(136, 26);
             this.editTB_create_client.Text = "Client";
             this.editTB_create_client.Click += new System.EventHandler(this.editTB_create_client_Click);
             // 
@@ -154,7 +158,7 @@ namespace Auction_Tool {
             this.editTB_remove_client});
             this.editTB_remove.Image = global::Auction_Tool.Properties.Resources.remove;
             this.editTB_remove.Name = "editTB_remove";
-            this.editTB_remove.Size = new System.Drawing.Size(115, 22);
+            this.editTB_remove.Size = new System.Drawing.Size(224, 26);
             this.editTB_remove.Text = "Elimină";
             // 
             // editTB_remove_item
@@ -164,20 +168,22 @@ namespace Auction_Tool {
             this.editTB_remove_item_ID});
             this.editTB_remove_item.Image = ((System.Drawing.Image)(resources.GetObject("editTB_remove_item.Image")));
             this.editTB_remove_item.Name = "editTB_remove_item";
-            this.editTB_remove_item.Size = new System.Drawing.Size(109, 22);
+            this.editTB_remove_item.Size = new System.Drawing.Size(224, 26);
             this.editTB_remove_item.Text = "Articol";
             // 
             // editTB_remove_item_all
             // 
             this.editTB_remove_item_all.Name = "editTB_remove_item_all";
-            this.editTB_remove_item_all.Size = new System.Drawing.Size(153, 22);
+            this.editTB_remove_item_all.Size = new System.Drawing.Size(195, 26);
             this.editTB_remove_item_all.Text = "Toate articolele";
+            this.editTB_remove_item_all.Click += new System.EventHandler(this.editTB_remove_item_all_Click);
             // 
             // editTB_remove_item_ID
             // 
             this.editTB_remove_item_ID.Name = "editTB_remove_item_ID";
-            this.editTB_remove_item_ID.Size = new System.Drawing.Size(153, 22);
+            this.editTB_remove_item_ID.Size = new System.Drawing.Size(195, 26);
             this.editTB_remove_item_ID.Text = "După ID";
+            this.editTB_remove_item_ID.Click += new System.EventHandler(this.editTB_remove_item_ID_Click);
             // 
             // editTB_remove_client
             // 
@@ -186,20 +192,22 @@ namespace Auction_Tool {
             this.editTB_remove_client_ID});
             this.editTB_remove_client.Image = global::Auction_Tool.Properties.Resources.bidder;
             this.editTB_remove_client.Name = "editTB_remove_client";
-            this.editTB_remove_client.Size = new System.Drawing.Size(109, 22);
+            this.editTB_remove_client.Size = new System.Drawing.Size(224, 26);
             this.editTB_remove_client.Text = "Client";
             // 
             // editTB_remove_client_all
             // 
             this.editTB_remove_client_all.Name = "editTB_remove_client_all";
-            this.editTB_remove_client_all.Size = new System.Drawing.Size(131, 22);
+            this.editTB_remove_client_all.Size = new System.Drawing.Size(224, 26);
             this.editTB_remove_client_all.Text = "Toți clienții";
+            this.editTB_remove_client_all.Click += new System.EventHandler(this.editTB_remove_client_all_Click);
             // 
             // editTB_remove_client_ID
             // 
             this.editTB_remove_client_ID.Name = "editTB_remove_client_ID";
-            this.editTB_remove_client_ID.Size = new System.Drawing.Size(131, 22);
+            this.editTB_remove_client_ID.Size = new System.Drawing.Size(224, 26);
             this.editTB_remove_client_ID.Text = "După ID";
+            this.editTB_remove_client_ID.Click += new System.EventHandler(this.editTB_remove_client_ID_Click);
             // 
             // itemToolbar
             // 
@@ -207,7 +215,7 @@ namespace Auction_Tool {
             this.itemTB_load});
             this.itemToolbar.ForeColor = System.Drawing.Color.White;
             this.itemToolbar.Name = "itemToolbar";
-            this.itemToolbar.Size = new System.Drawing.Size(60, 20);
+            this.itemToolbar.Size = new System.Drawing.Size(75, 24);
             this.itemToolbar.Text = "Articole";
             this.itemToolbar.DropDownClosed += new System.EventHandler(this.itemToolStripMenuItem_DropDownClosed);
             this.itemToolbar.Click += new System.EventHandler(this.itemToolStripMenuItem_Click);
@@ -218,16 +226,17 @@ namespace Auction_Tool {
             // 
             this.itemTB_load.Image = ((System.Drawing.Image)(resources.GetObject("itemTB_load.Image")));
             this.itemTB_load.Name = "itemTB_load";
-            this.itemTB_load.Size = new System.Drawing.Size(112, 22);
+            this.itemTB_load.Size = new System.Drawing.Size(139, 26);
             this.itemTB_load.Text = "Încarcă";
             // 
             // denumArticol
             // 
             this.denumArticol.AutoSize = true;
             this.denumArticol.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)), true);
-            this.denumArticol.Location = new System.Drawing.Point(3, 39);
+            this.denumArticol.Location = new System.Drawing.Point(4, 48);
+            this.denumArticol.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.denumArticol.Name = "denumArticol";
-            this.denumArticol.Size = new System.Drawing.Size(93, 14);
+            this.denumArticol.Size = new System.Drawing.Size(116, 18);
             this.denumArticol.TabIndex = 2;
             this.denumArticol.Text = "Denumire articol:";
             // 
@@ -235,9 +244,10 @@ namespace Auction_Tool {
             // 
             this.denumArticol_out.AutoSize = true;
             this.denumArticol_out.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.denumArticol_out.Location = new System.Drawing.Point(95, 39);
+            this.denumArticol_out.Location = new System.Drawing.Point(127, 48);
+            this.denumArticol_out.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.denumArticol_out.Name = "denumArticol_out";
-            this.denumArticol_out.Size = new System.Drawing.Size(59, 13);
+            this.denumArticol_out.Size = new System.Drawing.Size(78, 17);
             this.denumArticol_out.TabIndex = 3;
             this.denumArticol_out.Text = "Indisponibil";
             // 
@@ -245,9 +255,10 @@ namespace Auction_Tool {
             // 
             this.pretBaza.AutoSize = true;
             this.pretBaza.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pretBaza.Location = new System.Drawing.Point(3, 22);
+            this.pretBaza.Location = new System.Drawing.Point(4, 27);
+            this.pretBaza.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.pretBaza.Name = "pretBaza";
-            this.pretBaza.Size = new System.Drawing.Size(71, 14);
+            this.pretBaza.Size = new System.Drawing.Size(88, 18);
             this.pretBaza.TabIndex = 6;
             this.pretBaza.Text = "Preț de bază:";
             // 
@@ -255,9 +266,10 @@ namespace Auction_Tool {
             // 
             this.pretBaza_out.AutoSize = true;
             this.pretBaza_out.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pretBaza_out.Location = new System.Drawing.Point(72, 22);
+            this.pretBaza_out.Location = new System.Drawing.Point(96, 27);
+            this.pretBaza_out.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.pretBaza_out.Name = "pretBaza_out";
-            this.pretBaza_out.Size = new System.Drawing.Size(59, 13);
+            this.pretBaza_out.Size = new System.Drawing.Size(78, 17);
             this.pretBaza_out.TabIndex = 7;
             this.pretBaza_out.Text = "Indisponibil";
             // 
@@ -265,9 +277,10 @@ namespace Auction_Tool {
             // 
             this.pretCurent.AutoSize = true;
             this.pretCurent.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pretCurent.Location = new System.Drawing.Point(3, 39);
+            this.pretCurent.Location = new System.Drawing.Point(4, 48);
+            this.pretCurent.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.pretCurent.Name = "pretCurent";
-            this.pretCurent.Size = new System.Drawing.Size(100, 14);
+            this.pretCurent.Size = new System.Drawing.Size(127, 18);
             this.pretCurent.TabIndex = 8;
             this.pretCurent.Text = "Preț propus curent:";
             // 
@@ -275,9 +288,10 @@ namespace Auction_Tool {
             // 
             this.pretCurent_out.AutoSize = true;
             this.pretCurent_out.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pretCurent_out.Location = new System.Drawing.Point(101, 39);
+            this.pretCurent_out.Location = new System.Drawing.Point(135, 48);
+            this.pretCurent_out.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.pretCurent_out.Name = "pretCurent_out";
-            this.pretCurent_out.Size = new System.Drawing.Size(59, 13);
+            this.pretCurent_out.Size = new System.Drawing.Size(78, 17);
             this.pretCurent_out.TabIndex = 9;
             this.pretCurent_out.Text = "Indisponibil";
             // 
@@ -285,9 +299,10 @@ namespace Auction_Tool {
             // 
             this.nrClientTop.AutoSize = true;
             this.nrClientTop.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nrClientTop.Location = new System.Drawing.Point(3, 56);
+            this.nrClientTop.Location = new System.Drawing.Point(4, 69);
+            this.nrClientTop.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.nrClientTop.Name = "nrClientTop";
-            this.nrClientTop.Size = new System.Drawing.Size(105, 14);
+            this.nrClientTop.Size = new System.Drawing.Size(131, 18);
             this.nrClientTop.TabIndex = 10;
             this.nrClientTop.Text = "Număr client în top:";
             // 
@@ -295,9 +310,10 @@ namespace Auction_Tool {
             // 
             this.nrClientTop_out.AutoSize = true;
             this.nrClientTop_out.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nrClientTop_out.Location = new System.Drawing.Point(106, 56);
+            this.nrClientTop_out.Location = new System.Drawing.Point(141, 69);
+            this.nrClientTop_out.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.nrClientTop_out.Name = "nrClientTop_out";
-            this.nrClientTop_out.Size = new System.Drawing.Size(59, 13);
+            this.nrClientTop_out.Size = new System.Drawing.Size(78, 17);
             this.nrClientTop_out.TabIndex = 11;
             this.nrClientTop_out.Text = "Indisponibil";
             // 
@@ -310,18 +326,20 @@ namespace Auction_Tool {
             this.infoGen_pan.Controls.Add(this.descArticol);
             this.infoGen_pan.Controls.Add(this.denumArticol);
             this.infoGen_pan.Controls.Add(this.denumArticol_out);
-            this.infoGen_pan.Location = new System.Drawing.Point(34, 238);
+            this.infoGen_pan.Location = new System.Drawing.Point(45, 293);
+            this.infoGen_pan.Margin = new System.Windows.Forms.Padding(4);
             this.infoGen_pan.Name = "infoGen_pan";
-            this.infoGen_pan.Size = new System.Drawing.Size(229, 86);
+            this.infoGen_pan.Size = new System.Drawing.Size(305, 106);
             this.infoGen_pan.TabIndex = 13;
             // 
             // idArticol
             // 
             this.idArticol.AutoSize = true;
             this.idArticol.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)), true);
-            this.idArticol.Location = new System.Drawing.Point(3, 23);
+            this.idArticol.Location = new System.Drawing.Point(4, 28);
+            this.idArticol.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.idArticol.Name = "idArticol";
-            this.idArticol.Size = new System.Drawing.Size(55, 14);
+            this.idArticol.Size = new System.Drawing.Size(67, 18);
             this.idArticol.TabIndex = 15;
             this.idArticol.Text = "ID articol:";
             // 
@@ -329,9 +347,10 @@ namespace Auction_Tool {
             // 
             this.idArticol_out.AutoSize = true;
             this.idArticol_out.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.idArticol_out.Location = new System.Drawing.Point(55, 23);
+            this.idArticol_out.Location = new System.Drawing.Point(73, 28);
+            this.idArticol_out.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.idArticol_out.Name = "idArticol_out";
-            this.idArticol_out.Size = new System.Drawing.Size(59, 13);
+            this.idArticol_out.Size = new System.Drawing.Size(78, 17);
             this.idArticol_out.TabIndex = 16;
             this.idArticol_out.Text = "Indisponibil";
             // 
@@ -339,9 +358,10 @@ namespace Auction_Tool {
             // 
             this.infoGen_title.AutoSize = true;
             this.infoGen_title.Font = new System.Drawing.Font("Calibri", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.infoGen_title.Location = new System.Drawing.Point(3, 2);
+            this.infoGen_title.Location = new System.Drawing.Point(4, 2);
+            this.infoGen_title.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.infoGen_title.Name = "infoGen_title";
-            this.infoGen_title.Size = new System.Drawing.Size(120, 17);
+            this.infoGen_title.Size = new System.Drawing.Size(146, 21);
             this.infoGen_title.TabIndex = 14;
             this.infoGen_title.Text = "Informații generale";
             // 
@@ -351,9 +371,10 @@ namespace Auction_Tool {
             this.descArticol_link.Cursor = System.Windows.Forms.Cursors.Hand;
             this.descArticol_link.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.descArticol_link.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.descArticol_link.Location = new System.Drawing.Point(92, 56);
+            this.descArticol_link.Location = new System.Drawing.Point(123, 69);
+            this.descArticol_link.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.descArticol_link.Name = "descArticol_link";
-            this.descArticol_link.Size = new System.Drawing.Size(57, 13);
+            this.descArticol_link.Size = new System.Drawing.Size(77, 17);
             this.descArticol_link.TabIndex = 13;
             this.descArticol_link.Text = "Vizualizare";
             this.descArticol_link.Click += new System.EventHandler(this.descArticol_link_Click);
@@ -362,9 +383,10 @@ namespace Auction_Tool {
             // 
             this.descArticol.AutoSize = true;
             this.descArticol.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)), true);
-            this.descArticol.Location = new System.Drawing.Point(3, 56);
+            this.descArticol.Location = new System.Drawing.Point(4, 69);
+            this.descArticol.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.descArticol.Name = "descArticol";
-            this.descArticol.Size = new System.Drawing.Size(91, 14);
+            this.descArticol.Size = new System.Drawing.Size(113, 18);
             this.descArticol.TabIndex = 12;
             this.descArticol.Text = "Descriere articol:";
             // 
@@ -375,9 +397,10 @@ namespace Auction_Tool {
             this.infoArticol_pan.Controls.Add(this.infoLic_pan);
             this.infoArticol_pan.Controls.Add(this.fotoArticol_pb);
             this.infoArticol_pan.Controls.Add(this.infoGen_pan);
-            this.infoArticol_pan.Location = new System.Drawing.Point(0, 24);
+            this.infoArticol_pan.Location = new System.Drawing.Point(0, 30);
+            this.infoArticol_pan.Margin = new System.Windows.Forms.Padding(4);
             this.infoArticol_pan.Name = "infoArticol_pan";
-            this.infoArticol_pan.Size = new System.Drawing.Size(305, 430);
+            this.infoArticol_pan.Size = new System.Drawing.Size(406, 529);
             this.infoArticol_pan.TabIndex = 14;
             // 
             // infoLic_pan
@@ -389,18 +412,20 @@ namespace Auction_Tool {
             this.infoLic_pan.Controls.Add(this.pretBaza_out);
             this.infoLic_pan.Controls.Add(this.pretCurent_out);
             this.infoLic_pan.Controls.Add(this.nrClientTop_out);
-            this.infoLic_pan.Location = new System.Drawing.Point(34, 327);
+            this.infoLic_pan.Location = new System.Drawing.Point(45, 402);
+            this.infoLic_pan.Margin = new System.Windows.Forms.Padding(4);
             this.infoLic_pan.Name = "infoLic_pan";
-            this.infoLic_pan.Size = new System.Drawing.Size(229, 83);
+            this.infoLic_pan.Size = new System.Drawing.Size(305, 102);
             this.infoLic_pan.TabIndex = 14;
             // 
             // infoLicitatie_title
             // 
             this.infoLicitatie_title.AutoSize = true;
             this.infoLicitatie_title.Font = new System.Drawing.Font("Calibri", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.infoLicitatie_title.Location = new System.Drawing.Point(3, 5);
+            this.infoLicitatie_title.Location = new System.Drawing.Point(4, 6);
+            this.infoLicitatie_title.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.infoLicitatie_title.Name = "infoLicitatie_title";
-            this.infoLicitatie_title.Size = new System.Drawing.Size(111, 17);
+            this.infoLicitatie_title.Size = new System.Drawing.Size(136, 21);
             this.infoLicitatie_title.TabIndex = 15;
             this.infoLicitatie_title.Text = "Informații licitație";
             // 
@@ -409,9 +434,10 @@ namespace Auction_Tool {
             this.fotoArticol_pb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.fotoArticol_pb.Image = global::Auction_Tool.Properties.Resources.no_image;
             this.fotoArticol_pb.InitialImage = global::Auction_Tool.Properties.Resources.no_image;
-            this.fotoArticol_pb.Location = new System.Drawing.Point(48, 18);
+            this.fotoArticol_pb.Location = new System.Drawing.Point(64, 22);
+            this.fotoArticol_pb.Margin = new System.Windows.Forms.Padding(4);
             this.fotoArticol_pb.Name = "fotoArticol_pb";
-            this.fotoArticol_pb.Size = new System.Drawing.Size(203, 210);
+            this.fotoArticol_pb.Size = new System.Drawing.Size(270, 258);
             this.fotoArticol_pb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.fotoArticol_pb.TabIndex = 1;
             this.fotoArticol_pb.TabStop = false;
@@ -422,10 +448,10 @@ namespace Auction_Tool {
             this.clientSearch_tb.BackColor = System.Drawing.Color.Gainsboro;
             this.clientSearch_tb.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.clientSearch_tb.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.clientSearch_tb.Location = new System.Drawing.Point(14, 7);
+            this.clientSearch_tb.Location = new System.Drawing.Point(14, 6);
             this.clientSearch_tb.Margin = new System.Windows.Forms.Padding(0);
             this.clientSearch_tb.Name = "clientSearch_tb";
-            this.clientSearch_tb.Size = new System.Drawing.Size(418, 13);
+            this.clientSearch_tb.Size = new System.Drawing.Size(418, 15);
             this.clientSearch_tb.TabIndex = 15;
             this.clientSearch_tb.TabStop = false;
             this.clientSearch_tb.Text = "Caută ID client..";
@@ -438,9 +464,10 @@ namespace Auction_Tool {
             // preItemSelect1
             // 
             this.preItemSelect1.AutoSize = true;
-            this.preItemSelect1.Location = new System.Drawing.Point(30, 11);
+            this.preItemSelect1.Location = new System.Drawing.Point(40, 14);
+            this.preItemSelect1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.preItemSelect1.Name = "preItemSelect1";
-            this.preItemSelect1.Size = new System.Drawing.Size(322, 13);
+            this.preItemSelect1.Size = new System.Drawing.Size(395, 16);
             this.preItemSelect1.TabIndex = 16;
             this.preItemSelect1.Text = "Selectează un articol din categoria \"Articole\" înainte de a continua";
             // 
@@ -449,17 +476,19 @@ namespace Auction_Tool {
             this.preItemSelect_pan.BackColor = System.Drawing.Color.White;
             this.preItemSelect_pan.Controls.Add(this.preItemSelect1);
             this.preItemSelect_pan.Controls.Add(this.preItemSelect2);
-            this.preItemSelect_pan.Location = new System.Drawing.Point(349, 199);
+            this.preItemSelect_pan.Location = new System.Drawing.Point(465, 245);
+            this.preItemSelect_pan.Margin = new System.Windows.Forms.Padding(4);
             this.preItemSelect_pan.Name = "preItemSelect_pan";
-            this.preItemSelect_pan.Size = new System.Drawing.Size(387, 58);
+            this.preItemSelect_pan.Size = new System.Drawing.Size(516, 71);
             this.preItemSelect_pan.TabIndex = 18;
             // 
             // preItemSelect2
             // 
             this.preItemSelect2.AutoSize = true;
-            this.preItemSelect2.Location = new System.Drawing.Point(12, 27);
+            this.preItemSelect2.Location = new System.Drawing.Point(16, 33);
+            this.preItemSelect2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.preItemSelect2.Name = "preItemSelect2";
-            this.preItemSelect2.Size = new System.Drawing.Size(362, 13);
+            this.preItemSelect2.Size = new System.Drawing.Size(448, 16);
             this.preItemSelect2.TabIndex = 17;
             this.preItemSelect2.Text = "Dacă nu sunt articole de selectat, creează unul folosind categoria \"Editare\"";
             // 
@@ -620,12 +649,35 @@ namespace Auction_Tool {
             this.searchIcon_pb.TabIndex = 19;
             this.searchIcon_pb.TabStop = false;
             // 
+            // clientElement_context
+            // 
+            this.clientElement_context.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.clientElement_context.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ștergereToolStripMenuItem,
+            this.editareToolStripMenuItem});
+            this.clientElement_context.Name = "clientElement_context";
+            this.clientElement_context.Size = new System.Drawing.Size(132, 56);
+            // 
+            // ștergereToolStripMenuItem
+            // 
+            this.ștergereToolStripMenuItem.Image = global::Auction_Tool.Properties.Resources.remove;
+            this.ștergereToolStripMenuItem.Name = "ștergereToolStripMenuItem";
+            this.ștergereToolStripMenuItem.Size = new System.Drawing.Size(131, 26);
+            this.ștergereToolStripMenuItem.Text = "Elimină";
+            // 
+            // editareToolStripMenuItem
+            // 
+            this.editareToolStripMenuItem.Image = global::Auction_Tool.Properties.Resources.edit;
+            this.editareToolStripMenuItem.Name = "editareToolStripMenuItem";
+            this.editareToolStripMenuItem.Size = new System.Drawing.Size(131, 26);
+            this.editareToolStripMenuItem.Text = "Editare";
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(764, 450);
+            this.ClientSize = new System.Drawing.Size(1019, 554);
             this.Controls.Add(this.infoArticol_pan);
             this.Controls.Add(this.menuStrip);
             this.Controls.Add(this.preItemSelect_pan);
@@ -633,6 +685,7 @@ namespace Auction_Tool {
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Licitații (.NET Form Designer App)";
@@ -651,6 +704,7 @@ namespace Auction_Tool {
             this.clientSearch_tlp.PerformLayout();
             this.searchIconBG_pan.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.searchIcon_pb)).EndInit();
+            this.clientElement_context.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -693,10 +747,8 @@ namespace Auction_Tool {
         private System.Windows.Forms.ToolStripMenuItem editTB_remove_client_all;
         private System.Windows.Forms.ToolStripMenuItem editTB_remove_client_ID;
         private System.Windows.Forms.Label idArticol;
-        private System.Windows.Forms.Label idArticol_out;
+        public System.Windows.Forms.Label idArticol_out;
         public System.Windows.Forms.ToolStripMenuItem itemTB_load;
-        #endregion
-
         private ToolTip toolTip1;
         public Panel clientList_panel;
         private Label nrOrdineTable;
@@ -710,6 +762,10 @@ namespace Auction_Tool {
         private TableLayoutPanel clientSearch_tlp;
         private PictureBox searchIcon_pb;
         private Panel searchIconBG_pan;
+        private ContextMenuStrip clientElement_context;
+        private ToolStripMenuItem ștergereToolStripMenuItem;
+        private ToolStripMenuItem editareToolStripMenuItem;
+        #endregion
     }
 }
 

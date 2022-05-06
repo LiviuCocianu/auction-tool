@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Net;
 using System.Windows.Forms;
 
@@ -10,35 +11,35 @@ namespace Auction_Tool {
 
         private const string searchPlaceholder = "Caută ID client..";
 
-        private static string workPath;
+        private static string workPath = "";
         public static string WorkPath {
             get { return workPath; }
             set { workPath = value; }
         }
 
         public MainForm() {
-            cereWorkPath();
+            bool succes = cereWorkPath();
+
             InitializeComponent();
 
             // Coloanele de tabel din elementele listei de clienti se vor
             // ajusta după lățimea capului de tabel al listei
             clientElemPercs = new float[7] {
-                clientListHeader_tlp.ColumnStyles[0].Width,
-                clientListHeader_tlp.ColumnStyles[1].Width,
-                clientListHeader_tlp.ColumnStyles[2].Width,
-                clientListHeader_tlp.ColumnStyles[3].Width,
-                clientListHeader_tlp.ColumnStyles[4].Width,
-                clientListHeader_tlp.ColumnStyles[5].Width,
-                clientListHeader_tlp.ColumnStyles[6].Width,
-            };
+                    clientListHeader_tlp.ColumnStyles[0].Width,
+                    clientListHeader_tlp.ColumnStyles[1].Width,
+                    clientListHeader_tlp.ColumnStyles[2].Width,
+                    clientListHeader_tlp.ColumnStyles[3].Width,
+                    clientListHeader_tlp.ColumnStyles[4].Width,
+                    clientListHeader_tlp.ColumnStyles[5].Width,
+                    clientListHeader_tlp.ColumnStyles[6].Width,
+                };
 
             seteazaArticoleToolbar();
             seteazaListaClienti();
-            foreach(Control con in clientList_panel.Controls) {
-                Console.WriteLine("control: " + con.Name); // TODO
-            }
 
             toolTip1.SetToolTip(denumArticol_out, "Indisponibil");
+
+            if (!succes) Close();
         }
 
         private void testToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -101,40 +102,17 @@ namespace Auction_Tool {
         }
 
         public void itemTB_itemn_Click(object sender, EventArgs e) {
-            ToolStripMenuItem clicked = (ToolStripMenuItem) sender;
+            ToolStripMenuItem clicked = (ToolStripMenuItem)sender;
 
             if (clicked.Tag != null) {
-                Articol art = (Articol) (clicked.Tag);
-                idArticol_out.Text = art.Id.ToString();
-                denumArticol_out.Text = $"{art.Nume.Substring(0, 22)}" +
-                    $"{(art.Nume.Length > 22 ? "..." : "")}";
-                descArticol_link.Tag = art;
-                pretBaza_out.Text = $"{art.PretBaza} lei";
-                pretCurent_out.Text = "0 lei";
-                nrClientTop_out.Text = "În curând";
-                toolTip1.SetToolTip(denumArticol_out, art.Nume);
-                if(art.Descriere.Length < 65) 
-                    toolTip1.SetToolTip(descArticol_link, art.Descriere);
-
-                arataListaClienti();
-
-                if (!string.IsNullOrEmpty(art.URLfoto)) {
-                    var request = WebRequest.Create(art.URLfoto);
-                    try {
-                        using (var response = request.GetResponse())
-                        using (var stream = response.GetResponseStream()) {
-                            fotoArticol_pb.Image = Image.FromStream(stream);
-                        }
-                    } catch (WebException) {
-                        MessageBox.Show("Nu s-a putut conecta la internet. Articolul va fi încărcat fără imagine", "Eroare", MessageBoxButtons.OK);
-                    }
-                }
+                Articol art = (Articol)(clicked.Tag);
+                afiseazaArticol(art);
             }
         }
 
         private void descArticol_link_Click(object sender, EventArgs e) {
             Label clicked = (Label)sender;
-            if(clicked.Tag != null) {
+            if (clicked.Tag != null) {
                 Articol curent = (Articol)clicked.Tag;
                 MessageBox.Show(curent.Descriere, "Descriere", MessageBoxButtons.OK);
             }
@@ -146,8 +124,61 @@ namespace Auction_Tool {
         }
 
         private void clientSearch_tb_KeyPress(object sender, KeyPressEventArgs e) {
-            if(clientSearch_tb.Text.Equals(searchPlaceholder)) {
+            if (clientSearch_tb.Text.Equals(searchPlaceholder)) {
                 clientSearch_tb.Text = "";
+            }
+        }
+
+        private void editTB_remove_item_ID_Click(object sender, EventArgs e) {
+            DeleteByIdForm del = new DeleteByIdForm(this, For.Articol);
+            del.Show();
+        }
+
+        private void editTB_remove_item_all_Click(object sender, EventArgs e) {
+            DialogResult alegere = MessageBox.Show("Sigur vrei să elimini toate articolele? Odată eliminate, nu vor " +
+                "mai putea fi recuperate", "Avertisment", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (alegere == DialogResult.Yes) {
+                if(!File.Exists($"{WorkPath}\\items.dat")) {
+                    MessageBox.Show("Nu există articole de eliminat", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                Articol.stergeTot();
+
+                DialogResult res = MessageBox.Show("Toate articolele au fost eliminate!", "Articole eliminate",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                if (res == DialogResult.OK || res == DialogResult.Cancel) {
+                    refreshArticoleToolbar();
+                    reseteazaAfisareArticol();
+                }
+            }
+        }
+
+        private void editTB_remove_client_ID_Click(object sender, EventArgs e) {
+            DeleteByIdForm del = new DeleteByIdForm(this, For.ClientLicitatie);
+            del.Show();
+        }
+
+        private void editTB_remove_client_all_Click(object sender, EventArgs e) {
+            DialogResult alegere = MessageBox.Show("Sigur vrei să elimini toate datele clienților? Odată eliminate, nu vor " +
+                "mai putea fi recuperate", "Avertisment", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (alegere == DialogResult.Yes) {
+                if (!File.Exists($"{WorkPath}\\clients.dat")) {
+                    MessageBox.Show("Nu există clienți de eliminat", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                ClientLicitatie.stergeTot();
+
+                DialogResult res = MessageBox.Show("Toate datele clienților au fost eliminate!", "Date clienți eliminate",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                if (res == DialogResult.OK || res == DialogResult.Cancel) {
+                    refreshListaClienti();
+                }
             }
         }
     }

@@ -3,24 +3,85 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Windows.Forms;
 
 namespace Auction_Tool {
     partial class MainForm {
-        private void cereWorkPath() {
-            FolderBrowserDialog dial = new FolderBrowserDialog();
-            dial.Description = "Înainte de a folosi aplicația, selectează locația unde vrei să salvezi datele." +
-                " Vei fi rugat să faci acest lucru de fiecare dată când deschizi aplicația!";
+        private bool cereWorkPath() {
+            while(true) {
+                FolderBrowserDialog dial = new FolderBrowserDialog();
+                dial.Description = "Înainte de a folosi aplicația, selectează locația unde vrei să salvezi datele." +
+                    " Vei fi rugat să faci acest lucru de fiecare dată când deschizi aplicația!";
 
-            DialogResult res = dial.ShowDialog();
-            if (res == DialogResult.OK) {
-                WorkPath = dial.SelectedPath;
+                DialogResult res = dial.ShowDialog();
+                if (res == DialogResult.OK) {
+                    WorkPath = dial.SelectedPath;
+                    return true;
+                } else if (res == DialogResult.Cancel) {
+                    DialogResult errRes = MessageBox.Show("Aplicația nu poate fi folosită fără o locație pentru date! " +
+                        "Vă rugăm să introduceți locația!",
+                        "Eroare", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+
+                    if (errRes == DialogResult.Cancel) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        public bool areWorkPath() {
+            return !string.IsNullOrEmpty(WorkPath);
+        }
+
+        public void reseteazaAfisareArticol() {
+            idArticol_out.Text = "Indisponibil";
+            denumArticol_out.Text = "Indisponibil";
+            descArticol_link.Tag = null;
+            pretBaza_out.Text = "Indisponibil";
+            pretCurent_out.Text = "Indisponibil";
+            nrClientTop_out.Text = "Indisponibil";
+
+            toolTip1.RemoveAll();
+
+            ascundeListaClienti();
+
+            fotoArticol_pb.Image = Properties.Resources.no_image;
+            fotoArticol_pb.InitialImage = Properties.Resources.no_image;
+        }
+
+        public void afiseazaArticol(Articol art) {
+            idArticol_out.Text = art.Id.ToString();
+            denumArticol_out.Text = 
+                $"{(art.Nume.Length > 21 ? art.Nume.Substring(0, 22) : art.Nume)}" +
+                $"{(art.Nume.Length > 22 ? "..." : "")}";
+            descArticol_link.Tag = art;
+            pretBaza_out.Text = $"{art.PretBaza} lei";
+            pretCurent_out.Text = "0 lei";
+            nrClientTop_out.Text = "În curând";
+            toolTip1.SetToolTip(denumArticol_out, art.Nume);
+            if (art.Descriere.Length < 65)
+                toolTip1.SetToolTip(descArticol_link, art.Descriere);
+
+            arataListaClienti();
+
+            if (!string.IsNullOrEmpty(art.URLfoto)) {
+                var request = WebRequest.Create(art.URLfoto);
+                try {
+                    using (var response = request.GetResponse())
+                    using (var stream = response.GetResponseStream()) {
+                        fotoArticol_pb.Image = Image.FromStream(stream);
+                    }
+                } catch (WebException) {
+                    MessageBox.Show("Nu s-a putut conecta la internet. Articolul va fi încărcat fără imagine",
+                        "Avertisment", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 
         private void seteazaArticoleToolbar() {
             if (File.Exists($"{WorkPath}\\items.dat")) {
-                List<Articol> articole = Articol.deserialize();
+                List<Articol> articole = Articol.deserializeaza();
 
                 if (articole.Count() > 0) {
                     for (int i = 0; i < articole.Count; i++) {
@@ -33,19 +94,9 @@ namespace Auction_Tool {
             }
         }
 
-        public void seteazaListaClienti() {
-            if (File.Exists($"{WorkPath}\\clients.dat")) {
-                List<ClientLicitatie> clienti = ClientLicitatie.deserialize();
-
-                if (clienti.Count() > 0) {
-                    for (int i = clienti.Count - 1; i >= 0; i--) {
-                        ClientLicitatie client = clienti.ElementAt(i);
-                        adaugaElementClient(i + 1, client);
-                    }
-                }
-
-                ClientLicitatie.Cache.Clienti.AddRange(clienti);
-            }
+        public void refreshArticoleToolbar() {
+            itemTB_load.DropDownItems.Clear();
+            seteazaArticoleToolbar();
         }
 
         public void adaugaOptiuneArticol(Articol articol) {
@@ -61,6 +112,26 @@ namespace Auction_Tool {
             art.Click += new EventHandler(itemTB_itemn_Click);
 
             itemTB_load.DropDownItems.Add(art);
+        }
+
+        public void seteazaListaClienti() {
+            if (File.Exists($"{WorkPath}\\clients.dat")) {
+                List<ClientLicitatie> clienti = ClientLicitatie.deserializeaza();
+
+                if (clienti.Count() > 0) {
+                    for (int i = clienti.Count - 1; i >= 0; i--) {
+                        ClientLicitatie client = clienti.ElementAt(i);
+                        adaugaElementClient(i + 1, client);
+                    }
+                }
+
+                ClientLicitatie.Cache.Clienti.AddRange(clienti);
+            }
+        }
+
+        public void refreshListaClienti() {
+            clientList_panel.Controls.Clear();
+            seteazaListaClienti();
         }
 
         public void adaugaElementClient(ClientLicitatie client) {
@@ -139,6 +210,8 @@ namespace Auction_Tool {
             elem.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             elem.Size = new Size(498, 32);
             elem.TabIndex = 0;
+
+            elem.ContextMenuStrip = clientElement_context;
 
             clientList_panel.Controls.Add(elem);
         }

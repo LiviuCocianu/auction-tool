@@ -79,6 +79,12 @@
     <Compile Include="CreateItemForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="DeleteByIdForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeleteByIdForm.Designer.cs">
+      <DependentUpon>DeleteByIdForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="IIdentifiable.cs" />
     <Compile Include="IstoricClient.cs" />
     <Compile Include="MainForm.cs">
@@ -99,6 +105,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CreateItemForm.resx">
       <DependentUpon>CreateItemForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeleteByIdForm.resx">
+      <DependentUpon>DeleteByIdForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -161,6 +170,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\edit.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

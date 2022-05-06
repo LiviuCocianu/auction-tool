@@ -38,9 +38,9 @@ namespace Auction_Tool {
             SalveazaIstoric = istoric != null; 
         }
 
-        public void serialize() {
+        public void serializeaza() {
             BinaryFormatter bf = new BinaryFormatter();
-            List<ClientLicitatie> list = deserialize();
+            List<ClientLicitatie> list = deserializeaza();
 
             using (Stream stream = new FileStream(
                 $"{MainForm.WorkPath}\\clients.dat",
@@ -52,7 +52,7 @@ namespace Auction_Tool {
             }
         }
 
-        public static List<ClientLicitatie> deserialize() {
+        public static List<ClientLicitatie> deserializeaza() {
             BinaryFormatter bf = new BinaryFormatter();
             List<ClientLicitatie> list = new List<ClientLicitatie>();
 
@@ -68,6 +68,59 @@ namespace Auction_Tool {
 
             return list;
         }
+
+        public static void serializeazaTot(List<ClientLicitatie> list) {
+            BinaryFormatter bf = new BinaryFormatter();
+
+            using (Stream stream = new FileStream(
+                $"{MainForm.WorkPath}\\clients.dat",
+                FileMode.OpenOrCreate, FileAccess.Write,
+                FileShare.None)
+            ) {
+                bf.Serialize(stream, list);
+            }
+        }
+
+        public static ClientLicitatie gasesteClient(int id) {
+            List<ClientLicitatie> clienti = deserializeaza();
+
+            if (clienti.Count > 0) {
+                foreach (ClientLicitatie cli in clienti) {
+                    if (cli.Id == id)
+                        return cli;
+                }
+
+                return null;
+            } else return null;
+        }
+
+        public static void stergeClient(int id) {
+            List<ClientLicitatie> clienti = deserializeaza();
+
+            if (clienti.Count > 0) {
+                foreach (ClientLicitatie cli in clienti) {
+                    if (cli.Id == id) {
+                        Cache.Clienti.RemoveAt(clienti.IndexOf(cli));
+                        clienti.Remove(cli);
+
+                        break;
+                    }
+                }
+
+                serializeazaTot(clienti);
+            }
+        }
+
+        public static void stergeTot() {
+            string path = $"{MainForm.WorkPath}\\clients.dat";
+
+            if (File.Exists(path)) {
+                File.Delete(path);
+            }
+
+            Cache.Clienti.Clear();
+        }
+
 
         public static class Cache {
             private static List<ClientLicitatie> clienti = new List<ClientLicitatie>();

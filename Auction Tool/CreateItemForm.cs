@@ -41,7 +41,7 @@ namespace Auction_Tool {
                 string URL = URLfoto_tb.Text;
 
                 Articol item = new Articol(nume, descriere, pretBaza, URL);
-                item.serialize();
+                item.serializeaza();
 
                 main.adaugaOptiuneArticol(item);
                 Articol.Cache.Articole.Add(item);
@@ -49,7 +49,7 @@ namespace Auction_Tool {
                 DialogResult res = MessageBox.Show(
                     "Articolul a fost salvat cu succes!",
                     "Articol creat",
-                    MessageBoxButtons.OK
+                    MessageBoxButtons.OK, MessageBoxIcon.Information
                 );
 
                 if(res == DialogResult.OK || res == DialogResult.Cancel) {
@@ -259,7 +259,7 @@ namespace Auction_Tool {
                 return false;
             } else {
                 if (File.Exists($"{MainForm.WorkPath}\\items.dat")) {
-                    List<Articol> articole = Articol.deserialize();
+                    List<Articol> articole = Articol.deserializeaza();
 
                     if (articole.Count > 0) {
                         foreach (Articol art in articole) {

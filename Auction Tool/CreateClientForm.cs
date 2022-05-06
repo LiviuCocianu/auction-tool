@@ -31,17 +31,16 @@ namespace Auction_Tool {
                     numarPersonal, sumaDeclarata,
                     salveazaIst ? new IstoricClient() : null
                 );
-                client.serialize();
+                client.serializeaza();
 
                 ClientLicitatie.Cache.Clienti.Add(client);
 
-                main.clientList_panel.Controls.Clear();
-                main.seteazaListaClienti();
+                main.refreshListaClienti();
 
                 DialogResult res = MessageBox.Show(
                     "Clientul a fost salvat cu succes!",
                     "Client creat",
-                    MessageBoxButtons.OK
+                    MessageBoxButtons.OK, MessageBoxIcon.Information
                 );
 
                 if (res == DialogResult.OK || res == DialogResult.Cancel) {
@@ -53,13 +52,15 @@ namespace Auction_Tool {
         private void numarLicitatieInfo_Click(object sender, EventArgs e) {
             MessageBox.Show("Acest număr întreg trebuie să fie unic și va servi ca o metodă de identificare " +
                 "și abreviere a clientului virtual cu cel din sala de licitații. A se lua în considerare că acest număr nu este " +
-                "același lucru cu ID-ul clientului, care este folosit strict în aplicație", "Ajutor", MessageBoxButtons.OK);
+                "același lucru cu ID-ul clientului, care este folosit strict în aplicație",
+                "Ajutor", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void sumaDispInfo_Click(object sender, EventArgs e) {
             MessageBox.Show("Acest număr rațional va fi folosit pentru a valida dacă prețul propus de client " +
                 "în timpul unei licitații se află în bugetul acestuia. Dacă suma nu v-a fost comunicată de către client, " +
-                "lăsați acest câmp gol", "Ajutor", MessageBoxButtons.OK);
+                "lăsați acest câmp gol",
+                "Ajutor", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private bool numeValid() {
@@ -94,7 +95,7 @@ namespace Auction_Tool {
 
         private bool numePrenumeValid() {
             if (File.Exists($"{MainForm.WorkPath}\\clients.dat")) {
-                List<ClientLicitatie> clienti = ClientLicitatie.deserialize();
+                List<ClientLicitatie> clienti = ClientLicitatie.deserializeaza();
 
                 if (clienti.Count > 0) {
                     foreach (ClientLicitatie client in clienti) {
@@ -124,7 +125,7 @@ namespace Auction_Tool {
                 errorProvider.SetError(numarLicitatie_tb, "Prețul de bază nu poate fi mai mic decât 0");
                 return false;
             } else if (File.Exists($"{MainForm.WorkPath}\\clients.dat")) {
-                List<ClientLicitatie> clienti = ClientLicitatie.deserialize();
+                List<ClientLicitatie> clienti = ClientLicitatie.deserializeaza();
 
                 if (clienti.Count > 0) {
                     foreach (ClientLicitatie client in clienti) {

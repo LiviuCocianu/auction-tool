@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace Auction_Tool {
-    enum For {
+    public enum For {
         Articol, ClientLicitatie
     }
 

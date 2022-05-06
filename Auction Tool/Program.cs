@@ -13,7 +13,9 @@ namespace Auction_Tool {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            MainForm main = new MainForm();
+            if(main.areWorkPath())
+                Application.Run(main);
         }
     }
 }
