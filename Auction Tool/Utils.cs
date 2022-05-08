@@ -6,6 +6,10 @@ namespace Auction_Tool {
         Articol, ClientLicitatie
     }
 
+    public enum Operatie {
+        Creare, Editare
+    }
+
     class Utils {
         public static int genereazaIdUnic(For obj, int max) {
             Random ran = new Random();

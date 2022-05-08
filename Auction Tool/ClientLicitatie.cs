@@ -82,10 +82,8 @@ namespace Auction_Tool {
         }
 
         public static ClientLicitatie gasesteClient(int id) {
-            List<ClientLicitatie> clienti = deserializeaza();
-
-            if (clienti.Count > 0) {
-                foreach (ClientLicitatie cli in clienti) {
+            if (Cache.Clienti.Count > 0) {
+                foreach (ClientLicitatie cli in Cache.Clienti) {
                     if (cli.Id == id)
                         return cli;
                 }

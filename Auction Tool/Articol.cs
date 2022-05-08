@@ -96,10 +96,8 @@ namespace Auction_Tool {
         }
 
         public static Articol gasesteArticol(int id) {
-            List<Articol> articole = deserializeaza();
-
-            if (articole.Count > 0) {
-                foreach (Articol art in articole) {
+            if (Cache.Articole.Count > 0) {
+                foreach (Articol art in Cache.Articole) {
                     if (art.Id == id) 
                         return art;
                 }
@@ -123,6 +121,34 @@ namespace Auction_Tool {
 
                 serializeazaTot(articole);
             }
+        }
+
+        /*
+         * Setează acest articol la același indice din fișierul serializat,
+         * numit și "baza de date".
+         * Returnează lista de articole cu schimbarea.
+         * 
+         * Articolul TREBUIE să-și aibă existența verificată în baza de date.
+         * Funcția nu va face nimic dacă articolul nu există în aceasta
+         */
+        public List<Articol> seteazaArticol() {
+            List<Articol> articole = deserializeaza();
+
+            if (articole.Count > 0) {
+                bool found = false;
+
+                for (int i = 0; i < articole.Count; i++) {
+                    if (articole[i].Id == Id) {
+                        found = true;
+                        articole[i] = this;
+                        break;
+                    }
+                }
+
+                if(found) serializeazaTot(articole);
+            }
+
+            return articole;
         }
 
         public static void stergeTot() {

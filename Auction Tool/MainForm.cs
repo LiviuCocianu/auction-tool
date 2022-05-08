@@ -17,6 +17,8 @@ namespace Auction_Tool {
             set { workPath = value; }
         }
 
+        private ClientLicitatie clientSelectat;
+
         public MainForm() {
             bool succes = cereWorkPath();
 
@@ -97,7 +99,7 @@ namespace Auction_Tool {
         }
 
         private void itemToolStripMenuItem_Click_1(object sender, EventArgs e) {
-            CreateItemForm create = new CreateItemForm(this);
+            CreateEditItemForm create = new CreateEditItemForm(this, Operatie.Creare);
             create.Show();
         }
 
@@ -180,6 +182,44 @@ namespace Auction_Tool {
                     refreshListaClienti();
                 }
             }
+        }
+
+        private void clientElementn_MouseEnter(object sender, EventArgs e) {
+            Control con = (Control)sender;
+            clientSelectat = (ClientLicitatie) con.Tag;
+            con.BackColor = Color.PaleTurquoise;
+        }
+
+        private void clientElementn_MouseLeave(object sender, EventArgs e) {
+            Control con = (Control)sender;
+            con.BackColor = Color.WhiteSmoke;
+        }
+
+        private void stergereToolStripMenuItem_Click(object sender, EventArgs e) {
+            ClientLicitatie.stergeClient(clientSelectat.Id);
+
+            DialogResult res = MessageBox.Show($"Clientul " +
+                $"cu ID-ul {clientSelectat.Id} a fost eliminat", "Client eliminat",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            if (res == DialogResult.OK || res == DialogResult.Cancel) {
+                refreshListaClienti();
+            }
+        }
+
+        private void articolToolStripMenuItem_Click(object sender, EventArgs e) {
+            /*
+             * Apeleaza această funcție lambda după ce utilizatorul a introdus
+             * ID-ul articolului și a trecut prin validări
+             */
+            Action<Articol> after = (art) => {
+                CreateEditItemForm edit = new CreateEditItemForm(this, art);
+                edit.Show();
+            };
+
+            // Solicită ID-ul articolului care va urma să fie editat
+            EditByIdForm requestID = new EditByIdForm(this, after);
+            requestID.Show();
         }
     }
 }

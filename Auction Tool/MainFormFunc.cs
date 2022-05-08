@@ -156,7 +156,7 @@ namespace Auction_Tool {
                 Name = $"clientIndexElem{index}",
                 Text = $"{index}",
                 Anchor = AnchorStyles.None,
-                TextAlign = ContentAlignment.MiddleCenter 
+                TextAlign = ContentAlignment.MiddleCenter
             });
 
             elem.Controls.Add(new Label() {
@@ -202,7 +202,6 @@ namespace Auction_Tool {
             });
 
             elem.ColumnCount = elem.ColumnStyles.Count;
-            elem.Cursor = Cursors.Hand;
             elem.Dock = DockStyle.Top;
             elem.Location = new Point(0, 0);
             elem.Name = $"clientElement{index}";
@@ -211,7 +210,12 @@ namespace Auction_Tool {
             elem.Size = new Size(498, 32);
             elem.TabIndex = 0;
 
-            elem.ContextMenuStrip = clientElement_context;
+            Label clientIdLabel = (Label) elem.Controls.Find($"clientIdElem{index}", false)[0];
+            clientIdLabel.MouseEnter += new EventHandler(clientElementn_MouseEnter);
+            clientIdLabel.MouseLeave += new EventHandler(clientElementn_MouseLeave);
+            clientIdLabel.ContextMenuStrip = clientElement_context;
+            clientIdLabel.Tag = client;
+            clientIdLabel.Cursor = Cursors.Hand;
 
             clientList_panel.Controls.Add(elem);
         }

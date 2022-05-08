@@ -1,59 +1,107 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Auction_Tool {
-    class CreateItemForm : Form, ISubmitter {
+    class CreateEditItemForm : Form, ISubmitter {
         private Label numeArticol;
         private Panel numeArt_pan;
         private TextBox numeArticol_tb;
         private Label descArticol;
         private TextBox descArticol_tb;
         private Label pretBaza;
-        private TextBox URLfoto_tb;
+        private TextBox urlFoto_tb;
         private Label URLfoto;
         private Panel urlFoto_pan;
         private Panel pretBaza_pan;
         private Panel descArt_pan;
         private System.ComponentModel.IContainer components;
         private ErrorProvider errorProvider;
-        private Button creeaza_btn;
+        private Button submit_btn;
         private TextBox pretBaza_tb;
-        private Label creeaza_title;
+        private Label title;
 
         private MainForm main;
+        private Operatie op;
+        private Articol toEdit;
 
-        public CreateItemForm(MainForm main) {
+        private CreateEditItemForm(MainForm main) {
             InitializeComponent();
             this.main = main;
         }
 
+        public CreateEditItemForm(MainForm main, Operatie op) : this(main) {
+            this.op = op;
+
+            switch(op) {
+                case Operatie.Creare:
+                    title.Text = "Creează un articol nou";
+                    submit_btn.Text = "Creează";
+                    break;
+                case Operatie.Editare:
+                    title.Text = "Editează articol";
+                    submit_btn.Text = "Editează";
+                    break;
+            }
+        }
+
+        public CreateEditItemForm(MainForm main, Articol toEdit) : this(main, Operatie.Editare) {
+            this.toEdit = toEdit;
+            numeArticol_tb.Text = toEdit.Nume;
+            descArticol_tb.Text = toEdit.Descriere;
+            pretBaza_tb.Text = toEdit.PretBaza.ToString();
+            urlFoto_tb.Text = toEdit.URLfoto;
+        }
+
         public void Submit() {
             if(checkValidity()) {
-                string nume = numeArticol_tb.Text;
-                string descriere = descArticol_tb.Text;
-                float pretBaza;
-                float.TryParse(pretBaza_tb.Text, out pretBaza);
-                string URL = URLfoto_tb.Text;
 
-                Articol item = new Articol(nume, descriere, pretBaza, URL);
-                item.serializeaza();
+                switch (op) {
+                    case Operatie.Creare:
+                        string nume = numeArticol_tb.Text;
+                        string descriere = descArticol_tb.Text;
+                        float.TryParse(pretBaza_tb.Text, out float pretBaza);
+                        string URL = urlFoto_tb.Text;
 
-                main.adaugaOptiuneArticol(item);
-                Articol.Cache.Articole.Add(item);
+                        Articol item = new Articol(nume, descriere, pretBaza, URL);
+                        item.serializeaza();
 
-                DialogResult res = MessageBox.Show(
-                    "Articolul a fost salvat cu succes!",
-                    "Articol creat",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information
-                );
+                        main.adaugaOptiuneArticol(item);
+                        Articol.Cache.Articole.Add(item);
 
-                if(res == DialogResult.OK || res == DialogResult.Cancel) {
-                    this.Close();
+                        DialogResult res = MessageBox.Show(
+                            "Articolul a fost salvat cu succes!",
+                            "Articol creat",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information
+                        );
+
+                        if (res == DialogResult.OK || res == DialogResult.Cancel)
+                            Close();
+                        break;
+                    case Operatie.Editare:
+                        nume = numeArticol_tb.Text;
+                        descriere = descArticol_tb.Text;
+                        float.TryParse(pretBaza_tb.Text, out pretBaza);
+                        URL = urlFoto_tb.Text;
+
+                        item = new Articol(nume, descriere, pretBaza, URL) {
+                            Id = toEdit.Id
+                        };
+
+                        Articol.Cache.Articole = item.seteazaArticol();
+                        main.refreshArticoleToolbar();
+                        main.afiseazaArticol(item);
+
+                        res = MessageBox.Show(
+                            "Articolul a fost editat cu succes!",
+                            "Articol editat",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information
+                        );
+
+                        if (res == DialogResult.OK || res == DialogResult.Cancel)
+                            Close();
+                        break;
                 }
             }
         }
@@ -61,12 +109,12 @@ namespace Auction_Tool {
         #region CreareComponente
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateItemForm));
-            this.creeaza_title = new System.Windows.Forms.Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateEditItemForm));
+            this.title = new System.Windows.Forms.Label();
             this.numeArticol = new System.Windows.Forms.Label();
             this.numeArt_pan = new System.Windows.Forms.Panel();
             this.numeArticol_tb = new System.Windows.Forms.TextBox();
-            this.URLfoto_tb = new System.Windows.Forms.TextBox();
+            this.urlFoto_tb = new System.Windows.Forms.TextBox();
             this.URLfoto = new System.Windows.Forms.Label();
             this.pretBaza = new System.Windows.Forms.Label();
             this.descArticol_tb = new System.Windows.Forms.TextBox();
@@ -76,7 +124,7 @@ namespace Auction_Tool {
             this.pretBaza_tb = new System.Windows.Forms.TextBox();
             this.descArt_pan = new System.Windows.Forms.Panel();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.creeaza_btn = new System.Windows.Forms.Button();
+            this.submit_btn = new System.Windows.Forms.Button();
             this.numeArt_pan.SuspendLayout();
             this.urlFoto_pan.SuspendLayout();
             this.pretBaza_pan.SuspendLayout();
@@ -84,15 +132,15 @@ namespace Auction_Tool {
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
-            // creeaza_title
+            // title
             // 
-            this.creeaza_title.AutoSize = true;
-            this.creeaza_title.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.creeaza_title.Location = new System.Drawing.Point(19, 14);
-            this.creeaza_title.Name = "creeaza_title";
-            this.creeaza_title.Size = new System.Drawing.Size(161, 19);
-            this.creeaza_title.TabIndex = 0;
-            this.creeaza_title.Text = "Creează un articol nou";
+            this.title.AutoSize = true;
+            this.title.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.title.Location = new System.Drawing.Point(19, 14);
+            this.title.Name = "title";
+            this.title.Size = new System.Drawing.Size(161, 19);
+            this.title.TabIndex = 0;
+            this.title.Text = "Creează un articol nou";
             // 
             // numeArticol
             // 
@@ -119,12 +167,12 @@ namespace Auction_Tool {
             this.numeArticol_tb.Size = new System.Drawing.Size(336, 20);
             this.numeArticol_tb.TabIndex = 2;
             // 
-            // URLfoto_tb
+            // urlFoto_tb
             // 
-            this.URLfoto_tb.Location = new System.Drawing.Point(6, 20);
-            this.URLfoto_tb.Name = "URLfoto_tb";
-            this.URLfoto_tb.Size = new System.Drawing.Size(336, 20);
-            this.URLfoto_tb.TabIndex = 8;
+            this.urlFoto_tb.Location = new System.Drawing.Point(6, 20);
+            this.urlFoto_tb.Name = "urlFoto_tb";
+            this.urlFoto_tb.Size = new System.Drawing.Size(336, 20);
+            this.urlFoto_tb.TabIndex = 8;
             // 
             // URLfoto
             // 
@@ -167,7 +215,7 @@ namespace Auction_Tool {
             // urlFoto_pan
             // 
             this.urlFoto_pan.Controls.Add(this.URLfoto);
-            this.urlFoto_pan.Controls.Add(this.URLfoto_tb);
+            this.urlFoto_pan.Controls.Add(this.urlFoto_tb);
             this.urlFoto_pan.Location = new System.Drawing.Point(17, 211);
             this.urlFoto_pan.Name = "urlFoto_pan";
             this.urlFoto_pan.Size = new System.Drawing.Size(371, 46);
@@ -202,29 +250,29 @@ namespace Auction_Tool {
             // 
             this.errorProvider.ContainerControl = this;
             // 
-            // creeaza_btn
+            // submit_btn
             // 
-            this.creeaza_btn.Location = new System.Drawing.Point(23, 267);
-            this.creeaza_btn.Name = "creeaza_btn";
-            this.creeaza_btn.Size = new System.Drawing.Size(336, 23);
-            this.creeaza_btn.TabIndex = 12;
-            this.creeaza_btn.Text = "Creează";
-            this.creeaza_btn.UseVisualStyleBackColor = true;
-            this.creeaza_btn.Click += new System.EventHandler(this.creeaza_btn_Click);
+            this.submit_btn.Location = new System.Drawing.Point(23, 267);
+            this.submit_btn.Name = "submit_btn";
+            this.submit_btn.Size = new System.Drawing.Size(336, 23);
+            this.submit_btn.TabIndex = 12;
+            this.submit_btn.Text = "Creează";
+            this.submit_btn.UseVisualStyleBackColor = true;
+            this.submit_btn.Click += new System.EventHandler(this.creeaza_btn_Click);
             // 
-            // CreateItemForm
+            // CreateEditItemForm
             // 
             this.ClientSize = new System.Drawing.Size(400, 308);
-            this.Controls.Add(this.creeaza_btn);
+            this.Controls.Add(this.submit_btn);
             this.Controls.Add(this.descArt_pan);
             this.Controls.Add(this.pretBaza_pan);
             this.Controls.Add(this.urlFoto_pan);
             this.Controls.Add(this.numeArt_pan);
-            this.Controls.Add(this.creeaza_title);
+            this.Controls.Add(this.title);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "CreateItemForm";
+            this.Name = "CreateEditItemForm";
             this.numeArt_pan.ResumeLayout(false);
             this.numeArt_pan.PerformLayout();
             this.urlFoto_pan.ResumeLayout(false);
@@ -258,7 +306,7 @@ namespace Auction_Tool {
                 errorProvider.SetError(numeArticol_tb, $"Numele articolului nu poate depăși {nameCharLimit} caractere");
                 return false;
             } else {
-                if (File.Exists($"{MainForm.WorkPath}\\items.dat")) {
+                if (File.Exists($"{MainForm.WorkPath}\\items.dat") && op == Operatie.Creare) {
                     List<Articol> articole = Articol.deserializeaza();
 
                     if (articole.Count > 0) {
@@ -308,24 +356,24 @@ namespace Auction_Tool {
         }
 
         private bool URLvalid() {
-            if (!string.IsNullOrEmpty(URLfoto_tb.Text)) {
+            if (!string.IsNullOrEmpty(urlFoto_tb.Text)) {
                 Uri URL;
-                Uri.TryCreate(URLfoto_tb.Text, UriKind.Absolute, out URL);
+                Uri.TryCreate(urlFoto_tb.Text, UriKind.Absolute, out URL);
 
-                if (Uri.IsWellFormedUriString(URLfoto_tb.Text, UriKind.Absolute)) {
+                if (Uri.IsWellFormedUriString(urlFoto_tb.Text, UriKind.Absolute)) {
                     if (URL.Scheme != Uri.UriSchemeHttp && URL.Scheme != Uri.UriSchemeHttps) {
-                        errorProvider.SetError(URLfoto_tb, "Acest URL nu este de forma HTTP sau HTTPS");
+                        errorProvider.SetError(urlFoto_tb, "Acest URL nu este de forma HTTP sau HTTPS");
                         return false;
                     } else {
-                        errorProvider.SetError(URLfoto_tb, null);
+                        errorProvider.SetError(urlFoto_tb, null);
                         return true;
                     }
                 } else {
-                    errorProvider.SetError(URLfoto_tb, "Textul introdus nu are forma unui URL valid");
+                    errorProvider.SetError(urlFoto_tb, "Textul introdus nu are forma unui URL valid");
                     return false;
                 }
             } else {
-                errorProvider.SetError(URLfoto_tb, null);
+                errorProvider.SetError(urlFoto_tb, null);
                 return true;
             }
         }
