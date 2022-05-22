@@ -4,12 +4,38 @@ using System.IO;
 using System.Windows.Forms;
 
 namespace Auction_Tool {
-    public partial class CreateClientForm : Form, ISubmitter {
+    public partial class CreateEditClientForm : Form, ISubmitter {
         private MainForm main;
+        private Operatie op;
+        private ClientLicitatie toEdit;
 
-        public CreateClientForm(MainForm main) {
+        public CreateEditClientForm(MainForm main) {
             InitializeComponent();
             this.main = main;
+        }
+
+        public CreateEditClientForm(MainForm main, Operatie op) : this(main) {
+            this.op = op;
+
+            switch (op) {
+                case Operatie.Creare:
+                    title.Text = "Creează un client nou";
+                    submit_btn.Text = "Creează";
+                    break;
+                case Operatie.Editare:
+                    title.Text = "Editează client";
+                    submit_btn.Text = "Editează";
+                    break;
+            }
+        }
+
+        public CreateEditClientForm(MainForm main, ClientLicitatie toEdit) : this(main, Operatie.Editare) {
+            this.toEdit = toEdit;
+            numeClient_tb.Text = toEdit.Nume;
+            prenumeClient_tb.Text = toEdit.Prenume;
+            numarLicitatie_tb.Text = toEdit.Numar.ToString();
+            sumaDisp_tb.Text = toEdit.SumaDisponibila.ToString();
+            salveazaIst_ckb.Checked = toEdit.SalveazaIstoric;
         }
 
         public bool checkValidity() {
@@ -19,33 +45,64 @@ namespace Auction_Tool {
 
         public void Submit() {
             if(checkValidity()) {
-                string nume = numeClient_tb.Text.Trim();
-                string prenume = prenumeClient_tb.Text.Trim();
-                int numarPersonal = int.Parse(numarLicitatie_tb.Text);
-                float sumaDeclarata = string.IsNullOrEmpty(sumaDisp_tb.Text) 
-                                        ? float.MaxValue : float.Parse(sumaDisp_tb.Text);
-                bool salveazaIst = salveazaIst_ckb.Checked;
+                switch(op) {
+                    case Operatie.Creare:
+                        string nume = numeClient_tb.Text.Trim();
+                        string prenume = prenumeClient_tb.Text.Trim();
+                        int numarPersonal = int.Parse(numarLicitatie_tb.Text);
+                        float sumaDeclarata = string.IsNullOrEmpty(sumaDisp_tb.Text)
+                                                ? float.MaxValue : float.Parse(sumaDisp_tb.Text);
+                        bool salveazaIst = salveazaIst_ckb.Checked;
 
-                ClientLicitatie client = new ClientLicitatie(
-                    nume, prenume,
-                    numarPersonal, sumaDeclarata,
-                    salveazaIst ? new IstoricClient() : null
-                );
-                client.serializeaza();
+                        ClientLicitatie client = new ClientLicitatie(
+                            nume, prenume,
+                            numarPersonal, sumaDeclarata,
+                            salveazaIst ? new IstoricClient() : null
+                        );
+                        client.serializeaza();
 
-                ClientLicitatie.Cache.Clienti.Add(client);
+                        ClientLicitatie.Cache.Clienti.Add(client);
 
-                main.refreshListaClienti();
+                        main.refreshListaClienti(false);
 
-                DialogResult res = MessageBox.Show(
-                    "Clientul a fost salvat cu succes!",
-                    "Client creat",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information
-                );
+                        DialogResult res = MessageBox.Show(
+                            "Clientul a fost salvat cu succes!",
+                            "Client creat",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information
+                        );
 
-                if (res == DialogResult.OK || res == DialogResult.Cancel) {
-                    this.Close();
+                        if (res == DialogResult.OK || res == DialogResult.Cancel) 
+                            this.Close();
+                        break;
+                    case Operatie.Editare:
+                        nume = numeClient_tb.Text.Trim();
+                        prenume = prenumeClient_tb.Text.Trim();
+                        numarPersonal = int.Parse(numarLicitatie_tb.Text);
+                        sumaDeclarata = string.IsNullOrEmpty(sumaDisp_tb.Text)
+                                                ? float.MaxValue : float.Parse(sumaDisp_tb.Text);
+                        salveazaIst = salveazaIst_ckb.Checked;
+
+                        client = new ClientLicitatie(
+                            nume, prenume,
+                            numarPersonal, sumaDeclarata,
+                            salveazaIst ? new IstoricClient() : null
+                        ) { Id = toEdit.Id };
+
+                        ClientLicitatie.Cache.Clienti = client.seteazaClient();
+
+                        res = MessageBox.Show(
+                            "Clientul a fost editat cu succes!",
+                            "Client editat",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information
+                        );
+
+                        if (res == DialogResult.OK || res == DialogResult.Cancel) {
+                            main.refreshListaClienti(false);
+                            Close();
+                        }
+                        break;
                 }
+                
             }
         }
 
@@ -100,6 +157,11 @@ namespace Auction_Tool {
                 if (clienti.Count > 0) {
                     foreach (ClientLicitatie client in clienti) {
                         if (client.Nume == numeClient_tb.Text && client.Prenume == prenumeClient_tb.Text) {
+                            // Dacă nu s-a făcut nicio modificare la nume sau prenume, facem o excepție
+                            // și lăsăm validarea să continue
+                            if (op == Operatie.Editare && numeClient_tb.Text == toEdit.Nume
+                                && prenumeClient_tb.Text == toEdit.Prenume) return true;
+
                             errorProvider.SetError(prenumeClient_tb, "Acest nume și prenume aparțin deja altui client");
                             return false;
                         }
@@ -130,6 +192,8 @@ namespace Auction_Tool {
                 if (clienti.Count > 0) {
                     foreach (ClientLicitatie client in clienti) {
                         if(client.Numar == numar) {
+                            if (op == Operatie.Editare && numar == toEdit.Numar) return true;
+
                             errorProvider.SetError(numarLicitatie_tb, "Acest număr aparține deja altui client");
                             return false;
                         }

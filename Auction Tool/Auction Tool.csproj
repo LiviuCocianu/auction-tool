@@ -69,12 +69,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Articol.cs" />
-    <Compile Include="ClientLicitatie.cs" />
-    <Compile Include="CreateClientForm.cs">
+    <Compile Include="ClientBetForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CreateClientForm.Designer.cs">
-      <DependentUpon>CreateClientForm.cs</DependentUpon>
+    <Compile Include="ClientBetForm.Designer.cs">
+      <DependentUpon>ClientBetForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ClientLicitatie.cs" />
+    <Compile Include="CreateEditClientForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateEditClientForm.Designer.cs">
+      <DependentUpon>CreateEditClientForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CreateEditItemForm.cs">
       <SubType>Form</SubType>
@@ -87,6 +93,7 @@
     </Compile>
     <Compile Include="IIdentifiable.cs" />
     <Compile Include="IstoricClient.cs" />
+    <Compile Include="Auction.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,8 +118,11 @@
       <DependentUpon>EditByIdForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils.cs" />
-    <EmbeddedResource Include="CreateClientForm.resx">
-      <DependentUpon>CreateClientForm.cs</DependentUpon>
+    <EmbeddedResource Include="ClientBetForm.resx">
+      <DependentUpon>ClientBetForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateEditClientForm.resx">
+      <DependentUpon>CreateEditClientForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CreateEditItemForm.resx">
       <DependentUpon>CreateEditItemForm.cs</DependentUpon>

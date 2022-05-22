@@ -39,8 +39,10 @@ namespace Auction_Tool {
             denumArticol_out.Text = "Indisponibil";
             descArticol_link.Tag = null;
             pretBaza_out.Text = "Indisponibil";
-            pretCurent_out.Text = "Indisponibil";
+            sumaCurenta_out.Text = "Indisponibil";
+            sumaCurenta_out.Tag = 0f;
             nrClientTop_out.Text = "Indisponibil";
+            nrClientTop_out.Tag = null;
 
             toolTip1.RemoveAll();
 
@@ -50,6 +52,11 @@ namespace Auction_Tool {
             fotoArticol_pb.InitialImage = Properties.Resources.no_image;
         }
 
+        public Articol articolAfisat() {
+            if (descArticol_link.Tag == null) return null;
+            return (Articol)descArticol_link.Tag;
+        }
+
         public void afiseazaArticol(Articol art) {
             idArticol_out.Text = art.Id.ToString();
             denumArticol_out.Text = 
@@ -57,7 +64,7 @@ namespace Auction_Tool {
                 $"{(art.Nume.Length > 22 ? "..." : "")}";
             descArticol_link.Tag = art;
             pretBaza_out.Text = $"{art.PretBaza} lei";
-            pretCurent_out.Text = "0 lei";
+            sumaCurenta_out.Text = "0 lei";
             nrClientTop_out.Text = "În curând";
             toolTip1.SetToolTip(denumArticol_out, art.Nume);
             if (art.Descriere.Length < 65)
@@ -77,6 +84,8 @@ namespace Auction_Tool {
                         "Avertisment", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
+
+            Licitatie.start();
         }
 
         private void seteazaArticoleToolbar() {
@@ -114,9 +123,36 @@ namespace Auction_Tool {
             itemTB_load.DropDownItems.Add(art);
         }
 
-        public void seteazaListaClienti() {
-            if (File.Exists($"{WorkPath}\\clients.dat")) {
-                List<ClientLicitatie> clienti = ClientLicitatie.deserializeaza();
+        public bool esteAfisatCurent(Articol articol) {
+            if (descArticol_link.Tag == null) return false;
+            return ((Articol)descArticol_link.Tag).Id == articol.Id;
+        }
+
+        /**
+         * Seteaza clienții în lista din dreapta
+         * 
+         * cache - Dacă clienții vor fi luați din cache sau din fișier
+         *      Dacă este false, clienții din fișier vor fi resetați în cache
+         *      Dacă este true, se va citi din cache fără alte acțiuni
+         */
+        public void seteazaListaClienti(bool cache) {
+            List<ClientLicitatie> clienti;
+
+            if (!cache) {
+                if (File.Exists($"{WorkPath}\\clients.dat")) {
+                    clienti = ClientLicitatie.deserializeaza();
+
+                    if (clienti.Count() > 0) {
+                        for (int i = clienti.Count - 1; i >= 0; i--) {
+                            ClientLicitatie client = clienti.ElementAt(i);
+                            adaugaElementClient(i + 1, client);
+                        }
+                    }
+
+                    ClientLicitatie.Cache.Clienti.AddRange(clienti);
+                }
+            } else {
+                clienti = ClientLicitatie.Cache.Clienti;
 
                 if (clienti.Count() > 0) {
                     for (int i = clienti.Count - 1; i >= 0; i--) {
@@ -124,14 +160,12 @@ namespace Auction_Tool {
                         adaugaElementClient(i + 1, client);
                     }
                 }
-
-                ClientLicitatie.Cache.Clienti.AddRange(clienti);
             }
         }
 
-        public void refreshListaClienti() {
+        public void refreshListaClienti(bool cache) {
             clientList_panel.Controls.Clear();
-            seteazaListaClienti();
+            seteazaListaClienti(cache);
         }
 
         public void adaugaElementClient(ClientLicitatie client) {
@@ -196,7 +230,7 @@ namespace Auction_Tool {
 
             elem.Controls.Add(new Label() {
                 Name = $"clientSumaElem{index}",
-                Text = $"{client.SumaDisponibila}",
+                Text = $"{(client.SumaDisponibila == float.MaxValue ? "-" : client.SumaDisponibila.ToString())}",
                 Anchor = AnchorStyles.None,
                 TextAlign = ContentAlignment.MiddleCenter
             });
@@ -213,7 +247,7 @@ namespace Auction_Tool {
             Label clientIdLabel = (Label) elem.Controls.Find($"clientIdElem{index}", false)[0];
             clientIdLabel.MouseEnter += new EventHandler(clientElementn_MouseEnter);
             clientIdLabel.MouseLeave += new EventHandler(clientElementn_MouseLeave);
-            clientIdLabel.ContextMenuStrip = clientElement_context;
+            clientIdLabel.ContextMenuStrip = clientElement_ctx;
             clientIdLabel.Tag = client;
             clientIdLabel.Cursor = Cursors.Hand;
 

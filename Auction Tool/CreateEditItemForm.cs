@@ -56,7 +56,6 @@ namespace Auction_Tool {
 
         public void Submit() {
             if(checkValidity()) {
-
                 switch (op) {
                     case Operatie.Creare:
                         string nume = numeArticol_tb.Text;
@@ -90,8 +89,6 @@ namespace Auction_Tool {
                         };
 
                         Articol.Cache.Articole = item.seteazaArticol();
-                        main.refreshArticoleToolbar();
-                        main.afiseazaArticol(item);
 
                         res = MessageBox.Show(
                             "Articolul a fost editat cu succes!",
@@ -99,8 +96,12 @@ namespace Auction_Tool {
                             MessageBoxButtons.OK, MessageBoxIcon.Information
                         );
 
-                        if (res == DialogResult.OK || res == DialogResult.Cancel)
+                        if (res == DialogResult.OK || res == DialogResult.Cancel) {
+                            main.refreshArticoleToolbar();
+                            if (main.esteAfisatCurent(item))
+                                main.afiseazaArticol(item);
                             Close();
+                        }
                         break;
                 }
             }
@@ -306,12 +307,14 @@ namespace Auction_Tool {
                 errorProvider.SetError(numeArticol_tb, $"Numele articolului nu poate depăși {nameCharLimit} caractere");
                 return false;
             } else {
-                if (File.Exists($"{MainForm.WorkPath}\\items.dat") && op == Operatie.Creare) {
+                if (File.Exists($"{MainForm.WorkPath}\\items.dat")) {
                     List<Articol> articole = Articol.deserializeaza();
 
                     if (articole.Count > 0) {
                         foreach (Articol art in articole) {
                             if (art.Nume == numeArticol_tb.Text) {
+                                if (op == Operatie.Editare && numeArticol_tb.Text == toEdit.Nume) return true;
+
                                 errorProvider.SetError(numeArticol_tb, $"Acest nume aparține deja altui articol");
                                 return false;
                             }

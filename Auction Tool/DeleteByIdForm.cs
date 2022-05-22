@@ -57,7 +57,7 @@ namespace Auction_Tool {
                         if (int.Parse(main.idArticol_out.Text) == id)
                             main.reseteazaAfisareArticol();
                     } else if(tip == For.ClientLicitatie) {
-                        main.refreshListaClienti();
+                        main.refreshListaClienti(false);
                     }
                 }
             }

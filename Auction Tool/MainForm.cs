@@ -12,15 +12,23 @@ namespace Auction_Tool {
         private const string searchPlaceholder = "Caută ID client..";
 
         private static string workPath = "";
+        private Auction licitatie;
+
         public static string WorkPath {
             get { return workPath; }
             set { workPath = value; }
+        }
+
+        public Auction Licitatie {
+            get { return licitatie; }
+            set { licitatie = value; }
         }
 
         private ClientLicitatie clientSelectat;
 
         public MainForm() {
             bool succes = cereWorkPath();
+            Licitatie = new Auction(this);
 
             InitializeComponent();
 
@@ -37,7 +45,7 @@ namespace Auction_Tool {
                 };
 
             seteazaArticoleToolbar();
-            seteazaListaClienti();
+            seteazaListaClienti(false);
 
             toolTip1.SetToolTip(denumArticol_out, "Indisponibil");
 
@@ -45,19 +53,19 @@ namespace Auction_Tool {
         }
 
         private void testToolStripMenuItem_Click(object sender, EventArgs e) {
-            this.editToolbar.ForeColor = Color.Black;
+            this.fileToolbar.ForeColor = Color.Black;
         }
 
         private void testToolStripMenuItem_DropDownClosed(object sender, EventArgs e) {
-            this.editToolbar.ForeColor = Color.White;
+            this.fileToolbar.ForeColor = Color.White;
         }
 
         private void testToolStripMenuItem_MouseLeave(object sender, EventArgs e) {
-            this.editToolbar.ForeColor = Color.White;
+            this.fileToolbar.ForeColor = Color.White;
         }
 
         private void testToolStripMenuItem_MouseHover(object sender, EventArgs e) {
-            this.editToolbar.ForeColor = Color.Black;
+            this.fileToolbar.ForeColor = Color.Black;
         }
 
         private void itemToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -121,7 +129,7 @@ namespace Auction_Tool {
         }
 
         private void editTB_create_client_Click(object sender, EventArgs e) {
-            CreateClientForm ccf = new CreateClientForm(this);
+            CreateEditClientForm ccf = new CreateEditClientForm(this);
             ccf.Show();
         }
 
@@ -179,7 +187,7 @@ namespace Auction_Tool {
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 if (res == DialogResult.OK || res == DialogResult.Cancel) {
-                    refreshListaClienti();
+                    refreshListaClienti(false);
                 }
             }
         }
@@ -203,7 +211,7 @@ namespace Auction_Tool {
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             if (res == DialogResult.OK || res == DialogResult.Cancel) {
-                refreshListaClienti();
+                refreshListaClienti(false);
             }
         }
 
@@ -220,6 +228,34 @@ namespace Auction_Tool {
             // Solicită ID-ul articolului care va urma să fie editat
             EditByIdForm requestID = new EditByIdForm(this, after);
             requestID.Show();
+        }
+
+        private void editareToolStripMenuItem_Click(object sender, EventArgs e) {
+            CreateEditClientForm edit = new CreateEditClientForm(this, clientSelectat);
+            edit.Show();
+        }
+
+        private void clientToolStripMenuItem_Click(object sender, EventArgs e) {
+            Action<ClientLicitatie> after = (cli) => {
+                CreateEditClientForm edit = new CreateEditClientForm(this, cli);
+                edit.Show();
+            };
+
+            EditByIdForm requestID = new EditByIdForm(this, after);
+            requestID.Show();
+        }
+
+        private void cli_ctx_bet_Click(object sender, EventArgs e) {
+            ClientBetForm bet = new ClientBetForm(this, clientSelectat);
+            bet.Show();
+        }
+
+        private void auctionTB_stop_Click(object sender, EventArgs e) {
+            Licitatie.stop();
+        }
+
+        private void auctionTB_reset_Click(object sender, EventArgs e) {
+            Licitatie.reset();
         }
     }
 }

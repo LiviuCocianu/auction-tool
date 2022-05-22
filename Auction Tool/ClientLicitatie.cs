@@ -109,6 +109,52 @@ namespace Auction_Tool {
             }
         }
 
+        public List<ClientLicitatie> seteazaClient() {
+            List<ClientLicitatie> clienti = deserializeaza();
+
+            if (clienti.Count > 0) {
+                bool found = false;
+
+                for (int i = 0; i < clienti.Count; i++) {
+                    if (clienti[i].Id == Id) {
+                        found = true;
+                        clienti[i] = this;
+                        break;
+                    }
+                }
+
+                if (found) serializeazaTot(clienti);
+            }
+
+            return clienti;
+        }
+
+        /*
+         * Setează clientul dat la același indice din care a venit în funcție
+         * de ID. 
+         * 
+         * Prin urmare, este imposibilă modificarea ID-ului intern
+         * al clientului prin această metodă întrucât este necesar pentru
+         * a afla indicele din care a provenit modificarea!
+         */
+        public void seteazaClientCache() {
+            List<ClientLicitatie> clienti = Cache.Clienti;
+
+            if (clienti.Count > 0) {
+                bool found = false;
+
+                for (int i = 0; i < clienti.Count; i++) {
+                    if (clienti[i].Id == Id) {
+                        found = true;
+                        clienti[i] = this;
+                        break;
+                    }
+                }
+
+                if (found) Cache.Clienti = clienti;
+            }
+        }
+
         public static void stergeTot() {
             string path = $"{MainForm.WorkPath}\\clients.dat";
 
