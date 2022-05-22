@@ -73,7 +73,7 @@
             this.delete_btn.TabIndex = 3;
             this.delete_btn.Text = "Șterge articol";
             this.delete_btn.UseVisualStyleBackColor = true;
-            this.delete_btn.Click += new System.EventHandler(this.button1_Click);
+            this.delete_btn.Click += new System.EventHandler(this.delete_btn_Click);
             // 
             // errorProvider
             // 

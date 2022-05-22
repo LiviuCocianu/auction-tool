@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Auction_Tool {
@@ -14,7 +11,8 @@ namespace Auction_Tool {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm main = new MainForm();
-            if(main.areWorkPath())
+
+            if(main.workpathProvided())
                 Application.Run(main);
         }
     }

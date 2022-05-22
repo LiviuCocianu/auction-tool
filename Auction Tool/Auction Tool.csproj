@@ -48,6 +48,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -68,14 +71,14 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Articol.cs" />
+    <Compile Include="AuctionItem.cs" />
     <Compile Include="ClientBetForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ClientBetForm.Designer.cs">
       <DependentUpon>ClientBetForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ClientLicitatie.cs" />
+    <Compile Include="AuctionClient.cs" />
     <Compile Include="CreateEditClientForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,8 +95,9 @@
       <DependentUpon>DeleteByIdForm.cs</DependentUpon>
     </Compile>
     <Compile Include="IIdentifiable.cs" />
-    <Compile Include="IstoricClient.cs" />
+    <Compile Include="ClientHistory.cs" />
     <Compile Include="Auction.cs" />
+    <Compile Include="ILocalizable.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,6 +145,8 @@
     <EmbeddedResource Include="EditByIdForm.resx">
       <DependentUpon>EditByIdForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="lang\ro\main_form.json" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -199,5 +205,6 @@
   <ItemGroup>
     <None Include="Resources\all.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

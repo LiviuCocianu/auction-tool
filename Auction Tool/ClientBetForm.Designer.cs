@@ -26,14 +26,14 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClientBetForm));
             this.title = new System.Windows.Forms.Label();
-            this.sumaNoua_pan = new System.Windows.Forms.Panel();
-            this.sumaNoua_tb = new System.Windows.Forms.TextBox();
-            this.sumaNoua = new System.Windows.Forms.Label();
-            this.currentSum = new System.Windows.Forms.Label();
+            this.newBid_pan = new System.Windows.Forms.Panel();
+            this.newBid_tb = new System.Windows.Forms.TextBox();
+            this.newBid = new System.Windows.Forms.Label();
+            this.currentBid = new System.Windows.Forms.Label();
             this.submit_btn = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.sumaDisp = new System.Windows.Forms.Label();
-            this.sumaNoua_pan.SuspendLayout();
+            this.clientBudget = new System.Windows.Forms.Label();
+            this.newBid_pan.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
@@ -48,39 +48,39 @@
             this.title.TabIndex = 1;
             this.title.Text = "Setează suma propusă de client";
             // 
-            // sumaNoua_pan
+            // newBid_pan
             // 
-            this.sumaNoua_pan.Controls.Add(this.sumaNoua_tb);
-            this.sumaNoua_pan.Controls.Add(this.sumaNoua);
-            this.sumaNoua_pan.Location = new System.Drawing.Point(17, 82);
-            this.sumaNoua_pan.Name = "sumaNoua_pan";
-            this.sumaNoua_pan.Size = new System.Drawing.Size(310, 50);
-            this.sumaNoua_pan.TabIndex = 3;
+            this.newBid_pan.Controls.Add(this.newBid_tb);
+            this.newBid_pan.Controls.Add(this.newBid);
+            this.newBid_pan.Location = new System.Drawing.Point(17, 82);
+            this.newBid_pan.Name = "sumaNoua_pan";
+            this.newBid_pan.Size = new System.Drawing.Size(310, 50);
+            this.newBid_pan.TabIndex = 3;
             // 
-            // sumaNoua_tb
+            // newBid_tb
             // 
-            this.sumaNoua_tb.Location = new System.Drawing.Point(6, 24);
-            this.sumaNoua_tb.Name = "sumaNoua_tb";
-            this.sumaNoua_tb.Size = new System.Drawing.Size(271, 22);
-            this.sumaNoua_tb.TabIndex = 2;
+            this.newBid_tb.Location = new System.Drawing.Point(6, 24);
+            this.newBid_tb.Name = "sumaNoua_tb";
+            this.newBid_tb.Size = new System.Drawing.Size(271, 22);
+            this.newBid_tb.TabIndex = 2;
             // 
-            // sumaNoua
+            // newBid
             // 
-            this.sumaNoua.AutoSize = true;
-            this.sumaNoua.Location = new System.Drawing.Point(3, 5);
-            this.sumaNoua.Name = "sumaNoua";
-            this.sumaNoua.Size = new System.Drawing.Size(129, 16);
-            this.sumaNoua.TabIndex = 1;
-            this.sumaNoua.Text = "Noua sumă propusă";
+            this.newBid.AutoSize = true;
+            this.newBid.Location = new System.Drawing.Point(3, 5);
+            this.newBid.Name = "sumaNoua";
+            this.newBid.Size = new System.Drawing.Size(129, 16);
+            this.newBid.TabIndex = 1;
+            this.newBid.Text = "Noua sumă propusă";
             // 
-            // currentSum
+            // currentBid
             // 
-            this.currentSum.AutoSize = true;
-            this.currentSum.Location = new System.Drawing.Point(20, 41);
-            this.currentSum.Name = "currentSum";
-            this.currentSum.Size = new System.Drawing.Size(149, 16);
-            this.currentSum.TabIndex = 4;
-            this.currentSum.Text = "Sumă propusă anterior: ";
+            this.currentBid.AutoSize = true;
+            this.currentBid.Location = new System.Drawing.Point(20, 41);
+            this.currentBid.Name = "currentSum";
+            this.currentBid.Size = new System.Drawing.Size(149, 16);
+            this.currentBid.TabIndex = 4;
+            this.currentBid.Text = "Sumă propusă anterior: ";
             // 
             // submit_btn
             // 
@@ -96,32 +96,32 @@
             // 
             this.errorProvider.ContainerControl = this;
             // 
-            // sumaDisp
+            // clientBudget
             // 
-            this.sumaDisp.AutoSize = true;
-            this.sumaDisp.Location = new System.Drawing.Point(20, 57);
-            this.sumaDisp.Name = "sumaDisp";
-            this.sumaDisp.Size = new System.Drawing.Size(159, 16);
-            this.sumaDisp.TabIndex = 6;
-            this.sumaDisp.Text = "Sumă disponibilă (buget):";
+            this.clientBudget.AutoSize = true;
+            this.clientBudget.Location = new System.Drawing.Point(20, 57);
+            this.clientBudget.Name = "clientBudget";
+            this.clientBudget.Size = new System.Drawing.Size(159, 16);
+            this.clientBudget.TabIndex = 6;
+            this.clientBudget.Text = "Sumă disponibilă (buget):";
             // 
             // ClientBetForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(341, 197);
-            this.Controls.Add(this.sumaDisp);
+            this.Controls.Add(this.clientBudget);
             this.Controls.Add(this.submit_btn);
-            this.Controls.Add(this.currentSum);
-            this.Controls.Add(this.sumaNoua_pan);
+            this.Controls.Add(this.currentBid);
+            this.Controls.Add(this.newBid_pan);
             this.Controls.Add(this.title);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ClientBetForm";
-            this.sumaNoua_pan.ResumeLayout(false);
-            this.sumaNoua_pan.PerformLayout();
+            this.newBid_pan.ResumeLayout(false);
+            this.newBid_pan.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -131,12 +131,12 @@
         #endregion
 
         private System.Windows.Forms.Label title;
-        private System.Windows.Forms.Panel sumaNoua_pan;
-        private System.Windows.Forms.TextBox sumaNoua_tb;
-        private System.Windows.Forms.Label sumaNoua;
-        private System.Windows.Forms.Label currentSum;
+        private System.Windows.Forms.Panel newBid_pan;
+        private System.Windows.Forms.TextBox newBid_tb;
+        private System.Windows.Forms.Label newBid;
+        private System.Windows.Forms.Label currentBid;
         private System.Windows.Forms.Button submit_btn;
         private System.Windows.Forms.ErrorProvider errorProvider;
-        private System.Windows.Forms.Label sumaDisp;
+        private System.Windows.Forms.Label clientBudget;
     }
 }

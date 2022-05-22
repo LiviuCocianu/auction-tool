@@ -26,26 +26,26 @@ namespace Auction_Tool {
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditByIdForm));
-            this.search_title = new System.Windows.Forms.Label();
+            this.searchTitle = new System.Windows.Forms.Label();
             this.search_btn = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.cauta_lv = new System.Windows.Forms.ListView();
-            this.cauta_lv_ID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.cauta_lv_nume = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.searchElem_lv = new System.Windows.Forms.ListView();
+            this.searchElem_lv_ID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.searchElem_lv_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.selectedId = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
-            // search_title
+            // searchTitle
             // 
-            this.search_title.AutoSize = true;
-            this.search_title.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.search_title.Location = new System.Drawing.Point(19, 14);
-            this.search_title.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.search_title.Name = "search_title";
-            this.search_title.Size = new System.Drawing.Size(152, 19);
-            this.search_title.TabIndex = 2;
-            this.search_title.Text = "Caută articol după ID";
+            this.searchTitle.AutoSize = true;
+            this.searchTitle.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchTitle.Location = new System.Drawing.Point(19, 14);
+            this.searchTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.searchTitle.Name = "searchTitle";
+            this.searchTitle.Size = new System.Drawing.Size(152, 19);
+            this.searchTitle.TabIndex = 2;
+            this.searchTitle.Text = "Caută articol după ID";
             // 
             // search_btn
             // 
@@ -62,30 +62,30 @@ namespace Auction_Tool {
             // 
             this.errorProvider.ContainerControl = this;
             // 
-            // cauta_lv
+            // searchElem_lv
             // 
-            this.cauta_lv.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.cauta_lv_ID,
-            this.cauta_lv_nume});
-            this.cauta_lv.HideSelection = false;
-            this.cauta_lv.Location = new System.Drawing.Point(23, 46);
-            this.cauta_lv.MultiSelect = false;
-            this.cauta_lv.Name = "cauta_lv";
-            this.cauta_lv.Size = new System.Drawing.Size(280, 97);
-            this.cauta_lv.TabIndex = 7;
-            this.cauta_lv.UseCompatibleStateImageBehavior = false;
-            this.cauta_lv.View = System.Windows.Forms.View.Details;
-            this.cauta_lv.Click += new System.EventHandler(this.cauta_lv_Click);
+            this.searchElem_lv.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.searchElem_lv_ID,
+            this.searchElem_lv_name});
+            this.searchElem_lv.HideSelection = false;
+            this.searchElem_lv.Location = new System.Drawing.Point(23, 46);
+            this.searchElem_lv.MultiSelect = false;
+            this.searchElem_lv.Name = "searchElem_lv";
+            this.searchElem_lv.Size = new System.Drawing.Size(280, 97);
+            this.searchElem_lv.TabIndex = 7;
+            this.searchElem_lv.UseCompatibleStateImageBehavior = false;
+            this.searchElem_lv.View = System.Windows.Forms.View.Details;
+            this.searchElem_lv.Click += new System.EventHandler(this.searchElement_lv_Click);
             // 
-            // cauta_lv_ID
+            // searchElem_lv_ID
             // 
-            this.cauta_lv_ID.Text = "ID";
-            this.cauta_lv_ID.Width = 40;
+            this.searchElem_lv_ID.Text = "ID";
+            this.searchElem_lv_ID.Width = 40;
             // 
-            // cauta_lv_nume
+            // searchElem_lv_name
             // 
-            this.cauta_lv_nume.Text = "Nume articol";
-            this.cauta_lv_nume.Width = 235;
+            this.searchElem_lv_name.Text = "Nume articol";
+            this.searchElem_lv_name.Width = 235;
             // 
             // selectedId
             // 
@@ -102,9 +102,9 @@ namespace Auction_Tool {
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(332, 214);
             this.Controls.Add(this.selectedId);
-            this.Controls.Add(this.cauta_lv);
+            this.Controls.Add(this.searchElem_lv);
             this.Controls.Add(this.search_btn);
-            this.Controls.Add(this.search_title);
+            this.Controls.Add(this.searchTitle);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -119,12 +119,12 @@ namespace Auction_Tool {
 
         #endregion
 
-        private System.Windows.Forms.Label search_title;
+        private System.Windows.Forms.Label searchTitle;
         private System.Windows.Forms.Button search_btn;
         private System.Windows.Forms.ErrorProvider errorProvider;
-        private System.Windows.Forms.ListView cauta_lv;
-        private System.Windows.Forms.ColumnHeader cauta_lv_ID;
-        private System.Windows.Forms.ColumnHeader cauta_lv_nume;
+        private System.Windows.Forms.ListView searchElem_lv;
+        private System.Windows.Forms.ColumnHeader searchElem_lv_ID;
+        private System.Windows.Forms.ColumnHeader searchElem_lv_name;
         private System.Windows.Forms.Label selectedId;
     }
 }

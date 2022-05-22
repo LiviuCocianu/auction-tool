@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace Auction_Tool {
     public class Auction {
@@ -26,23 +21,23 @@ namespace Auction_Tool {
 
         }
 
-        public void seteazaSumaTop(float sum) {
-            main.sumaCurenta_out.Text = $"{sum} lei";
-            main.sumaCurenta_out.Tag = sum;
+        public void setHighestBet(float amount) {
+            main.highestBid_out.Text = $"{amount} lei";
+            main.highestBid_out.Tag = amount;
         }
 
-        public float sumaPropusaTop() {
-            return (float)main.sumaCurenta_out.Tag;
+        public float getHighestBet() {
+            return (float)main.highestBid_out.Tag;
         }
 
-        public void seteazaClientTop(ClientLicitatie client) {
-            main.nrClientTop_out.Text = client.Numar.ToString();
-            main.nrClientTop_out.Tag = client;
+        public void setTopBidder(AuctionClient client) {
+            main.topBidderNo_out.Text = client.AuctionNumber.ToString();
+            main.topBidderNo_out.Tag = client;
         }
 
-        public ClientLicitatie getClientTop() {
-            if (main.nrClientTop_out.Tag == null) return null;
-            return (ClientLicitatie)main.nrClientTop_out.Tag;
+        public AuctionClient getTopBidder() {
+            if (main.topBidderNo_out.Tag == null) return null;
+            return (AuctionClient)main.topBidderNo_out.Tag;
         }
     }
 }

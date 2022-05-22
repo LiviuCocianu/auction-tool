@@ -8,76 +8,77 @@ using System.Windows.Forms;
 
 namespace Auction_Tool {
     partial class MainForm {
-        private bool cereWorkPath() {
+        private bool promptWorkpath() {
             while(true) {
                 FolderBrowserDialog dial = new FolderBrowserDialog();
                 dial.Description = "Înainte de a folosi aplicația, selectează locația unde vrei să salvezi datele." +
                     " Vei fi rugat să faci acest lucru de fiecare dată când deschizi aplicația!";
 
-                DialogResult res = dial.ShowDialog();
-                if (res == DialogResult.OK) {
+                DialogResult choice = dial.ShowDialog();
+
+                if (choice == DialogResult.OK) {
                     WorkPath = dial.SelectedPath;
                     return true;
-                } else if (res == DialogResult.Cancel) {
-                    DialogResult errRes = MessageBox.Show("Aplicația nu poate fi folosită fără o locație pentru date! " +
+                } else if (choice == DialogResult.Cancel) {
+                    DialogResult errChoice = MessageBox.Show("Aplicația nu poate fi folosită fără o locație pentru date! " +
                         "Vă rugăm să introduceți locația!",
                         "Eroare", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
 
-                    if (errRes == DialogResult.Cancel) {
+                    if (errChoice == DialogResult.Cancel) {
                         return false;
                     }
                 }
             }
         }
 
-        public bool areWorkPath() {
+        public bool workpathProvided() {
             return !string.IsNullOrEmpty(WorkPath);
         }
 
-        public void reseteazaAfisareArticol() {
-            idArticol_out.Text = "Indisponibil";
-            denumArticol_out.Text = "Indisponibil";
-            descArticol_link.Tag = null;
-            pretBaza_out.Text = "Indisponibil";
-            sumaCurenta_out.Text = "Indisponibil";
-            sumaCurenta_out.Tag = 0f;
-            nrClientTop_out.Text = "Indisponibil";
-            nrClientTop_out.Tag = null;
+        public void displayNoItem() {
+            auctionItemID_out.Text = "Indisponibil";
+            auctionItemName_out.Text = "Indisponibil";
+            auctionItemDesc_link.Tag = null;
+            basePrice_out.Text = "Indisponibil";
+            highestBid_out.Text = "Indisponibil";
+            highestBid_out.Tag = 0f;
+            topBidderNo_out.Text = "Indisponibil";
+            topBidderNo_out.Tag = null;
 
             toolTip1.RemoveAll();
 
-            ascundeListaClienti();
+            hideClientList();
 
-            fotoArticol_pb.Image = Properties.Resources.no_image;
-            fotoArticol_pb.InitialImage = Properties.Resources.no_image;
+            itemImage_pb.Image = Properties.Resources.no_image;
+            itemImage_pb.InitialImage = Properties.Resources.no_image;
         }
 
-        public Articol articolAfisat() {
-            if (descArticol_link.Tag == null) return null;
-            return (Articol)descArticol_link.Tag;
+        public AuctionItem getDisplayedItem() {
+            if (auctionItemDesc_link.Tag == null) return null;
+            return (AuctionItem)auctionItemDesc_link.Tag;
         }
 
-        public void afiseazaArticol(Articol art) {
-            idArticol_out.Text = art.Id.ToString();
-            denumArticol_out.Text = 
-                $"{(art.Nume.Length > 21 ? art.Nume.Substring(0, 22) : art.Nume)}" +
-                $"{(art.Nume.Length > 22 ? "..." : "")}";
-            descArticol_link.Tag = art;
-            pretBaza_out.Text = $"{art.PretBaza} lei";
-            sumaCurenta_out.Text = "0 lei";
-            nrClientTop_out.Text = "În curând";
-            toolTip1.SetToolTip(denumArticol_out, art.Nume);
-            if (art.Descriere.Length < 65)
-                toolTip1.SetToolTip(descArticol_link, art.Descriere);
+        public void displayItem(AuctionItem art) {
+            auctionItemID_out.Text = art.Id.ToString();
+            auctionItemName_out.Text = 
+                $"{(art.Name.Length > 21 ? art.Name.Substring(0, 22) : art.Name)}" +
+                $"{(art.Name.Length > 22 ? "..." : "")}";
+            auctionItemDesc_link.Tag = art;
+            basePrice_out.Text = $"{art.BasePrice} lei";
+            highestBid_out.Text = "0 lei";
+            topBidderNo_out.Text = "În curând";
+            toolTip1.SetToolTip(auctionItemName_out, art.Name);
+            if (art.Description.Length < 65)
+                toolTip1.SetToolTip(auctionItemDesc_link, art.Description);
 
-            arataListaClienti();
+            showClientList();
 
-            if (!string.IsNullOrEmpty(art.URLfoto)) {
-                var request = WebRequest.Create(art.URLfoto);
+            if (!string.IsNullOrEmpty(art.ImageURL)) {
+                var request = WebRequest.Create(art.ImageURL);
                 try {
                     using (var response = request.GetResponse())
                     using (var stream = response.GetResponseStream()) {
-                        fotoArticol_pb.Image = Image.FromStream(stream);
+                        itemImage_pb.Image = Image.FromStream(stream);
                     }
                 } catch (WebException) {
                     MessageBox.Show("Nu s-a putut conecta la internet. Articolul va fi încărcat fără imagine",
@@ -85,98 +86,106 @@ namespace Auction_Tool {
                 }
             }
 
-            Licitatie.start();
+            AuctionInstance.start();
         }
 
-        private void seteazaArticoleToolbar() {
+        private void updateToolbarItems() {
             if (File.Exists($"{WorkPath}\\items.dat")) {
-                List<Articol> articole = Articol.deserializeaza();
+                List<AuctionItem> articole = AuctionItem.deserialize();
 
                 if (articole.Count() > 0) {
                     for (int i = 0; i < articole.Count; i++) {
-                        Articol articol = articole.ElementAt(i);
-                        adaugaOptiuneArticol(articol);
+                        AuctionItem articol = articole.ElementAt(i);
+                        addItemToToolbar(articol);
                     }
                 }
 
-                Articol.Cache.Articole.AddRange(articole);
+                AuctionItem.Cache.Collection.AddRange(articole);
             }
         }
 
-        public void refreshArticoleToolbar() {
+        public void refreshToolbarItems() {
             itemTB_load.DropDownItems.Clear();
-            seteazaArticoleToolbar();
+            updateToolbarItems();
         }
 
-        public void adaugaOptiuneArticol(Articol articol) {
-            ToolStripMenuItem art = new ToolStripMenuItem();
+        public void addItemToToolbar(AuctionItem item) {
+            ToolStripMenuItem tsmItem = new ToolStripMenuItem();
             int index = itemTB_load.DropDownItems.Count + 1;
 
-            art.Name = $"itemTB_item{index}";
-            art.Text = $"{index}. {articol.Nume}";
-            art.ForeColor = Color.Black;
-            art.Size = new Size(180, 22);
-            art.Image = global::Auction_Tool.Properties.Resources.individual_load;
-            art.Tag = articol;
-            art.Click += new EventHandler(itemTB_itemn_Click);
+            tsmItem.Name = $"itemTB_item{index}";
+            tsmItem.Text = $"{index}. {item.Name}";
+            tsmItem.ForeColor = Color.Black;
+            tsmItem.Size = new Size(180, 22);
+            tsmItem.Image = Properties.Resources.individual_load;
+            tsmItem.Tag = item;
+            tsmItem.Click += new EventHandler(toolbarItemElement_Click);
 
-            itemTB_load.DropDownItems.Add(art);
+            itemTB_load.DropDownItems.Add(tsmItem);
         }
 
-        public bool esteAfisatCurent(Articol articol) {
-            if (descArticol_link.Tag == null) return false;
-            return ((Articol)descArticol_link.Tag).Id == articol.Id;
+        public bool isItemDisplayed(AuctionItem articol) {
+            if (auctionItemDesc_link.Tag == null) return false;
+            return ((AuctionItem)auctionItemDesc_link.Tag).Id == articol.Id;
         }
 
-        /**
+        /*
+         * RO:
          * Seteaza clienții în lista din dreapta
          * 
          * cache - Dacă clienții vor fi luați din cache sau din fișier
          *      Dacă este false, clienții din fișier vor fi resetați în cache
          *      Dacă este true, se va citi din cache fără alte acțiuni
+         * 
+         * EN:
+         * Updates the client list on the right
+         * 
+         * cache - If the clients are read from cache or from the database
+         *      If false, the file clients will be updated in cache
+         *      If true, clients will be read from cache and nothing else
          */
-        public void seteazaListaClienti(bool cache) {
-            List<ClientLicitatie> clienti;
+        public void updateClientList(bool cache) {
+            List<AuctionClient> clients;
 
             if (!cache) {
                 if (File.Exists($"{WorkPath}\\clients.dat")) {
-                    clienti = ClientLicitatie.deserializeaza();
+                    clients = AuctionClient.deserialize();
 
-                    if (clienti.Count() > 0) {
-                        for (int i = clienti.Count - 1; i >= 0; i--) {
-                            ClientLicitatie client = clienti.ElementAt(i);
-                            adaugaElementClient(i + 1, client);
+                    if (clients.Count() > 0) {
+                        for (int i = clients.Count - 1; i >= 0; i--) {
+                            AuctionClient client = clients.ElementAt(i);
+                            addClientToList(i + 1, client);
                         }
                     }
 
-                    ClientLicitatie.Cache.Clienti.AddRange(clienti);
+                    AuctionClient.Cache.Collection.AddRange(clients);
                 }
             } else {
-                clienti = ClientLicitatie.Cache.Clienti;
+                clients = AuctionClient.Cache.Collection;
 
-                if (clienti.Count() > 0) {
-                    for (int i = clienti.Count - 1; i >= 0; i--) {
-                        ClientLicitatie client = clienti.ElementAt(i);
-                        adaugaElementClient(i + 1, client);
+                if (clients.Count() > 0) {
+                    for (int i = clients.Count - 1; i >= 0; i--) {
+                        AuctionClient client = clients.ElementAt(i);
+                        addClientToList(i + 1, client);
                     }
                 }
             }
         }
 
-        public void refreshListaClienti(bool cache) {
+        public void refreshClientList(bool cache) {
             clientList_panel.Controls.Clear();
-            seteazaListaClienti(cache);
+            updateClientList(cache);
         }
 
-        public void adaugaElementClient(ClientLicitatie client) {
-            adaugaElementClient(clientList_panel.Controls.Count + 1, client);
+        public void adaugaElementClient(AuctionClient client) {
+            addClientToList(clientList_panel.Controls.Count + 1, client);
         }
 
-        public void adaugaElementClient(int index, ClientLicitatie client) {
-            TableLayoutPanel elem = new TableLayoutPanel();
-
-            elem.BackColor = Color.WhiteSmoke;
-            elem.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
+        public void addClientToList(int index, AuctionClient client) {
+            TableLayoutPanel elem = new TableLayoutPanel {
+                BackColor = Color.WhiteSmoke,
+                CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
+            };
 
             elem.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, clientElemPercs[0]));
             elem.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, clientElemPercs[1]));
@@ -201,36 +210,36 @@ namespace Auction_Tool {
             });
 
             elem.Controls.Add(new Label() {
-                Name = $"clientNrElem{index}",
-                Text = $"{client.Numar}",
+                Name = $"clientNoElem{index}",
+                Text = $"{client.AuctionNumber}",
                 Anchor = AnchorStyles.None,
                 TextAlign = ContentAlignment.MiddleCenter
             });
 
             elem.Controls.Add(new Label() {
-                Name = $"clientNumeElem{index}",
-                Text = $"{client.Nume}",
+                Name = $"clientFirstNameElem{index}",
+                Text = $"{client.FirstName}",
                 Anchor = AnchorStyles.None,
                 TextAlign = ContentAlignment.MiddleCenter
             });
 
             elem.Controls.Add(new Label() {
-                Name = $"clientPrenumeElem{index}",
-                Text = $"{client.Prenume}",
+                Name = $"clientLastNameElem{index}",
+                Text = $"{client.LastName}",
                 Anchor = AnchorStyles.None,
                 TextAlign = ContentAlignment.MiddleCenter
             });
 
             elem.Controls.Add(new Label() {
-                Name = $"clientPretElem{index}",
-                Text = $"{client.PretLicitat}",
+                Name = $"clientBidPriceElem{index}",
+                Text = $"{client.BidPrice}",
                 Anchor = AnchorStyles.None,
                 TextAlign = ContentAlignment.MiddleCenter
             });
 
             elem.Controls.Add(new Label() {
-                Name = $"clientSumaElem{index}",
-                Text = $"{(client.SumaDisponibila == float.MaxValue ? "-" : client.SumaDisponibila.ToString())}",
+                Name = $"clientBudgetElem{index}",
+                Text = $"{(client.AuctionBudget == float.MaxValue ? "-" : client.AuctionBudget.ToString())}",
                 Anchor = AnchorStyles.None,
                 TextAlign = ContentAlignment.MiddleCenter
             });
@@ -254,8 +263,8 @@ namespace Auction_Tool {
             clientList_panel.Controls.Add(elem);
         }
 
-        public void arataListaClienti() {
-            if (!listaClientiVisibila()) {
+        public void showClientList() {
+            if (!isClientListVisible()) {
                 clientListHeader_tlp.SuspendLayout();
                 Controls.Add(clientListHeader_tlp);
                 clientListHeader_tlp.ResumeLayout(false);
@@ -272,8 +281,8 @@ namespace Auction_Tool {
             }
         }
 
-        public void ascundeListaClienti() {
-            if (listaClientiVisibila()) {
+        public void hideClientList() {
+            if (isClientListVisible()) {
                 clientListHeader_tlp.SuspendLayout();
                 Controls.Remove(clientListHeader_tlp);
                 clientListHeader_tlp.ResumeLayout(false);
@@ -290,7 +299,7 @@ namespace Auction_Tool {
             }
         }
 
-        public bool listaClientiVisibila() {
+        public bool isClientListVisible() {
             return Controls.ContainsKey("clientList_panel");
         }
     }

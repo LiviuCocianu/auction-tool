@@ -1,36 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Auction_Tool {
     public partial class ClientBetForm : Form, ISubmitter {
         private MainForm main;
-        private ClientLicitatie client;
+        private AuctionClient client;
 
-        public ClientBetForm(MainForm main, ClientLicitatie client) {
+        public ClientBetForm(MainForm main, AuctionClient client) {
             this.main = main;
             this.client = client;
             InitializeComponent();
 
-            currentSum.Text = $"Sumă propusă anterior: {client.PretLicitat} lei";
-            sumaDisp.Text = $"Sumă disponibilă (buget): {client.SumaDisponibila} lei";
+            currentBid.Text = $"Sumă propusă anterior: {client.BidPrice} lei";
+            clientBudget.Text = $"Sumă disponibilă (buget): {client.AuctionBudget} lei";
         }
 
         public void Submit() {
             if(checkValidity()) {
-                float sumaNoua = float.Parse(sumaNoua_tb.Text);
-                client.PretLicitat = sumaNoua;
-                client.seteazaClientCache();
-                main.refreshListaClienti(true);
+                float newBid = float.Parse(newBid_tb.Text);
+                client.BidPrice = newBid;
+                client.saveThisInCache();
+                main.refreshClientList(true);
 
-                main.Licitatie.seteazaSumaTop(sumaNoua);
-                main.Licitatie.seteazaClientTop(client);
+                main.AuctionInstance.setHighestBet(newBid);
+                main.AuctionInstance.setTopBidder(client);
 
                 Close();
             }
@@ -42,28 +35,28 @@ namespace Auction_Tool {
 
         private bool sumaValid() {
             float suma;
-            bool converted = float.TryParse(sumaNoua_tb.Text, out suma);
+            bool converted = float.TryParse(newBid_tb.Text, out suma);
 
             if (!converted || float.IsNaN(suma) || float.IsInfinity(suma)) {
-                errorProvider.SetError(sumaNoua_tb, "Acest câmp nu conține un număr rațional pozitiv");
+                errorProvider.SetError(newBid_tb, "Acest câmp nu conține un număr rațional pozitiv");
                 return false;
             } else if (suma < 0) {
-                errorProvider.SetError(sumaNoua_tb, "Suma nouă nu poate fi mai mică decât 0");
+                errorProvider.SetError(newBid_tb, "Suma nouă nu poate fi mai mică decât 0");
                 return false;
-            } else if (suma <= main.articolAfisat().PretBaza) {
-                errorProvider.SetError(sumaNoua_tb, "Suma nouă trebuie să fie mai mare decat prețul de bază al articolului");
+            } else if (suma <= main.getDisplayedItem().BasePrice) {
+                errorProvider.SetError(newBid_tb, "Suma nouă trebuie să fie mai mare decat prețul de bază al articolului");
                 return false;
-            } else if (suma <= client.PretLicitat) {
-                errorProvider.SetError(sumaNoua_tb, "Suma nouă trebuie să fie mai mare decât suma propriu propusă anterior");
+            } else if (suma <= client.BidPrice) {
+                errorProvider.SetError(newBid_tb, "Suma nouă trebuie să fie mai mare decât suma propriu propusă anterior");
                 return false;
-            } else if (suma <= main.Licitatie.sumaPropusaTop()) {
-                errorProvider.SetError(sumaNoua_tb, "Suma nouă trebuie să fie mai mare decât suma propusă de ceilalți clienți");
+            } else if (suma <= main.AuctionInstance.getHighestBet()) {
+                errorProvider.SetError(newBid_tb, "Suma nouă trebuie să fie mai mare decât suma propusă de ceilalți clienți");
                 return false;
-            } else if (suma > client.SumaDisponibila) {
-                errorProvider.SetError(sumaNoua_tb, "Suma nouă nu se află în bugetul clientului");
+            } else if (suma > client.AuctionBudget) {
+                errorProvider.SetError(newBid_tb, "Suma nouă nu se află în bugetul clientului");
                 return false;
             } else {
-                errorProvider.SetError(sumaNoua_tb, null);
+                errorProvider.SetError(newBid_tb, null);
                 return true;
             }
         }

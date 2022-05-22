@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Auction_Tool {
-    /**
-     * Pentru clase cu câmpuri ID-uri unice
+﻿namespace Auction_Tool {
+    /*
+     * RO: Pentru clase cu câmpuri ID-uri unice
+     * EN: For classes that use an ID field
      */
     public interface IIdentifiable {
         int Id { get; set; }

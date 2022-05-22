@@ -27,25 +27,25 @@ namespace Auction_Tool {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateEditClientForm));
             this.title = new System.Windows.Forms.Label();
-            this.numePrenum_pan = new System.Windows.Forms.Panel();
-            this.prenumeClient_tb = new System.Windows.Forms.TextBox();
-            this.prenumeClient = new System.Windows.Forms.Label();
-            this.numeClient_tb = new System.Windows.Forms.TextBox();
-            this.numeClient = new System.Windows.Forms.Label();
-            this.numarLicitatie_pan = new System.Windows.Forms.Panel();
-            this.numarLicitatieInfo = new System.Windows.Forms.Label();
-            this.numarLicitatie_tb = new System.Windows.Forms.TextBox();
-            this.numarLicitatie = new System.Windows.Forms.Label();
-            this.sumaDisp_pan = new System.Windows.Forms.Panel();
-            this.sumaDispInfo = new System.Windows.Forms.Label();
-            this.sumaDisp_tb = new System.Windows.Forms.TextBox();
-            this.sumaDisp = new System.Windows.Forms.Label();
-            this.salveazaIst_ckb = new System.Windows.Forms.CheckBox();
+            this.firstLastName_pan = new System.Windows.Forms.Panel();
+            this.lastName_tb = new System.Windows.Forms.TextBox();
+            this.lastName = new System.Windows.Forms.Label();
+            this.firstName_tb = new System.Windows.Forms.TextBox();
+            this.firstName = new System.Windows.Forms.Label();
+            this.auctionNumber_pan = new System.Windows.Forms.Panel();
+            this.auctionNumberInfo = new System.Windows.Forms.Label();
+            this.auctionNumber_tb = new System.Windows.Forms.TextBox();
+            this.auctionNumber = new System.Windows.Forms.Label();
+            this.clientBudget_pan = new System.Windows.Forms.Panel();
+            this.clientBudgetInfo = new System.Windows.Forms.Label();
+            this.clientBudget_tb = new System.Windows.Forms.TextBox();
+            this.clientBudget = new System.Windows.Forms.Label();
+            this.saveHistory_ckb = new System.Windows.Forms.CheckBox();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.submit_btn = new System.Windows.Forms.Button();
-            this.numePrenum_pan.SuspendLayout();
-            this.numarLicitatie_pan.SuspendLayout();
-            this.sumaDisp_pan.SuspendLayout();
+            this.firstLastName_pan.SuspendLayout();
+            this.auctionNumber_pan.SuspendLayout();
+            this.clientBudget_pan.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
@@ -60,148 +60,148 @@ namespace Auction_Tool {
             this.title.TabIndex = 0;
             this.title.Text = "Creează un client nou";
             // 
-            // numePrenum_pan
+            // firstLastName_pan
             // 
-            this.numePrenum_pan.Controls.Add(this.prenumeClient_tb);
-            this.numePrenum_pan.Controls.Add(this.prenumeClient);
-            this.numePrenum_pan.Controls.Add(this.numeClient_tb);
-            this.numePrenum_pan.Controls.Add(this.numeClient);
-            this.numePrenum_pan.Location = new System.Drawing.Point(23, 55);
-            this.numePrenum_pan.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.numePrenum_pan.Name = "numePrenum_pan";
-            this.numePrenum_pan.Size = new System.Drawing.Size(495, 58);
-            this.numePrenum_pan.TabIndex = 1;
+            this.firstLastName_pan.Controls.Add(this.lastName_tb);
+            this.firstLastName_pan.Controls.Add(this.lastName);
+            this.firstLastName_pan.Controls.Add(this.firstName_tb);
+            this.firstLastName_pan.Controls.Add(this.firstName);
+            this.firstLastName_pan.Location = new System.Drawing.Point(23, 55);
+            this.firstLastName_pan.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.firstLastName_pan.Name = "numePrenum_pan";
+            this.firstLastName_pan.Size = new System.Drawing.Size(495, 58);
+            this.firstLastName_pan.TabIndex = 1;
             // 
-            // prenumeClient_tb
+            // lastName_tb
             // 
-            this.prenumeClient_tb.Location = new System.Drawing.Point(232, 26);
-            this.prenumeClient_tb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.prenumeClient_tb.Name = "prenumeClient_tb";
-            this.prenumeClient_tb.Size = new System.Drawing.Size(216, 22);
-            this.prenumeClient_tb.TabIndex = 3;
+            this.lastName_tb.Location = new System.Drawing.Point(232, 26);
+            this.lastName_tb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lastName_tb.Name = "prenumeClient_tb";
+            this.lastName_tb.Size = new System.Drawing.Size(216, 22);
+            this.lastName_tb.TabIndex = 3;
             // 
-            // prenumeClient
+            // lastName
             // 
-            this.prenumeClient.AutoSize = true;
-            this.prenumeClient.Location = new System.Drawing.Point(228, 5);
-            this.prenumeClient.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.prenumeClient.Name = "prenumeClient";
-            this.prenumeClient.Size = new System.Drawing.Size(61, 16);
-            this.prenumeClient.TabIndex = 2;
-            this.prenumeClient.Text = "Prenume";
+            this.lastName.AutoSize = true;
+            this.lastName.Location = new System.Drawing.Point(228, 5);
+            this.lastName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lastName.Name = "prenumeClient";
+            this.lastName.Size = new System.Drawing.Size(61, 16);
+            this.lastName.TabIndex = 2;
+            this.lastName.Text = "Prenume";
             // 
-            // numeClient_tb
+            // firstName_tb
             // 
-            this.numeClient_tb.Location = new System.Drawing.Point(12, 26);
-            this.numeClient_tb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.numeClient_tb.Name = "numeClient_tb";
-            this.numeClient_tb.Size = new System.Drawing.Size(173, 22);
-            this.numeClient_tb.TabIndex = 1;
+            this.firstName_tb.Location = new System.Drawing.Point(12, 26);
+            this.firstName_tb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.firstName_tb.Name = "numeClient_tb";
+            this.firstName_tb.Size = new System.Drawing.Size(173, 22);
+            this.firstName_tb.TabIndex = 1;
             // 
-            // numeClient
+            // firstName
             // 
-            this.numeClient.AutoSize = true;
-            this.numeClient.Location = new System.Drawing.Point(8, 5);
-            this.numeClient.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.numeClient.Name = "numeClient";
-            this.numeClient.Size = new System.Drawing.Size(43, 16);
-            this.numeClient.TabIndex = 0;
-            this.numeClient.Text = "Nume";
+            this.firstName.AutoSize = true;
+            this.firstName.Location = new System.Drawing.Point(8, 5);
+            this.firstName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.firstName.Name = "numeClient";
+            this.firstName.Size = new System.Drawing.Size(43, 16);
+            this.firstName.TabIndex = 0;
+            this.firstName.Text = "Nume";
             // 
-            // numarLicitatie_pan
+            // auctionNumber_pan
             // 
-            this.numarLicitatie_pan.Controls.Add(this.numarLicitatieInfo);
-            this.numarLicitatie_pan.Controls.Add(this.numarLicitatie_tb);
-            this.numarLicitatie_pan.Controls.Add(this.numarLicitatie);
-            this.numarLicitatie_pan.Location = new System.Drawing.Point(23, 112);
-            this.numarLicitatie_pan.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.numarLicitatie_pan.Name = "numarLicitatie_pan";
-            this.numarLicitatie_pan.Size = new System.Drawing.Size(495, 58);
-            this.numarLicitatie_pan.TabIndex = 4;
+            this.auctionNumber_pan.Controls.Add(this.auctionNumberInfo);
+            this.auctionNumber_pan.Controls.Add(this.auctionNumber_tb);
+            this.auctionNumber_pan.Controls.Add(this.auctionNumber);
+            this.auctionNumber_pan.Location = new System.Drawing.Point(23, 112);
+            this.auctionNumber_pan.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.auctionNumber_pan.Name = "auctionNumber_pan";
+            this.auctionNumber_pan.Size = new System.Drawing.Size(495, 58);
+            this.auctionNumber_pan.TabIndex = 4;
             // 
-            // numarLicitatieInfo
+            // auctionNumberInfo
             // 
-            this.numarLicitatieInfo.AutoSize = true;
-            this.numarLicitatieInfo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.numarLicitatieInfo.Location = new System.Drawing.Point(175, 5);
-            this.numarLicitatieInfo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.numarLicitatieInfo.Name = "numarLicitatieInfo";
-            this.numarLicitatieInfo.Size = new System.Drawing.Size(42, 16);
-            this.numarLicitatieInfo.TabIndex = 2;
-            this.numarLicitatieInfo.Text = "[ Info ]";
-            this.numarLicitatieInfo.Click += new System.EventHandler(this.numarLicitatieInfo_Click);
+            this.auctionNumberInfo.AutoSize = true;
+            this.auctionNumberInfo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.auctionNumberInfo.Location = new System.Drawing.Point(175, 5);
+            this.auctionNumberInfo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.auctionNumberInfo.Name = "auctionNumberInfo";
+            this.auctionNumberInfo.Size = new System.Drawing.Size(42, 16);
+            this.auctionNumberInfo.TabIndex = 2;
+            this.auctionNumberInfo.Text = "[ Info ]";
+            this.auctionNumberInfo.Click += new System.EventHandler(this.auctionNumberInfo_Click);
             // 
-            // numarLicitatie_tb
+            // auctionNumber_tb
             // 
-            this.numarLicitatie_tb.Location = new System.Drawing.Point(12, 26);
-            this.numarLicitatie_tb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.numarLicitatie_tb.Name = "numarLicitatie_tb";
-            this.numarLicitatie_tb.Size = new System.Drawing.Size(436, 22);
-            this.numarLicitatie_tb.TabIndex = 1;
+            this.auctionNumber_tb.Location = new System.Drawing.Point(12, 26);
+            this.auctionNumber_tb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.auctionNumber_tb.Name = "auctionNumber_tb";
+            this.auctionNumber_tb.Size = new System.Drawing.Size(436, 22);
+            this.auctionNumber_tb.TabIndex = 1;
             // 
-            // numarLicitatie
+            // auctionNumber
             // 
-            this.numarLicitatie.AutoSize = true;
-            this.numarLicitatie.Location = new System.Drawing.Point(8, 5);
-            this.numarLicitatie.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.numarLicitatie.Name = "numarLicitatie";
-            this.numarLicitatie.Size = new System.Drawing.Size(160, 16);
-            this.numarLicitatie.TabIndex = 0;
-            this.numarLicitatie.Text = "Număr personal în licitație";
+            this.auctionNumber.AutoSize = true;
+            this.auctionNumber.Location = new System.Drawing.Point(8, 5);
+            this.auctionNumber.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.auctionNumber.Name = "auctionNumber";
+            this.auctionNumber.Size = new System.Drawing.Size(160, 16);
+            this.auctionNumber.TabIndex = 0;
+            this.auctionNumber.Text = "Număr personal în licitație";
             // 
-            // sumaDisp_pan
+            // clientBudget_pan
             // 
-            this.sumaDisp_pan.Controls.Add(this.sumaDispInfo);
-            this.sumaDisp_pan.Controls.Add(this.sumaDisp_tb);
-            this.sumaDisp_pan.Controls.Add(this.sumaDisp);
-            this.sumaDisp_pan.Location = new System.Drawing.Point(23, 169);
-            this.sumaDisp_pan.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.sumaDisp_pan.Name = "sumaDisp_pan";
-            this.sumaDisp_pan.Size = new System.Drawing.Size(495, 58);
-            this.sumaDisp_pan.TabIndex = 5;
+            this.clientBudget_pan.Controls.Add(this.clientBudgetInfo);
+            this.clientBudget_pan.Controls.Add(this.clientBudget_tb);
+            this.clientBudget_pan.Controls.Add(this.clientBudget);
+            this.clientBudget_pan.Location = new System.Drawing.Point(23, 169);
+            this.clientBudget_pan.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.clientBudget_pan.Name = "clientBudget_pan";
+            this.clientBudget_pan.Size = new System.Drawing.Size(495, 58);
+            this.clientBudget_pan.TabIndex = 5;
             // 
-            // sumaDispInfo
+            // clientBudgetInfo
             // 
-            this.sumaDispInfo.AutoSize = true;
-            this.sumaDispInfo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.sumaDispInfo.Location = new System.Drawing.Point(181, 5);
-            this.sumaDispInfo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.sumaDispInfo.Name = "sumaDispInfo";
-            this.sumaDispInfo.Size = new System.Drawing.Size(42, 16);
-            this.sumaDispInfo.TabIndex = 2;
-            this.sumaDispInfo.Text = "[ Info ]";
-            this.sumaDispInfo.Click += new System.EventHandler(this.sumaDispInfo_Click);
+            this.clientBudgetInfo.AutoSize = true;
+            this.clientBudgetInfo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.clientBudgetInfo.Location = new System.Drawing.Point(181, 5);
+            this.clientBudgetInfo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.clientBudgetInfo.Name = "clientBudgetInfo";
+            this.clientBudgetInfo.Size = new System.Drawing.Size(42, 16);
+            this.clientBudgetInfo.TabIndex = 2;
+            this.clientBudgetInfo.Text = "[ Info ]";
+            this.clientBudgetInfo.Click += new System.EventHandler(this.clientBudgetInfo_Click);
             // 
-            // sumaDisp_tb
+            // clientBudget_tb
             // 
-            this.sumaDisp_tb.Location = new System.Drawing.Point(12, 26);
-            this.sumaDisp_tb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.sumaDisp_tb.Name = "sumaDisp_tb";
-            this.sumaDisp_tb.Size = new System.Drawing.Size(436, 22);
-            this.sumaDisp_tb.TabIndex = 1;
+            this.clientBudget_tb.Location = new System.Drawing.Point(12, 26);
+            this.clientBudget_tb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.clientBudget_tb.Name = "clientBudget_tb";
+            this.clientBudget_tb.Size = new System.Drawing.Size(436, 22);
+            this.clientBudget_tb.TabIndex = 1;
             // 
-            // sumaDisp
+            // clientBudget
             // 
-            this.sumaDisp.AutoSize = true;
-            this.sumaDisp.Location = new System.Drawing.Point(8, 5);
-            this.sumaDisp.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.sumaDisp.Name = "sumaDisp";
-            this.sumaDisp.Size = new System.Drawing.Size(171, 16);
-            this.sumaDisp.TabIndex = 0;
-            this.sumaDisp.Text = "Sumă disponibilă declarată";
+            this.clientBudget.AutoSize = true;
+            this.clientBudget.Location = new System.Drawing.Point(8, 5);
+            this.clientBudget.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.clientBudget.Name = "clientBudget";
+            this.clientBudget.Size = new System.Drawing.Size(171, 16);
+            this.clientBudget.TabIndex = 0;
+            this.clientBudget.Text = "Sumă disponibilă declarată";
             // 
-            // salveazaIst_ckb
+            // saveHistory_ckb
             // 
-            this.salveazaIst_ckb.AutoSize = true;
-            this.salveazaIst_ckb.Checked = true;
-            this.salveazaIst_ckb.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.salveazaIst_ckb.Location = new System.Drawing.Point(35, 238);
-            this.salveazaIst_ckb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.salveazaIst_ckb.Name = "salveazaIst_ckb";
-            this.salveazaIst_ckb.Size = new System.Drawing.Size(163, 20);
-            this.salveazaIst_ckb.TabIndex = 1;
-            this.salveazaIst_ckb.Text = "Salvează istoric licitații";
-            this.salveazaIst_ckb.UseVisualStyleBackColor = true;
+            this.saveHistory_ckb.AutoSize = true;
+            this.saveHistory_ckb.Checked = true;
+            this.saveHistory_ckb.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.saveHistory_ckb.Location = new System.Drawing.Point(35, 238);
+            this.saveHistory_ckb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.saveHistory_ckb.Name = "saveHistory_ckb";
+            this.saveHistory_ckb.Size = new System.Drawing.Size(163, 20);
+            this.saveHistory_ckb.TabIndex = 1;
+            this.saveHistory_ckb.Text = "Salvează istoric licitații";
+            this.saveHistory_ckb.UseVisualStyleBackColor = true;
             // 
             // errorProvider
             // 
@@ -216,7 +216,7 @@ namespace Auction_Tool {
             this.submit_btn.TabIndex = 6;
             this.submit_btn.Text = "Creează";
             this.submit_btn.UseVisualStyleBackColor = true;
-            this.submit_btn.Click += new System.EventHandler(this.creeazaClient_btn_Click);
+            this.submit_btn.Click += new System.EventHandler(this.submit_btn_Click);
             // 
             // CreateEditClientForm
             // 
@@ -224,22 +224,22 @@ namespace Auction_Tool {
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(533, 279);
             this.Controls.Add(this.submit_btn);
-            this.Controls.Add(this.salveazaIst_ckb);
-            this.Controls.Add(this.sumaDisp_pan);
-            this.Controls.Add(this.numarLicitatie_pan);
-            this.Controls.Add(this.numePrenum_pan);
+            this.Controls.Add(this.saveHistory_ckb);
+            this.Controls.Add(this.clientBudget_pan);
+            this.Controls.Add(this.auctionNumber_pan);
+            this.Controls.Add(this.firstLastName_pan);
             this.Controls.Add(this.title);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.Name = "CreateEditClientForm";
-            this.numePrenum_pan.ResumeLayout(false);
-            this.numePrenum_pan.PerformLayout();
-            this.numarLicitatie_pan.ResumeLayout(false);
-            this.numarLicitatie_pan.PerformLayout();
-            this.sumaDisp_pan.ResumeLayout(false);
-            this.sumaDisp_pan.PerformLayout();
+            this.firstLastName_pan.ResumeLayout(false);
+            this.firstLastName_pan.PerformLayout();
+            this.auctionNumber_pan.ResumeLayout(false);
+            this.auctionNumber_pan.PerformLayout();
+            this.clientBudget_pan.ResumeLayout(false);
+            this.clientBudget_pan.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -249,20 +249,20 @@ namespace Auction_Tool {
         #endregion
 
         private System.Windows.Forms.Label title;
-        private System.Windows.Forms.Panel numePrenum_pan;
-        private System.Windows.Forms.Label numeClient;
-        private System.Windows.Forms.TextBox prenumeClient_tb;
-        private System.Windows.Forms.Label prenumeClient;
-        private System.Windows.Forms.TextBox numeClient_tb;
-        private System.Windows.Forms.Panel numarLicitatie_pan;
-        private System.Windows.Forms.Label numarLicitatieInfo;
-        private System.Windows.Forms.TextBox numarLicitatie_tb;
-        private System.Windows.Forms.Label numarLicitatie;
-        private System.Windows.Forms.Panel sumaDisp_pan;
-        private System.Windows.Forms.Label sumaDispInfo;
-        private System.Windows.Forms.TextBox sumaDisp_tb;
-        private System.Windows.Forms.Label sumaDisp;
-        private System.Windows.Forms.CheckBox salveazaIst_ckb;
+        private System.Windows.Forms.Panel firstLastName_pan;
+        private System.Windows.Forms.Label firstName;
+        private System.Windows.Forms.TextBox lastName_tb;
+        private System.Windows.Forms.Label lastName;
+        private System.Windows.Forms.TextBox firstName_tb;
+        private System.Windows.Forms.Panel auctionNumber_pan;
+        private System.Windows.Forms.Label auctionNumberInfo;
+        private System.Windows.Forms.TextBox auctionNumber_tb;
+        private System.Windows.Forms.Label auctionNumber;
+        private System.Windows.Forms.Panel clientBudget_pan;
+        private System.Windows.Forms.Label clientBudgetInfo;
+        private System.Windows.Forms.TextBox clientBudget_tb;
+        private System.Windows.Forms.Label clientBudget;
+        private System.Windows.Forms.CheckBox saveHistory_ckb;
         private System.Windows.Forms.ErrorProvider errorProvider;
         private System.Windows.Forms.Button submit_btn;
     }

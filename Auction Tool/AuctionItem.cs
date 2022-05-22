@@ -1,26 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
 namespace Auction_Tool {
     [Serializable]
-    public class Articol : IIdentifiable {
+    public class AuctionItem : IIdentifiable {
         private int id;
-        private string nume;
-        private string descriere;
-        private float pretBaza;
-        private string urlFoto;
+        private string name;
+        private string description;
+        private float basePrice;
+        private string imageUrl;
 
-        public Articol(string nume, string descriere, float pretBaza, string urlFoto) {
-            Id = Utils.genereazaIdUnic(For.Articol, 10000);
-            Nume = nume;
-            Descriere = descriere;
-            PretBaza = pretBaza;
-            URLfoto = urlFoto;
+        public AuctionItem(string name, string description, float basePrice, string imageUrl) {
+            Id = Utils.generateUniqueID(For.AuctionItem, 10000);
+            Name = name;
+            Description = description;
+            BasePrice = basePrice;
+            ImageURL = imageUrl;
         }
 
         public int Id {
@@ -28,33 +25,33 @@ namespace Auction_Tool {
             set { id = value; }
         }
 
-        public string Nume {
-            get { return nume; }
-            set { nume = value; }
+        public string Name {
+            get { return name; }
+            set { name = value; }
         }
 
-        public string Descriere {
-            get { return descriere; }
-            set { descriere = value; }
+        public string Description {
+            get { return description; }
+            set { description = value; }
         }
 
-        public float PretBaza {
-            get { return pretBaza; }
+        public float BasePrice {
+            get { return basePrice; }
             set {
-                if (value > 0) pretBaza = value;
+                if (value > 0) basePrice = value;
             }
         }
 
-        public string URLfoto {
-            get { return urlFoto; }
+        public string ImageURL {
+            get { return imageUrl; }
             set {
-                if(value != null) urlFoto = value; 
+                if(value != null) imageUrl = value; 
             }
         }
 
-        public void serializeaza() {
+        public void serialize() {
             BinaryFormatter bf = new BinaryFormatter();
-            List<Articol> list = deserializeaza();
+            List<AuctionItem> list = deserialize();
 
             using (Stream stream = new FileStream(
                 $"{MainForm.WorkPath}\\items.dat",
@@ -66,7 +63,7 @@ namespace Auction_Tool {
             }
         }
 
-        public static void serializeazaTot(List<Articol> list) {
+        public static void serializeBulk(List<AuctionItem> list) {
             BinaryFormatter bf = new BinaryFormatter();
 
             using (Stream stream = new FileStream(
@@ -78,9 +75,9 @@ namespace Auction_Tool {
             }
         }
 
-        public static List<Articol> deserializeaza() {
+        public static List<AuctionItem> deserialize() {
             BinaryFormatter bf = new BinaryFormatter();
-            List<Articol> list = new List<Articol>();
+            List<AuctionItem> list = new List<AuctionItem>();
 
             using (Stream stream = new FileStream(
                 $"{MainForm.WorkPath}\\items.dat",
@@ -88,16 +85,16 @@ namespace Auction_Tool {
                 FileShare.Read)
             ) {
                 if (stream.Length > 0) {
-                    list = (List<Articol>)bf.Deserialize(stream);
+                    list = (List<AuctionItem>)bf.Deserialize(stream);
                 }
             }
 
             return list;
         }
 
-        public static Articol gasesteArticol(int id) {
-            if (Cache.Articole.Count > 0) {
-                foreach (Articol art in Cache.Articole) {
+        public static AuctionItem find(int id) {
+            if (Cache.Collection.Count > 0) {
+                foreach (AuctionItem art in Cache.Collection) {
                     if (art.Id == id) 
                         return art;
                 }
@@ -106,33 +103,42 @@ namespace Auction_Tool {
             } else return null;
         }
 
-        public static void stergeArticol(int id) {
-            List<Articol> articole = deserializeaza();
+        public static void delete(int id) {
+            List<AuctionItem> articole = deserialize();
 
             if (articole.Count > 0) {
-                foreach (Articol art in articole) {
+                foreach (AuctionItem art in articole) {
                     if (art.Id == id) {
-                        Cache.Articole.RemoveAt(articole.IndexOf(art));
+                        Cache.Collection.RemoveAt(articole.IndexOf(art));
                         articole.Remove(art);
                         
                         break;
                     }
                 }
 
-                serializeazaTot(articole);
+                serializeBulk(articole);
             }
         }
 
         /*
+         * RO:
          * Setează acest articol la același indice din fișierul serializat,
          * numit și "baza de date".
          * Returnează lista de articole cu schimbarea.
          * 
          * Articolul TREBUIE să-și aibă existența verificată în baza de date.
          * Funcția nu va face nimic dacă articolul nu există în aceasta
+         * 
+         * EN:
+         * Sets this item at the same serialized file index,
+         * also known as "the database".
+         * Returns the item list containing the changes.
+         * 
+         * The item MUST be existence-checked in the database.
+         * The function won't do anything if the item doesn't exist in it
          */
-        public List<Articol> seteazaArticol() {
-            List<Articol> articole = deserializeaza();
+        public List<AuctionItem> saveThis() {
+            List<AuctionItem> articole = deserialize();
 
             if (articole.Count > 0) {
                 bool found = false;
@@ -145,28 +151,28 @@ namespace Auction_Tool {
                     }
                 }
 
-                if(found) serializeazaTot(articole);
+                if(found) serializeBulk(articole);
             }
 
             return articole;
         }
 
-        public static void stergeTot() {
+        public static void deleteAll() {
             string path = $"{MainForm.WorkPath}\\items.dat";
 
             if (File.Exists(path)) {
                 File.Delete(path);
             }
 
-            Cache.Articole.Clear();
+            Cache.Collection.Clear();
         }
 
         public static class Cache {
-            private static List<Articol> articole = new List<Articol>();
+            private static List<AuctionItem> items = new List<AuctionItem>();
 
-            public static List<Articol> Articole {
-                get { return articole; }
-                set { articole = value; }
+            public static List<AuctionItem> Collection {
+                get { return items; }
+                set { items = value; }
             }
         }
     }

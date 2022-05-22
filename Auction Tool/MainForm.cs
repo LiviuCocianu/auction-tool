@@ -1,39 +1,63 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Net;
 using System.Windows.Forms;
 
 namespace Auction_Tool {
-    public partial class MainForm : Form {
+    public partial class MainForm : Form, ILocalizable {
         private float[] clientElemPercs;
 
-        private const string searchPlaceholder = "Caută ID client..";
+        private string searchPlaceholder;
 
         private static string workPath = "";
-        private Auction licitatie;
+        private Auction auctionInstance;
+        private Lang defaultLang = Lang.RO;
+        private Dictionary<string, string> langJson;
 
         public static string WorkPath {
             get { return workPath; }
             set { workPath = value; }
         }
 
-        public Auction Licitatie {
-            get { return licitatie; }
-            set { licitatie = value; }
+        public Auction AuctionInstance {
+            get { return auctionInstance; }
+            set { auctionInstance = value; }
         }
 
-        private ClientLicitatie clientSelectat;
+        public Lang DefaultLang {
+            get { return defaultLang; }
+            set { defaultLang = value; }
+        }
+
+        private Dictionary<string, string> LangJSON {
+            get { return langJson; }
+            set { langJson = value; }
+        }
+
+        private AuctionClient selectedClient;
 
         public MainForm() {
-            bool succes = cereWorkPath();
-            Licitatie = new Auction(this);
+            bool succes = promptWorkpath();
+            AuctionInstance = new Auction(this);
 
             InitializeComponent();
 
-            // Coloanele de tabel din elementele listei de clienti se vor
-            // ajusta după lățimea capului de tabel al listei
+            // RO: Tradu textele din aplicație în limba implicită
+            // EN: Translate the app texts in the default language 
+            localize(defaultLang);
+
+            searchPlaceholder = LangJSON["client_searchbox_placeholder"];
+
+            /*
+             * RO:
+             * Coloanele de tabel din elementele listei de clienti se vor
+             * ajusta după lățimea capului de tabel al listei
+             * 
+             * EN:
+             * The client list elements' table columns will adjust
+             * relative to the list header's width
+             */
             clientElemPercs = new float[7] {
                     clientListHeader_tlp.ColumnStyles[0].Width,
                     clientListHeader_tlp.ColumnStyles[1].Width,
@@ -42,46 +66,46 @@ namespace Auction_Tool {
                     clientListHeader_tlp.ColumnStyles[4].Width,
                     clientListHeader_tlp.ColumnStyles[5].Width,
                     clientListHeader_tlp.ColumnStyles[6].Width,
-                };
+            };
 
-            seteazaArticoleToolbar();
-            seteazaListaClienti(false);
+            updateToolbarItems();
+            updateClientList(false);
 
-            toolTip1.SetToolTip(denumArticol_out, "Indisponibil");
+            toolTip1.SetToolTip(auctionItemName_out, LangJSON["info_unavailable"]);
 
             if (!succes) Close();
         }
 
-        private void testToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void fileToolbar_Click(object sender, EventArgs e) {
             this.fileToolbar.ForeColor = Color.Black;
         }
 
-        private void testToolStripMenuItem_DropDownClosed(object sender, EventArgs e) {
+        private void fileToolbar_DropDownClosed(object sender, EventArgs e) {
             this.fileToolbar.ForeColor = Color.White;
         }
 
-        private void testToolStripMenuItem_MouseLeave(object sender, EventArgs e) {
+        private void fileToolbar_MouseLeave(object sender, EventArgs e) {
             this.fileToolbar.ForeColor = Color.White;
         }
 
-        private void testToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+        private void fileToolbar_MouseHover(object sender, EventArgs e) {
             this.fileToolbar.ForeColor = Color.Black;
         }
 
-        private void itemToolStripMenuItem_Click(object sender, EventArgs e) {
-            this.itemToolbar.ForeColor = Color.Black;
+        private void itemsToolbar_Click(object sender, EventArgs e) {
+            this.itemsToolbar.ForeColor = Color.Black;
         }
 
-        private void itemToolStripMenuItem_DropDownClosed(object sender, EventArgs e) {
-            this.itemToolbar.ForeColor = Color.White;
+        private void itemsToolbar_DropDownClosed(object sender, EventArgs e) {
+            this.itemsToolbar.ForeColor = Color.White;
         }
 
-        private void itemToolStripMenuItem_MouseLeave(object sender, EventArgs e) {
-            this.itemToolbar.ForeColor = Color.White;
+        private void itemsToolbar_MouseLeave(object sender, EventArgs e) {
+            this.itemsToolbar.ForeColor = Color.White;
         }
 
-        private void itemToolStripMenuItem_MouseHover(object sender, EventArgs e) {
-            this.itemToolbar.ForeColor = Color.Black;
+        private void itemsToolbar_MouseHover(object sender, EventArgs e) {
+            this.itemsToolbar.ForeColor = Color.Black;
         }
 
         private void clientSearch_tb_MouseClick(object sender, MouseEventArgs e) {
@@ -106,29 +130,30 @@ namespace Auction_Tool {
                 this.clientSearch_tb.Text = "";
         }
 
-        private void itemToolStripMenuItem_Click_1(object sender, EventArgs e) {
-            CreateEditItemForm create = new CreateEditItemForm(this, Operatie.Creare);
+        private void fileCreateItem_Click(object sender, EventArgs e) {
+            CreateEditItemForm create = new CreateEditItemForm(this, Operation.Create);
             create.Show();
         }
 
-        public void itemTB_itemn_Click(object sender, EventArgs e) {
+        public void toolbarItemElement_Click(object sender, EventArgs e) {
             ToolStripMenuItem clicked = (ToolStripMenuItem)sender;
 
             if (clicked.Tag != null) {
-                Articol art = (Articol)(clicked.Tag);
-                afiseazaArticol(art);
+                AuctionItem item = (AuctionItem)(clicked.Tag);
+                displayItem(item);
             }
         }
 
-        private void descArticol_link_Click(object sender, EventArgs e) {
+        private void auctionItemDescription_link_Click(object sender, EventArgs e) {
             Label clicked = (Label)sender;
+
             if (clicked.Tag != null) {
-                Articol curent = (Articol)clicked.Tag;
-                MessageBox.Show(curent.Descriere, "Descriere", MessageBoxButtons.OK);
+                AuctionItem curent = (AuctionItem)clicked.Tag;
+                MessageBox.Show(curent.Description, LangJSON["dialog_description_title"], MessageBoxButtons.OK);
             }
         }
 
-        private void editTB_create_client_Click(object sender, EventArgs e) {
+        private void fileCreateClient_Click(object sender, EventArgs e) {
             CreateEditClientForm ccf = new CreateEditClientForm(this);
             ccf.Show();
         }
@@ -139,62 +164,64 @@ namespace Auction_Tool {
             }
         }
 
-        private void editTB_remove_item_ID_Click(object sender, EventArgs e) {
-            DeleteByIdForm del = new DeleteByIdForm(this, For.Articol);
+        private void fileRemoveItem_Click(object sender, EventArgs e) {
+            DeleteByIdForm del = new DeleteByIdForm(this, For.AuctionItem);
             del.Show();
         }
 
-        private void editTB_remove_item_all_Click(object sender, EventArgs e) {
-            DialogResult alegere = MessageBox.Show("Sigur vrei să elimini toate articolele? Odată eliminate, nu vor " +
-                "mai putea fi recuperate", "Avertisment", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+        private void fileRemoveAllItems_Click(object sender, EventArgs e) {
+            DialogResult choice = MessageBox.Show(LangJSON["dialog_remove_all_items"],
+                LangJSON["dialog_warning"], MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
-            if (alegere == DialogResult.Yes) {
+            if (choice == DialogResult.Yes) {
                 if(!File.Exists($"{WorkPath}\\items.dat")) {
-                    MessageBox.Show("Nu există articole de eliminat", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(LangJSON["dialog_no_items_remove"], LangJSON["dialog_error"],
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                Articol.stergeTot();
+                AuctionItem.deleteAll();
 
-                DialogResult res = MessageBox.Show("Toate articolele au fost eliminate!", "Articole eliminate",
+                DialogResult res = MessageBox.Show(LangJSON["dialog_items_removed"], LangJSON["dialog_info"],
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 if (res == DialogResult.OK || res == DialogResult.Cancel) {
-                    refreshArticoleToolbar();
-                    reseteazaAfisareArticol();
+                    refreshToolbarItems();
+                    displayNoItem();
                 }
             }
         }
 
-        private void editTB_remove_client_ID_Click(object sender, EventArgs e) {
-            DeleteByIdForm del = new DeleteByIdForm(this, For.ClientLicitatie);
+        private void fileRemoveItemID_Click(object sender, EventArgs e) {
+            DeleteByIdForm del = new DeleteByIdForm(this, For.AuctionClient);
             del.Show();
         }
 
-        private void editTB_remove_client_all_Click(object sender, EventArgs e) {
-            DialogResult alegere = MessageBox.Show("Sigur vrei să elimini toate datele clienților? Odată eliminate, nu vor " +
-                "mai putea fi recuperate", "Avertisment", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+        private void fileRemoveClientID_Click(object sender, EventArgs e) {
+            DialogResult choice = MessageBox.Show(LangJSON["dialog_remove_all_clients"],
+                LangJSON["dialog_warning"], MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
-            if (alegere == DialogResult.Yes) {
+            if (choice == DialogResult.Yes) {
                 if (!File.Exists($"{WorkPath}\\clients.dat")) {
-                    MessageBox.Show("Nu există clienți de eliminat", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(LangJSON["dialog_no_clients_remove"], LangJSON["dialog_error"],
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                ClientLicitatie.stergeTot();
+                AuctionClient.deleteAll();
 
-                DialogResult res = MessageBox.Show("Toate datele clienților au fost eliminate!", "Date clienți eliminate",
+                DialogResult choiceTwo = MessageBox.Show(LangJSON["dialog_clients_removed"], LangJSON["dialog_info"],
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                if (res == DialogResult.OK || res == DialogResult.Cancel) {
-                    refreshListaClienti(false);
+                if (choiceTwo == DialogResult.OK || choiceTwo == DialogResult.Cancel) {
+                    refreshClientList(false);
                 }
             }
         }
 
         private void clientElementn_MouseEnter(object sender, EventArgs e) {
             Control con = (Control)sender;
-            clientSelectat = (ClientLicitatie) con.Tag;
+            selectedClient = (AuctionClient) con.Tag;
             con.BackColor = Color.PaleTurquoise;
         }
 
@@ -203,40 +230,47 @@ namespace Auction_Tool {
             con.BackColor = Color.WhiteSmoke;
         }
 
-        private void stergereToolStripMenuItem_Click(object sender, EventArgs e) {
-            ClientLicitatie.stergeClient(clientSelectat.Id);
+        private void contextRemoveItem_Click(object sender, EventArgs e) {
+            AuctionClient.delete(selectedClient.Id);
 
-            DialogResult res = MessageBox.Show($"Clientul " +
-                $"cu ID-ul {clientSelectat.Id} a fost eliminat", "Client eliminat",
+            DialogResult choice = MessageBox.Show(
+                LangJSON["dialog_client_removed_id"].Replace("%id%", selectedClient.Id.ToString()),
+                LangJSON["dialog_info"],
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            if (res == DialogResult.OK || res == DialogResult.Cancel) {
-                refreshListaClienti(false);
+            if (choice == DialogResult.OK || choice == DialogResult.Cancel) {
+                refreshClientList(false);
             }
         }
 
-        private void articolToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void fileEditItem_Click(object sender, EventArgs e) {
             /*
-             * Apeleaza această funcție lambda după ce utilizatorul a introdus
-             * ID-ul articolului și a trecut prin validări
+             * RO:
+             * Apeleaza această acțiune după ce utilizatorul a introdus
+             * un ID de articol și a trecut prin validări
+             * 
+             * EN:
+             * Call this action after the user provided an item ID
+             * and the validations were successful
              */
-            Action<Articol> after = (art) => {
+            Action<AuctionItem> after = (art) => {
                 CreateEditItemForm edit = new CreateEditItemForm(this, art);
                 edit.Show();
             };
 
-            // Solicită ID-ul articolului care va urma să fie editat
+            // RO: Solicită un ID de articol
+            // EN: Prompt an item ID
             EditByIdForm requestID = new EditByIdForm(this, after);
             requestID.Show();
         }
 
-        private void editareToolStripMenuItem_Click(object sender, EventArgs e) {
-            CreateEditClientForm edit = new CreateEditClientForm(this, clientSelectat);
+        private void contextEditItem_Click(object sender, EventArgs e) {
+            CreateEditClientForm edit = new CreateEditClientForm(this, selectedClient);
             edit.Show();
         }
 
-        private void clientToolStripMenuItem_Click(object sender, EventArgs e) {
-            Action<ClientLicitatie> after = (cli) => {
+        private void fileEditClient_Click(object sender, EventArgs e) {
+            Action<AuctionClient> after = (cli) => {
                 CreateEditClientForm edit = new CreateEditClientForm(this, cli);
                 edit.Show();
             };
@@ -245,17 +279,48 @@ namespace Auction_Tool {
             requestID.Show();
         }
 
-        private void cli_ctx_bet_Click(object sender, EventArgs e) {
-            ClientBetForm bet = new ClientBetForm(this, clientSelectat);
+        private void contextBet_Click(object sender, EventArgs e) {
+            ClientBetForm bet = new ClientBetForm(this, selectedClient);
             bet.Show();
         }
 
         private void auctionTB_stop_Click(object sender, EventArgs e) {
-            Licitatie.stop();
+            AuctionInstance.stop();
         }
 
         private void auctionTB_reset_Click(object sender, EventArgs e) {
-            Licitatie.reset();
+            AuctionInstance.reset();
+        }
+
+        public void localize(Lang lang) {
+            Dictionary<string, string> json = Utils.getJsonLang(lang, "main_form");
+            LangJSON = json;
+
+            fileToolbar.Text = json["toolbar_file"];
+            fileTB_create.Text = json["toolbar_file_create"];
+            fileTB_create_item.Text = json["toolbar_file_item"];
+            fileTB_create_client.Text = json["toolbar_file_client"];
+            fileTB_remove.Text = json["toolbar_file_remove"];
+            fileTB_remove_item.Text = json["toolbar_file_item"];
+            fileTB_remove_client.Text = json["toolbar_file_client"];
+            fileTB_remove_item_all.Text = json["toolbar_file_remove_all_items"];
+            fileTB_remove_item_ID.Text = json["toolbar_file_remove_by_id"];
+            fileTB_remove_client_all.Text = json["toolbar_file_remove_all_clients"];
+            fileTB_remove_client_ID.Text = json["toolbar_file_remove_by_id"];
+            fileTB_edit.Text = json["toolbar_file_edit"];
+            fileTB_edit_item.Text = json["toolbar_file_item"];
+            fileTB_edit_client.Text = json["toolbar_file_client"];
+            generalInfo_title.Text = json["general_info_title"];
+            auctionItemID.Text = $"{json["general_info_item_id"]}: {json["info_unavailable"]}";
+            auctionItemName.Text = $"{json["general_info_item_name"]}: {json["info_unavailable"]}";
+            auctionItemDesc.Text = $"{json["general_info_item_description"]}: ";
+            auctionItemDesc_link.Text = json["info_view"];
+            auctionInfo_title.Text = json["auction_info_title"];
+            basePrice.Text = $"{json["auction_info_base_price"]}: {json["info_unavailable"]}";
+            highestBid.Text = $"{json["auction_info_highest_bid"]}: {json["info_unavailable"]}";
+            topBidderNo.Text = $"{json["auction_info_top_client"]}: {json["info_unavailable"]}";
+            preItemSelect1.Text = json["item_preselectMessage1"];
+            preItemSelect2.Text = json["item_preselectMessage2"];
         }
     }
 }
