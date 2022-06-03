@@ -30,11 +30,28 @@ namespace Auction_Tool {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolbar = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileTB_create = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileTB_create_item = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileTB_create_client = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileTB_remove = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileTB_remove_item = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileTB_remove_item_all = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileTB_remove_item_ID = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileTB_remove_client = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileTB_remove_client_all = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileTB_remove_client_ID = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileTB_edit = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileTB_edit_item = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileTB_edit_client = new System.Windows.Forms.ToolStripMenuItem();
             this.itemsToolbar = new System.Windows.Forms.ToolStripMenuItem();
+            this.itemsTB_load = new System.Windows.Forms.ToolStripMenuItem();
             this.auctionToolbar = new System.Windows.Forms.ToolStripMenuItem();
             this.auctionTB_stop = new System.Windows.Forms.ToolStripMenuItem();
             this.auctionTB_reset = new System.Windows.Forms.ToolStripMenuItem();
+            this.auctionTB_finish = new System.Windows.Forms.ToolStripMenuItem();
             this.langToolbar = new System.Windows.Forms.ToolStripMenuItem();
+            this.langTB_RO = new System.Windows.Forms.ToolStripMenuItem();
+            this.langTB_EN = new System.Windows.Forms.ToolStripMenuItem();
             this.auctionItemName = new System.Windows.Forms.Label();
             this.auctionItemName_out = new System.Windows.Forms.Label();
             this.basePrice = new System.Windows.Forms.Label();
@@ -58,6 +75,7 @@ namespace Auction_Tool {
             this.basePrice_pan = new System.Windows.Forms.FlowLayoutPanel();
             this.topBidderNo_pan = new System.Windows.Forms.FlowLayoutPanel();
             this.highestBid_pan = new System.Windows.Forms.FlowLayoutPanel();
+            this.itemImage_pb = new System.Windows.Forms.PictureBox();
             this.clientSearch_tb = new System.Windows.Forms.TextBox();
             this.preItemSelect1 = new System.Windows.Forms.Label();
             this.preItemSelect_pan = new System.Windows.Forms.Panel();
@@ -76,26 +94,8 @@ namespace Auction_Tool {
             this.tableClientBudget = new System.Windows.Forms.Label();
             this.clientSearch_tlp = new System.Windows.Forms.TableLayoutPanel();
             this.searchIconBG_pan = new System.Windows.Forms.Panel();
-            this.clientElement_ctx = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.auctionTB_finish = new System.Windows.Forms.ToolStripMenuItem();
-            this.itemImage_pb = new System.Windows.Forms.PictureBox();
-            this.fileTB_create = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileTB_create_item = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileTB_create_client = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileTB_remove = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileTB_remove_item = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileTB_remove_item_all = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileTB_remove_item_ID = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileTB_remove_client = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileTB_remove_client_all = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileTB_remove_client_ID = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileTB_edit = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileTB_edit_item = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileTB_edit_client = new System.Windows.Forms.ToolStripMenuItem();
-            this.itemsTB_load = new System.Windows.Forms.ToolStripMenuItem();
-            this.langTB_RO = new System.Windows.Forms.ToolStripMenuItem();
-            this.langTB_EN = new System.Windows.Forms.ToolStripMenuItem();
             this.searchIcon_pb = new System.Windows.Forms.PictureBox();
+            this.clientElement_ctx = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cli_ctx_remove = new System.Windows.Forms.ToolStripMenuItem();
             this.cli_ctx_edit = new System.Windows.Forms.ToolStripMenuItem();
             this.cli_ctx_bet = new System.Windows.Forms.ToolStripMenuItem();
@@ -109,15 +109,15 @@ namespace Auction_Tool {
             this.basePrice_pan.SuspendLayout();
             this.topBidderNo_pan.SuspendLayout();
             this.highestBid_pan.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.itemImage_pb)).BeginInit();
             this.preItemSelect_pan.SuspendLayout();
             this.preItemSelect2_pan.SuspendLayout();
             this.preItemSelect1_pan.SuspendLayout();
             this.clientListHeader_tlp.SuspendLayout();
             this.clientSearch_tlp.SuspendLayout();
             this.searchIconBG_pan.SuspendLayout();
-            this.clientElement_ctx.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.itemImage_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.searchIcon_pb)).BeginInit();
+            this.clientElement_ctx.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -134,7 +134,7 @@ namespace Auction_Tool {
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
             this.menuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.menuStrip.Size = new System.Drawing.Size(1019, 30);
+            this.menuStrip.Size = new System.Drawing.Size(1019, 28);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -146,12 +146,128 @@ namespace Auction_Tool {
             this.fileTB_edit});
             this.fileToolbar.ForeColor = System.Drawing.Color.White;
             this.fileToolbar.Name = "fileToolbar";
-            this.fileToolbar.Size = new System.Drawing.Size(57, 26);
+            this.fileToolbar.Size = new System.Drawing.Size(57, 24);
             this.fileToolbar.Text = "Fișier";
             this.fileToolbar.DropDownClosed += new System.EventHandler(this.fileToolbar_DropDownClosed);
             this.fileToolbar.Click += new System.EventHandler(this.fileToolbar_Click);
             this.fileToolbar.MouseLeave += new System.EventHandler(this.fileToolbar_MouseLeave);
             this.fileToolbar.MouseHover += new System.EventHandler(this.fileToolbar_MouseHover);
+            // 
+            // fileTB_create
+            // 
+            this.fileTB_create.BackColor = System.Drawing.Color.White;
+            this.fileTB_create.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileTB_create_item,
+            this.fileTB_create_client});
+            this.fileTB_create.ForeColor = System.Drawing.Color.Black;
+            this.fileTB_create.Image = global::Auction_Tool.Properties.Resources.add;
+            this.fileTB_create.Name = "fileTB_create";
+            this.fileTB_create.Size = new System.Drawing.Size(149, 26);
+            this.fileTB_create.Text = "Creează";
+            // 
+            // fileTB_create_item
+            // 
+            this.fileTB_create_item.Image = ((System.Drawing.Image)(resources.GetObject("fileTB_create_item.Image")));
+            this.fileTB_create_item.Name = "fileTB_create_item";
+            this.fileTB_create_item.Size = new System.Drawing.Size(136, 26);
+            this.fileTB_create_item.Text = "Articol";
+            this.fileTB_create_item.Click += new System.EventHandler(this.fileCreateItem_Click);
+            // 
+            // fileTB_create_client
+            // 
+            this.fileTB_create_client.Image = global::Auction_Tool.Properties.Resources.bidder;
+            this.fileTB_create_client.Name = "fileTB_create_client";
+            this.fileTB_create_client.Size = new System.Drawing.Size(136, 26);
+            this.fileTB_create_client.Text = "Client";
+            this.fileTB_create_client.Click += new System.EventHandler(this.fileCreateClient_Click);
+            // 
+            // fileTB_remove
+            // 
+            this.fileTB_remove.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileTB_remove_item,
+            this.fileTB_remove_client});
+            this.fileTB_remove.Image = global::Auction_Tool.Properties.Resources.remove;
+            this.fileTB_remove.Name = "fileTB_remove";
+            this.fileTB_remove.Size = new System.Drawing.Size(149, 26);
+            this.fileTB_remove.Text = "Elimină";
+            // 
+            // fileTB_remove_item
+            // 
+            this.fileTB_remove_item.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileTB_remove_item_all,
+            this.fileTB_remove_item_ID});
+            this.fileTB_remove_item.Image = ((System.Drawing.Image)(resources.GetObject("fileTB_remove_item.Image")));
+            this.fileTB_remove_item.Name = "fileTB_remove_item";
+            this.fileTB_remove_item.Size = new System.Drawing.Size(136, 26);
+            this.fileTB_remove_item.Text = "Articol";
+            // 
+            // fileTB_remove_item_all
+            // 
+            this.fileTB_remove_item_all.Image = global::Auction_Tool.Properties.Resources.all;
+            this.fileTB_remove_item_all.Name = "fileTB_remove_item_all";
+            this.fileTB_remove_item_all.Size = new System.Drawing.Size(195, 26);
+            this.fileTB_remove_item_all.Text = "Toate articolele";
+            this.fileTB_remove_item_all.Click += new System.EventHandler(this.fileRemoveAllItems_Click);
+            // 
+            // fileTB_remove_item_ID
+            // 
+            this.fileTB_remove_item_ID.Image = global::Auction_Tool.Properties.Resources.by_id;
+            this.fileTB_remove_item_ID.Name = "fileTB_remove_item_ID";
+            this.fileTB_remove_item_ID.Size = new System.Drawing.Size(195, 26);
+            this.fileTB_remove_item_ID.Text = "După ID";
+            this.fileTB_remove_item_ID.Click += new System.EventHandler(this.fileRemoveItem_Click);
+            // 
+            // fileTB_remove_client
+            // 
+            this.fileTB_remove_client.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileTB_remove_client_all,
+            this.fileTB_remove_client_ID});
+            this.fileTB_remove_client.Image = global::Auction_Tool.Properties.Resources.bidder;
+            this.fileTB_remove_client.Name = "fileTB_remove_client";
+            this.fileTB_remove_client.Size = new System.Drawing.Size(136, 26);
+            this.fileTB_remove_client.Text = "Client";
+            // 
+            // fileTB_remove_client_all
+            // 
+            this.fileTB_remove_client_all.Image = global::Auction_Tool.Properties.Resources.all;
+            this.fileTB_remove_client_all.Name = "fileTB_remove_client_all";
+            this.fileTB_remove_client_all.Size = new System.Drawing.Size(165, 26);
+            this.fileTB_remove_client_all.Text = "Toți clienții";
+            this.fileTB_remove_client_all.Click += new System.EventHandler(this.fileRemoveClientID_Click);
+            // 
+            // fileTB_remove_client_ID
+            // 
+            this.fileTB_remove_client_ID.Image = global::Auction_Tool.Properties.Resources.by_id;
+            this.fileTB_remove_client_ID.Name = "fileTB_remove_client_ID";
+            this.fileTB_remove_client_ID.Size = new System.Drawing.Size(165, 26);
+            this.fileTB_remove_client_ID.Text = "După ID";
+            this.fileTB_remove_client_ID.Click += new System.EventHandler(this.fileRemoveItemID_Click);
+            // 
+            // fileTB_edit
+            // 
+            this.fileTB_edit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileTB_edit_item,
+            this.fileTB_edit_client});
+            this.fileTB_edit.Image = global::Auction_Tool.Properties.Resources.edit;
+            this.fileTB_edit.Name = "fileTB_edit";
+            this.fileTB_edit.Size = new System.Drawing.Size(149, 26);
+            this.fileTB_edit.Text = "Editează";
+            // 
+            // fileTB_edit_item
+            // 
+            this.fileTB_edit_item.Image = global::Auction_Tool.Properties.Resources.item;
+            this.fileTB_edit_item.Name = "fileTB_edit_item";
+            this.fileTB_edit_item.Size = new System.Drawing.Size(136, 26);
+            this.fileTB_edit_item.Text = "Articol";
+            this.fileTB_edit_item.Click += new System.EventHandler(this.fileEditItem_Click);
+            // 
+            // fileTB_edit_client
+            // 
+            this.fileTB_edit_client.Image = global::Auction_Tool.Properties.Resources.bidder;
+            this.fileTB_edit_client.Name = "fileTB_edit_client";
+            this.fileTB_edit_client.Size = new System.Drawing.Size(136, 26);
+            this.fileTB_edit_client.Text = "Client";
+            this.fileTB_edit_client.Click += new System.EventHandler(this.fileEditClient_Click);
             // 
             // itemsToolbar
             // 
@@ -159,12 +275,19 @@ namespace Auction_Tool {
             this.itemsTB_load});
             this.itemsToolbar.ForeColor = System.Drawing.Color.White;
             this.itemsToolbar.Name = "itemsToolbar";
-            this.itemsToolbar.Size = new System.Drawing.Size(75, 26);
+            this.itemsToolbar.Size = new System.Drawing.Size(75, 24);
             this.itemsToolbar.Text = "Articole";
             this.itemsToolbar.DropDownClosed += new System.EventHandler(this.itemsToolbar_DropDownClosed);
             this.itemsToolbar.Click += new System.EventHandler(this.itemsToolbar_Click);
             this.itemsToolbar.MouseLeave += new System.EventHandler(this.itemsToolbar_MouseLeave);
             this.itemsToolbar.MouseHover += new System.EventHandler(this.itemsToolbar_MouseHover);
+            // 
+            // itemsTB_load
+            // 
+            this.itemsTB_load.Image = ((System.Drawing.Image)(resources.GetObject("itemsTB_load.Image")));
+            this.itemsTB_load.Name = "itemsTB_load";
+            this.itemsTB_load.Size = new System.Drawing.Size(139, 26);
+            this.itemsTB_load.Text = "Încarcă";
             // 
             // auctionToolbar
             // 
@@ -174,7 +297,7 @@ namespace Auction_Tool {
             this.auctionTB_finish});
             this.auctionToolbar.ForeColor = System.Drawing.Color.White;
             this.auctionToolbar.Name = "auctionToolbar";
-            this.auctionToolbar.Size = new System.Drawing.Size(75, 26);
+            this.auctionToolbar.Size = new System.Drawing.Size(75, 24);
             this.auctionToolbar.Text = "Licitație";
             this.auctionToolbar.DropDownClosed += new System.EventHandler(this.auctionToolbar_DropDownClosed);
             this.auctionToolbar.Click += new System.EventHandler(this.auctionToolbar_Click);
@@ -195,6 +318,13 @@ namespace Auction_Tool {
             this.auctionTB_reset.Text = "Resetează";
             this.auctionTB_reset.Click += new System.EventHandler(this.auctionTB_reset_Click);
             // 
+            // auctionTB_finish
+            // 
+            this.auctionTB_finish.Name = "auctionTB_finish";
+            this.auctionTB_finish.Size = new System.Drawing.Size(159, 26);
+            this.auctionTB_finish.Text = "Termină";
+            this.auctionTB_finish.Click += new System.EventHandler(this.auctionTB_finish_Click);
+            // 
             // langToolbar
             // 
             this.langToolbar.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -202,12 +332,28 @@ namespace Auction_Tool {
             this.langTB_EN});
             this.langToolbar.ForeColor = System.Drawing.Color.White;
             this.langToolbar.Name = "langToolbar";
-            this.langToolbar.Size = new System.Drawing.Size(64, 26);
+            this.langToolbar.Size = new System.Drawing.Size(64, 24);
             this.langToolbar.Text = "Limbă";
             this.langToolbar.DropDownClosed += new System.EventHandler(this.langToolbar_DropDownClosed);
             this.langToolbar.Click += new System.EventHandler(this.langToolbar_Click);
             this.langToolbar.MouseLeave += new System.EventHandler(this.langToolbar_MouseLeave);
             this.langToolbar.MouseHover += new System.EventHandler(this.langToolbar_MouseHover);
+            // 
+            // langTB_RO
+            // 
+            this.langTB_RO.Image = global::Auction_Tool.Properties.Resources.lang_ro;
+            this.langTB_RO.Name = "langTB_RO";
+            this.langTB_RO.Size = new System.Drawing.Size(147, 26);
+            this.langTB_RO.Text = "Română";
+            this.langTB_RO.Click += new System.EventHandler(this.langTB_RO_Click);
+            // 
+            // langTB_EN
+            // 
+            this.langTB_EN.Image = global::Auction_Tool.Properties.Resources.lang_en;
+            this.langTB_EN.Name = "langTB_EN";
+            this.langTB_EN.Size = new System.Drawing.Size(147, 26);
+            this.langTB_EN.Text = "Engleză";
+            this.langTB_EN.Click += new System.EventHandler(this.langTB_EN_Click);
             // 
             // auctionItemName
             // 
@@ -464,6 +610,18 @@ namespace Auction_Tool {
             this.highestBid_pan.Size = new System.Drawing.Size(305, 22);
             this.highestBid_pan.TabIndex = 22;
             // 
+            // itemImage_pb
+            // 
+            this.itemImage_pb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.itemImage_pb.Image = global::Auction_Tool.Properties.Resources.no_image;
+            this.itemImage_pb.Location = new System.Drawing.Point(64, 22);
+            this.itemImage_pb.Margin = new System.Windows.Forms.Padding(4);
+            this.itemImage_pb.Name = "itemImage_pb";
+            this.itemImage_pb.Size = new System.Drawing.Size(270, 258);
+            this.itemImage_pb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.itemImage_pb.TabIndex = 1;
+            this.itemImage_pb.TabStop = false;
+            // 
             // clientSearch_tb
             // 
             this.clientSearch_tb.Anchor = System.Windows.Forms.AnchorStyles.Right;
@@ -676,174 +834,6 @@ namespace Auction_Tool {
             this.searchIconBG_pan.Size = new System.Drawing.Size(27, 25);
             this.searchIconBG_pan.TabIndex = 20;
             // 
-            // clientElement_ctx
-            // 
-            this.clientElement_ctx.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.clientElement_ctx.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cli_ctx_remove,
-            this.cli_ctx_edit,
-            this.cli_ctx_bet});
-            this.clientElement_ctx.Name = "clientElement_context";
-            this.clientElement_ctx.Size = new System.Drawing.Size(177, 82);
-            // 
-            // auctionTB_finish
-            // 
-            this.auctionTB_finish.Name = "auctionTB_finish";
-            this.auctionTB_finish.Size = new System.Drawing.Size(159, 26);
-            this.auctionTB_finish.Text = "Termină";
-            this.auctionTB_finish.Click += new System.EventHandler(this.auctionTB_finish_Click);
-            // 
-            // itemImage_pb
-            // 
-            this.itemImage_pb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.itemImage_pb.Image = global::Auction_Tool.Properties.Resources.no_image;
-            this.itemImage_pb.Location = new System.Drawing.Point(64, 22);
-            this.itemImage_pb.Margin = new System.Windows.Forms.Padding(4);
-            this.itemImage_pb.Name = "itemImage_pb";
-            this.itemImage_pb.Size = new System.Drawing.Size(270, 258);
-            this.itemImage_pb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.itemImage_pb.TabIndex = 1;
-            this.itemImage_pb.TabStop = false;
-            // 
-            // fileTB_create
-            // 
-            this.fileTB_create.BackColor = System.Drawing.Color.White;
-            this.fileTB_create.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileTB_create_item,
-            this.fileTB_create_client});
-            this.fileTB_create.ForeColor = System.Drawing.Color.Black;
-            this.fileTB_create.Image = global::Auction_Tool.Properties.Resources.add;
-            this.fileTB_create.Name = "fileTB_create";
-            this.fileTB_create.Size = new System.Drawing.Size(149, 26);
-            this.fileTB_create.Text = "Creează";
-            // 
-            // fileTB_create_item
-            // 
-            this.fileTB_create_item.Image = ((System.Drawing.Image)(resources.GetObject("fileTB_create_item.Image")));
-            this.fileTB_create_item.Name = "fileTB_create_item";
-            this.fileTB_create_item.Size = new System.Drawing.Size(136, 26);
-            this.fileTB_create_item.Text = "Articol";
-            this.fileTB_create_item.Click += new System.EventHandler(this.fileCreateItem_Click);
-            // 
-            // fileTB_create_client
-            // 
-            this.fileTB_create_client.Image = global::Auction_Tool.Properties.Resources.bidder;
-            this.fileTB_create_client.Name = "fileTB_create_client";
-            this.fileTB_create_client.Size = new System.Drawing.Size(136, 26);
-            this.fileTB_create_client.Text = "Client";
-            this.fileTB_create_client.Click += new System.EventHandler(this.fileCreateClient_Click);
-            // 
-            // fileTB_remove
-            // 
-            this.fileTB_remove.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileTB_remove_item,
-            this.fileTB_remove_client});
-            this.fileTB_remove.Image = global::Auction_Tool.Properties.Resources.remove;
-            this.fileTB_remove.Name = "fileTB_remove";
-            this.fileTB_remove.Size = new System.Drawing.Size(149, 26);
-            this.fileTB_remove.Text = "Elimină";
-            // 
-            // fileTB_remove_item
-            // 
-            this.fileTB_remove_item.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileTB_remove_item_all,
-            this.fileTB_remove_item_ID});
-            this.fileTB_remove_item.Image = ((System.Drawing.Image)(resources.GetObject("fileTB_remove_item.Image")));
-            this.fileTB_remove_item.Name = "fileTB_remove_item";
-            this.fileTB_remove_item.Size = new System.Drawing.Size(136, 26);
-            this.fileTB_remove_item.Text = "Articol";
-            // 
-            // fileTB_remove_item_all
-            // 
-            this.fileTB_remove_item_all.Image = global::Auction_Tool.Properties.Resources.all;
-            this.fileTB_remove_item_all.Name = "fileTB_remove_item_all";
-            this.fileTB_remove_item_all.Size = new System.Drawing.Size(195, 26);
-            this.fileTB_remove_item_all.Text = "Toate articolele";
-            this.fileTB_remove_item_all.Click += new System.EventHandler(this.fileRemoveAllItems_Click);
-            // 
-            // fileTB_remove_item_ID
-            // 
-            this.fileTB_remove_item_ID.Image = global::Auction_Tool.Properties.Resources.by_id;
-            this.fileTB_remove_item_ID.Name = "fileTB_remove_item_ID";
-            this.fileTB_remove_item_ID.Size = new System.Drawing.Size(195, 26);
-            this.fileTB_remove_item_ID.Text = "După ID";
-            this.fileTB_remove_item_ID.Click += new System.EventHandler(this.fileRemoveItem_Click);
-            // 
-            // fileTB_remove_client
-            // 
-            this.fileTB_remove_client.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileTB_remove_client_all,
-            this.fileTB_remove_client_ID});
-            this.fileTB_remove_client.Image = global::Auction_Tool.Properties.Resources.bidder;
-            this.fileTB_remove_client.Name = "fileTB_remove_client";
-            this.fileTB_remove_client.Size = new System.Drawing.Size(136, 26);
-            this.fileTB_remove_client.Text = "Client";
-            // 
-            // fileTB_remove_client_all
-            // 
-            this.fileTB_remove_client_all.Image = global::Auction_Tool.Properties.Resources.all;
-            this.fileTB_remove_client_all.Name = "fileTB_remove_client_all";
-            this.fileTB_remove_client_all.Size = new System.Drawing.Size(165, 26);
-            this.fileTB_remove_client_all.Text = "Toți clienții";
-            this.fileTB_remove_client_all.Click += new System.EventHandler(this.fileRemoveClientID_Click);
-            // 
-            // fileTB_remove_client_ID
-            // 
-            this.fileTB_remove_client_ID.Image = global::Auction_Tool.Properties.Resources.by_id;
-            this.fileTB_remove_client_ID.Name = "fileTB_remove_client_ID";
-            this.fileTB_remove_client_ID.Size = new System.Drawing.Size(165, 26);
-            this.fileTB_remove_client_ID.Text = "După ID";
-            this.fileTB_remove_client_ID.Click += new System.EventHandler(this.fileRemoveItemID_Click);
-            // 
-            // fileTB_edit
-            // 
-            this.fileTB_edit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileTB_edit_item,
-            this.fileTB_edit_client});
-            this.fileTB_edit.Image = global::Auction_Tool.Properties.Resources.edit;
-            this.fileTB_edit.Name = "fileTB_edit";
-            this.fileTB_edit.Size = new System.Drawing.Size(149, 26);
-            this.fileTB_edit.Text = "Editează";
-            // 
-            // fileTB_edit_item
-            // 
-            this.fileTB_edit_item.Image = global::Auction_Tool.Properties.Resources.item;
-            this.fileTB_edit_item.Name = "fileTB_edit_item";
-            this.fileTB_edit_item.Size = new System.Drawing.Size(136, 26);
-            this.fileTB_edit_item.Text = "Articol";
-            this.fileTB_edit_item.Click += new System.EventHandler(this.fileEditItem_Click);
-            // 
-            // fileTB_edit_client
-            // 
-            this.fileTB_edit_client.Image = global::Auction_Tool.Properties.Resources.bidder;
-            this.fileTB_edit_client.Name = "fileTB_edit_client";
-            this.fileTB_edit_client.Size = new System.Drawing.Size(136, 26);
-            this.fileTB_edit_client.Text = "Client";
-            this.fileTB_edit_client.Click += new System.EventHandler(this.fileEditClient_Click);
-            // 
-            // itemsTB_load
-            // 
-            this.itemsTB_load.Image = ((System.Drawing.Image)(resources.GetObject("itemsTB_load.Image")));
-            this.itemsTB_load.Name = "itemsTB_load";
-            this.itemsTB_load.Size = new System.Drawing.Size(139, 26);
-            this.itemsTB_load.Text = "Încarcă";
-            // 
-            // langTB_RO
-            // 
-            this.langTB_RO.Image = global::Auction_Tool.Properties.Resources.lang_ro;
-            this.langTB_RO.Name = "langTB_RO";
-            this.langTB_RO.Size = new System.Drawing.Size(147, 26);
-            this.langTB_RO.Text = "Română";
-            this.langTB_RO.Click += new System.EventHandler(this.langTB_RO_Click);
-            // 
-            // langTB_EN
-            // 
-            this.langTB_EN.Image = global::Auction_Tool.Properties.Resources.lang_en;
-            this.langTB_EN.Name = "langTB_EN";
-            this.langTB_EN.Size = new System.Drawing.Size(147, 26);
-            this.langTB_EN.Text = "Engleză";
-            this.langTB_EN.Click += new System.EventHandler(this.langTB_EN_Click);
-            // 
             // searchIcon_pb
             // 
             this.searchIcon_pb.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -856,6 +846,16 @@ namespace Auction_Tool {
             this.searchIcon_pb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.searchIcon_pb.TabIndex = 19;
             this.searchIcon_pb.TabStop = false;
+            // 
+            // clientElement_ctx
+            // 
+            this.clientElement_ctx.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.clientElement_ctx.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cli_ctx_remove,
+            this.cli_ctx_edit,
+            this.cli_ctx_bet});
+            this.clientElement_ctx.Name = "clientElement_context";
+            this.clientElement_ctx.Size = new System.Drawing.Size(177, 82);
             // 
             // cli_ctx_remove
             // 
@@ -883,6 +883,7 @@ namespace Auction_Tool {
             // 
             // MainForm
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
@@ -899,6 +900,8 @@ namespace Auction_Tool {
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Licitații (.NET Form Designer App)";
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainForm_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainForm_DragEnter);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.generalInfo_pan.ResumeLayout(false);
@@ -918,6 +921,7 @@ namespace Auction_Tool {
             this.topBidderNo_pan.PerformLayout();
             this.highestBid_pan.ResumeLayout(false);
             this.highestBid_pan.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.itemImage_pb)).EndInit();
             this.preItemSelect_pan.ResumeLayout(false);
             this.preItemSelect2_pan.ResumeLayout(false);
             this.preItemSelect1_pan.ResumeLayout(false);
@@ -925,9 +929,8 @@ namespace Auction_Tool {
             this.clientSearch_tlp.ResumeLayout(false);
             this.clientSearch_tlp.PerformLayout();
             this.searchIconBG_pan.ResumeLayout(false);
-            this.clientElement_ctx.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.itemImage_pb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.searchIcon_pb)).EndInit();
+            this.clientElement_ctx.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

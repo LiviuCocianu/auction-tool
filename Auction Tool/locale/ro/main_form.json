@@ -60,6 +60,8 @@
   "dialog_ask_reset_auction": "Ești sigur că vrei să resetezi licitația?",
   "dialog_ask_finish_auction": "Ești sigur că vrei să termini licitația?",
   "dialog_no_auction": "Licitația nu a început pentru a face asta",
+  "dialog_dragdrop_data": "Datele au fost create cu succes: %cl% clienți, %it% articole",
+  "dialog_auction_already_started": "O altă licitație este în progres! Pentru a începe alta, opriți licitația curentă",
   // Client list text
   "client_searchbox_placeholder": "Caută client după număr..",
   "client_list_index": "Nr",

@@ -9,6 +9,9 @@ namespace Auction_Tool {
         private MainForm main;
         private ClientBetForm betFormInstance = null;
         private DateTime auctionStart;
+        private List<float> bids = new List<float>();
+
+        public List<float> Bids => bids;
 
         public MainForm MainInstance {
             get => main;
@@ -25,6 +28,7 @@ namespace Auction_Tool {
             set {
                 main.highestBid_out.Text = $"{value} {main.LocaleJSON["currency_unit"]}";
                 main.highestBid_out.Tag = value;
+                bids.Add(value);
             }
         }
 
@@ -114,6 +118,7 @@ namespace Auction_Tool {
             resetAllBets();
             HighestBet = 0;
             TopBidder = null;
+            Bids.Clear();
             main.refreshClientList(true);
 
             if(BetForm != null) {
@@ -121,7 +126,5 @@ namespace Auction_Tool {
                 BetForm = null;
             }
         }
-
- 
     }
 }

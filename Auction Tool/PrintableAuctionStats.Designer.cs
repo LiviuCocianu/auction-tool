@@ -33,9 +33,6 @@
             this.auctionEnd_pan = new System.Windows.Forms.FlowLayoutPanel();
             this.auctionEnd = new System.Windows.Forms.Label();
             this.auctionEnd_out = new System.Windows.Forms.Label();
-            this.printDocument1 = new System.Drawing.Printing.PrintDocument();
-            this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.statSheet_pan = new System.Windows.Forms.Panel();
             this.auctionItem_pan = new System.Windows.Forms.FlowLayoutPanel();
             this.auctionItem = new System.Windows.Forms.Label();
             this.auctionItem_out = new System.Windows.Forms.Label();
@@ -54,17 +51,23 @@
             this.bidStdDev_pan = new System.Windows.Forms.FlowLayoutPanel();
             this.bidStdDev = new System.Windows.Forms.Label();
             this.bidStdDev_out = new System.Windows.Forms.Label();
+            this.printDocument1 = new System.Drawing.Printing.PrintDocument();
+            this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
+            this.statSheet_pan = new System.Windows.Forms.Panel();
+            this.graph_pan = new System.Windows.Forms.Panel();
+            this.graph = new System.Windows.Forms.Label();
             this.title_pan.SuspendLayout();
             this.stats_pan.SuspendLayout();
             this.auctionStart_pan.SuspendLayout();
             this.auctionEnd_pan.SuspendLayout();
-            this.statSheet_pan.SuspendLayout();
             this.auctionItem_pan.SuspendLayout();
             this.totalClients_pan.SuspendLayout();
             this.activityRate_pan.SuspendLayout();
             this.highestBet_pan.SuspendLayout();
             this.totalBiddingMoney_pan.SuspendLayout();
             this.bidStdDev_pan.SuspendLayout();
+            this.statSheet_pan.SuspendLayout();
+            this.graph_pan.SuspendLayout();
             this.SuspendLayout();
             // 
             // title
@@ -98,10 +101,11 @@
             this.stats_pan.Controls.Add(this.highestBet_pan);
             this.stats_pan.Controls.Add(this.totalBiddingMoney_pan);
             this.stats_pan.Controls.Add(this.bidStdDev_pan);
+            this.stats_pan.Controls.Add(this.graph_pan);
             this.stats_pan.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.stats_pan.Location = new System.Drawing.Point(81, 106);
             this.stats_pan.Name = "stats_pan";
-            this.stats_pan.Size = new System.Drawing.Size(425, 554);
+            this.stats_pan.Size = new System.Drawing.Size(425, 639);
             this.stats_pan.TabIndex = 2;
             // 
             // auctionStart_pan
@@ -161,30 +165,6 @@
             this.auctionEnd_out.Size = new System.Drawing.Size(167, 19);
             this.auctionEnd_out.TabIndex = 1;
             this.auctionEnd_out.Text = "01-01-2000, 00:00:00";
-            // 
-            // printDocument1
-            // 
-            this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument1_PrintPage);
-            // 
-            // printPreviewDialog1
-            // 
-            this.printPreviewDialog1.AutoScrollMargin = new System.Drawing.Size(0, 0);
-            this.printPreviewDialog1.AutoScrollMinSize = new System.Drawing.Size(0, 0);
-            this.printPreviewDialog1.ClientSize = new System.Drawing.Size(400, 300);
-            this.printPreviewDialog1.Document = this.printDocument1;
-            this.printPreviewDialog1.Enabled = true;
-            this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
-            this.printPreviewDialog1.Name = "printPreviewDialog1";
-            this.printPreviewDialog1.Visible = false;
-            // 
-            // statSheet_pan
-            // 
-            this.statSheet_pan.Controls.Add(this.title_pan);
-            this.statSheet_pan.Controls.Add(this.stats_pan);
-            this.statSheet_pan.Location = new System.Drawing.Point(0, 0);
-            this.statSheet_pan.Name = "statSheet_pan";
-            this.statSheet_pan.Size = new System.Drawing.Size(577, 795);
-            this.statSheet_pan.TabIndex = 3;
             // 
             // auctionItem_pan
             // 
@@ -360,6 +340,49 @@
             this.bidStdDev_out.TabIndex = 1;
             this.bidStdDev_out.Text = "0 u.m.";
             // 
+            // printDocument1
+            // 
+            this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument1_PrintPage);
+            // 
+            // printPreviewDialog1
+            // 
+            this.printPreviewDialog1.AutoScrollMargin = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.AutoScrollMinSize = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.ClientSize = new System.Drawing.Size(400, 300);
+            this.printPreviewDialog1.Document = this.printDocument1;
+            this.printPreviewDialog1.Enabled = true;
+            this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
+            this.printPreviewDialog1.Name = "printPreviewDialog1";
+            this.printPreviewDialog1.Visible = false;
+            // 
+            // statSheet_pan
+            // 
+            this.statSheet_pan.Controls.Add(this.title_pan);
+            this.statSheet_pan.Controls.Add(this.stats_pan);
+            this.statSheet_pan.Location = new System.Drawing.Point(0, 0);
+            this.statSheet_pan.Name = "statSheet_pan";
+            this.statSheet_pan.Size = new System.Drawing.Size(577, 795);
+            this.statSheet_pan.TabIndex = 3;
+            // 
+            // graph_pan
+            // 
+            this.graph_pan.Controls.Add(this.graph);
+            this.graph_pan.Location = new System.Drawing.Point(3, 307);
+            this.graph_pan.Name = "graph_pan";
+            this.graph_pan.Size = new System.Drawing.Size(419, 320);
+            this.graph_pan.TabIndex = 9;
+            this.graph_pan.Paint += new System.Windows.Forms.PaintEventHandler(this.graph_pan_Paint);
+            // 
+            // graph
+            // 
+            this.graph.AutoSize = true;
+            this.graph.Font = new System.Drawing.Font("Times New Roman", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.graph.Location = new System.Drawing.Point(3, 0);
+            this.graph.Name = "graph";
+            this.graph.Size = new System.Drawing.Size(155, 19);
+            this.graph.TabIndex = 1;
+            this.graph.Text = "Evoluția propunerilor";
+            // 
             // PrintableAuctionStats
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -379,7 +402,6 @@
             this.auctionStart_pan.PerformLayout();
             this.auctionEnd_pan.ResumeLayout(false);
             this.auctionEnd_pan.PerformLayout();
-            this.statSheet_pan.ResumeLayout(false);
             this.auctionItem_pan.ResumeLayout(false);
             this.auctionItem_pan.PerformLayout();
             this.totalClients_pan.ResumeLayout(false);
@@ -392,6 +414,9 @@
             this.totalBiddingMoney_pan.PerformLayout();
             this.bidStdDev_pan.ResumeLayout(false);
             this.bidStdDev_pan.PerformLayout();
+            this.statSheet_pan.ResumeLayout(false);
+            this.graph_pan.ResumeLayout(false);
+            this.graph_pan.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -428,5 +453,7 @@
         private System.Windows.Forms.FlowLayoutPanel bidStdDev_pan;
         private System.Windows.Forms.Label bidStdDev;
         private System.Windows.Forms.Label bidStdDev_out;
+        private System.Windows.Forms.Panel graph_pan;
+        private System.Windows.Forms.Label graph;
     }
 }

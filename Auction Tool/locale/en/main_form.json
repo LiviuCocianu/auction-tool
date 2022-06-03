@@ -60,6 +60,8 @@
   "dialog_ask_reset_auction": "Are you sure you want to reset the auction?",
   "dialog_ask_finish_auction": "Are you sure you want to finish the auction?",
   "dialog_no_auction": "Auction hasn't started for you to do this",
+  "dialog_dragdrop_data": "Data has been saved successfully: %cl% clients, %it% items",
+  "dialog_auction_already_started": "Another auction is in progress! To start another one, stop the ongoing auction",
   // Client list text
   "client_searchbox_placeholder": "Search client by auction number..",
   "client_list_index": "No",

@@ -233,9 +233,14 @@ namespace Auction_Tool {
             ToolStripMenuItem clicked = (ToolStripMenuItem)sender;
 
             if (clicked.Tag != null) {
-                AuctionItem item = (AuctionItem)(clicked.Tag);
-                displayItem(item);
-                AuctionInstance.start();
+                if (isAnyItemDisplayed()) {
+                    MessageBox.Show(LocaleJSON["dialog_auction_already_started"],
+                        LocaleJSON["dialog_error"], MessageBoxButtons.OK, MessageBoxIcon.Error);
+                } else {
+                    AuctionItem item = (AuctionItem)(clicked.Tag);
+                    displayItem(item);
+                    AuctionInstance.start();
+                }
             }
         }
 
@@ -427,6 +432,81 @@ namespace Auction_Tool {
             if (!converted) return;
 
             showClientSearchResults(num.ToString());
+        }
+
+        private void MainForm_DragEnter(object sender, DragEventArgs e) {
+            if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                e.Effect = DragDropEffects.All;
+            } else {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void MainForm_DragDrop(object sender, DragEventArgs e) {
+            string[] data = (string[]) e.Data.GetData(DataFormats.FileDrop, false);
+            int itemsAdded = 0;
+            int clientsAdded = 0;
+
+            for(int i = 0; i < data.Length; i++) {
+                string[] lines = File.ReadAllLines(data[i]);
+
+                Console.WriteLine(data[i]);
+
+                if(data[i].Contains("client")) {
+                    string firstName = lines[0];
+                    string lastName = lines[1];
+                    bool converted = int.TryParse(lines[2], out int auctionNo);
+                    bool converted2 = float.TryParse(lines[3], out float budget);
+
+                    if (!converted || !converted2) continue;
+
+                    if (!AuctionClient.Cache.Collection
+                        .TrueForAll(cl => cl.FirstName != firstName && cl.LastName != lastName)) continue;
+                    if (!AuctionClient.Cache.Collection
+                        .TrueForAll(cl => cl.AuctionNumber != auctionNo)) continue;
+
+                    AuctionClient client = new AuctionClient(
+                            firstName, lastName,
+                            auctionNo, budget
+                        );
+                    client.serialize();
+
+                    AuctionClient.Cache.Collection.Add(client);
+
+                    clientsAdded++;
+                } else if(data[i].Contains("item")) {
+                    string name = lines[0];
+                    string desc = lines[1];
+                    bool converted = float.TryParse(lines[2], out float basePrice);
+                    string url = lines[3];
+
+                    if (!converted || !Uri.IsWellFormedUriString(url, UriKind.Absolute)) continue;
+
+                    if (!AuctionItem.Cache.Collection
+                            .TrueForAll(it => it.Name != name)) continue;
+
+                    AuctionItem item = new AuctionItem(name, desc, basePrice, url);
+                    item.serialize();
+
+                    addItemToToolbar(item);
+                    AuctionItem.Cache.Collection.Add(item);
+
+                    itemsAdded++;
+                }
+            }
+
+            if(clientsAdded > 0 || itemsAdded > 0) {
+                if (clientsAdded > 0)
+                    refreshClientList(false);
+
+                MessageBox.Show(
+                    LocaleJSON["dialog_dragdrop_data"]
+                        .Replace("%cl%", clientsAdded.ToString())
+                        .Replace("%it%", itemsAdded.ToString()),
+                    LocaleJSON["dialog_info"],
+                    MessageBoxButtons.OK, MessageBoxIcon.Information
+                );
+            }
         }
     }
 }

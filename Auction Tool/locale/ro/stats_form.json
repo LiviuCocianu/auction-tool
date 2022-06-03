@@ -11,6 +11,7 @@
   "highest_bet_label": "Sumă câștigătoare:",
   "total_biddings_label": "Sumă totală investită:",
   "bid_std_dev_label": "Abatere standard propuneri:",
+  "graph_label": "Evoluția propunerilor",
   // Field formats
   "time_format": "dd-MM-yyyy HH:mm:ss",
   "id_format": "#%id%",
