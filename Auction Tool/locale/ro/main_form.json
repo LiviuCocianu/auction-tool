@@ -1,0 +1,77 @@
+﻿// ROMANIAN LOCALE
+
+{
+  "app_title": "Licitații (.NET Form Designer App)",
+  // Prompt workpath text
+  "prompt_workpath_message": "Înainte de a folosi aplicația, selectează locația unde vrei să salvezi datele. Vei fi rugat să faci acest lucru de fiecare dată când deschizi aplicația!",
+  "required_workpath_error": "Aplicația nu poate fi folosită fără o locație pentru date! Vă rugăm să introduceți locația!",
+  // Toolbar text
+  "toolbar_file": "Fișier",
+  "toolbar_file_create": "Creează",
+  "toolbar_file_remove": "Elimină",
+  "toolbar_file_remove_all_items": "Toate articolele",
+  "toolbar_file_remove_all_clients": "Toți clienții",
+  "toolbar_file_remove_by_id": "După ID",
+  "toolbar_file_edit": "Editează",
+  "toolbar_file_item": "Articol",
+  "toolbar_file_client": "Client",
+  "toolbar_items": "Articole",
+  "toolbar_items_load": "Încarcă",
+  "toolbar_auction": "Licitație",
+  "toolbar_auction_stop": "Oprește",
+  "toolbar_auction_reset": "Resetează",
+  "toolbar_auction_finish": "Termină",
+  "toolbar_language": "Limbă",
+  "toolbar_language_ro": "Română",
+  "toolbar_language_en": "Engleză",
+  // General info text
+  "general_info_title": "Informații generale",
+  "general_info_item_id": "ID articol",
+  "general_info_item_name": "Denumire articol",
+  "general_info_item_description": "Descriere articol",
+  // Auction info text
+  "auction_info_title": "Informații licitație",
+  "auction_info_base_price": "Preț de bază",
+  "auction_info_highest_bid": "Suma cea mai mare",
+  "auction_info_top_client": "Număr client top",
+  // Words & phrases
+  "info_unavailable": "Indisponibil",
+  "info_soon": "În curând",
+  "info_view": "Vizualizare",
+  "currency_unit": "lei",
+  // Item selection guide text
+  "item_preselectMessage1": "Selectează un articol din categoria \"Articole\" înainte de a continua",
+  "item_preselectMessage2": "Dacă nu sunt articole de selectat, creează unul folosind categoria \"Fișier\"",
+  // Dialog popups
+  "dialog_description_title": "Descriere",
+  "dialog_warning": "Avertisment",
+  "dialog_error": "Eroare",
+  "dialog_info": "Informare",
+  "dialog_remove_all_items": "Sigur vrei să elimini toate articolele? Odată eliminate, nu vor mai putea fi recuperate",
+  "dialog_no_items_remove": "Nu există articole de eliminat",
+  "dialog_items_removed": "Toate articolele au fost eliminate!",
+  "dialog_remove_all_clients": "Sigur vrei să elimini toate datele clienților? Odată eliminate, nu vor mai putea fi recuperate",
+  "dialog_no_clients_remove": "Nu există clienți de eliminat",
+  "dialog_clients_removed": "Toate datele clienților au fost eliminate!",
+  "dialog_client_removed_id": "Clientul cu ID-ul %id% a fost eliminat",
+  "load_item_without_internet": "Nu s-a putut conecta la internet. Articolul va fi încărcat fără imagine",
+  "language_changed": "Limba a fost schimbată!",
+  "dialog_ask_stop_auction": "Ești sigur că vrei să oprești licitația?",
+  "dialog_ask_reset_auction": "Ești sigur că vrei să resetezi licitația?",
+  "dialog_ask_finish_auction": "Ești sigur că vrei să termini licitația?",
+  "dialog_no_auction": "Licitația nu a început pentru a face asta",
+  // Client list text
+  "client_searchbox_placeholder": "Caută client după număr..",
+  "client_list_index": "Nr",
+  "client_list_id": "ID\r\nclient",
+  "client_list_auction_number": "Număr\r\nlicitație",
+  "client_list_first_name": "Nume client",
+  "client_list_last_name": "Prenume client",
+  "client_list_bid_amount": "Sumă\r\nlicitată",
+  "client_list_budget": "Buget\r\ndisponibil",
+  // Auction text
+  "auction_started": "Licitația a început!",
+  "auction_stopped": "Licitația a fost oprită!",
+  "auction_reset": "Licitația a fost resetată!",
+  "auction_finished": "Licitația s-a încheiat! Dorești să vezi statisticile?"
+}

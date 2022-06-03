@@ -29,7 +29,7 @@
             this.newBid_pan = new System.Windows.Forms.Panel();
             this.newBid_tb = new System.Windows.Forms.TextBox();
             this.newBid = new System.Windows.Forms.Label();
-            this.currentBid = new System.Windows.Forms.Label();
+            this.previousBid = new System.Windows.Forms.Label();
             this.submit_btn = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.clientBudget = new System.Windows.Forms.Label();
@@ -53,14 +53,14 @@
             this.newBid_pan.Controls.Add(this.newBid_tb);
             this.newBid_pan.Controls.Add(this.newBid);
             this.newBid_pan.Location = new System.Drawing.Point(17, 82);
-            this.newBid_pan.Name = "sumaNoua_pan";
+            this.newBid_pan.Name = "newBid_pan";
             this.newBid_pan.Size = new System.Drawing.Size(310, 50);
             this.newBid_pan.TabIndex = 3;
             // 
             // newBid_tb
             // 
             this.newBid_tb.Location = new System.Drawing.Point(6, 24);
-            this.newBid_tb.Name = "sumaNoua_tb";
+            this.newBid_tb.Name = "newBid_tb";
             this.newBid_tb.Size = new System.Drawing.Size(271, 22);
             this.newBid_tb.TabIndex = 2;
             // 
@@ -68,19 +68,19 @@
             // 
             this.newBid.AutoSize = true;
             this.newBid.Location = new System.Drawing.Point(3, 5);
-            this.newBid.Name = "sumaNoua";
+            this.newBid.Name = "newBid";
             this.newBid.Size = new System.Drawing.Size(129, 16);
             this.newBid.TabIndex = 1;
             this.newBid.Text = "Noua sumă propusă";
             // 
-            // currentBid
+            // previousBid
             // 
-            this.currentBid.AutoSize = true;
-            this.currentBid.Location = new System.Drawing.Point(20, 41);
-            this.currentBid.Name = "currentSum";
-            this.currentBid.Size = new System.Drawing.Size(149, 16);
-            this.currentBid.TabIndex = 4;
-            this.currentBid.Text = "Sumă propusă anterior: ";
+            this.previousBid.AutoSize = true;
+            this.previousBid.Location = new System.Drawing.Point(20, 41);
+            this.previousBid.Name = "previousBid";
+            this.previousBid.Size = new System.Drawing.Size(149, 16);
+            this.previousBid.TabIndex = 4;
+            this.previousBid.Text = "Sumă propusă anterior: ";
             // 
             // submit_btn
             // 
@@ -112,7 +112,7 @@
             this.ClientSize = new System.Drawing.Size(341, 197);
             this.Controls.Add(this.clientBudget);
             this.Controls.Add(this.submit_btn);
-            this.Controls.Add(this.currentBid);
+            this.Controls.Add(this.previousBid);
             this.Controls.Add(this.newBid_pan);
             this.Controls.Add(this.title);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -120,6 +120,8 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ClientBetForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ClientBetForm_FormClosed);
             this.newBid_pan.ResumeLayout(false);
             this.newBid_pan.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
@@ -134,7 +136,7 @@
         private System.Windows.Forms.Panel newBid_pan;
         private System.Windows.Forms.TextBox newBid_tb;
         private System.Windows.Forms.Label newBid;
-        private System.Windows.Forms.Label currentBid;
+        private System.Windows.Forms.Label previousBid;
         private System.Windows.Forms.Button submit_btn;
         private System.Windows.Forms.ErrorProvider errorProvider;
         private System.Windows.Forms.Label clientBudget;

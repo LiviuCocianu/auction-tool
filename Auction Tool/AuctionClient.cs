@@ -11,8 +11,6 @@ namespace Auction_Tool {
         private string lastName;
         private int auctionNumber;
         private float auctionBudget;
-        private ClientHistory auctionHistory;
-        private bool savesHistory;
         [NonSerialized]
         private float bidPrice;
 
@@ -21,20 +19,14 @@ namespace Auction_Tool {
         public string LastName { get => lastName; set => lastName = value; }
         public int AuctionNumber { get => auctionNumber; set => auctionNumber = value; }
         public float AuctionBudget { get => auctionBudget; set => auctionBudget = value; }
-        public ClientHistory AuctionHistory { get => auctionHistory; set => auctionHistory = value; }
-        public bool SavesHistory { get => savesHistory; set => savesHistory = value; }
         public float BidPrice { get => bidPrice; set => bidPrice = value; }
 
-        public AuctionClient(string firstName, string lastName, int auctionNumber,
-            float auctionBudget, ClientHistory auctionHistory) 
-        {
+        public AuctionClient(string firstName, string lastName, int auctionNumber, float auctionBudget) {
             Id = Utils.generateUniqueID(For.AuctionClient, 10000);
             FirstName = firstName;
             LastName = lastName;
             AuctionNumber = auctionNumber;
             AuctionBudget = auctionBudget;
-            AuctionHistory = auctionHistory;
-            SavesHistory = auctionHistory != null; 
         }
 
         public void serialize() {

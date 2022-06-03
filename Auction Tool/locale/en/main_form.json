@@ -1,0 +1,77 @@
+﻿// ENGLISH LOCALE
+
+{
+  "app_title": "Auctions (.NET Form Designer App)",
+  // Prompt workpath text
+  "prompt_workpath_message": "Before using the application, select your workpath.\nYou will always be prompted to do this every time you open the application",
+  "required_workpath_error": "Application cannot be used without a workpath! Please specify the directory!",
+  // Toolbar text
+  "toolbar_file": "File",
+  "toolbar_file_create": "Create",
+  "toolbar_file_remove": "Remove",
+  "toolbar_file_remove_all_items": "All items",
+  "toolbar_file_remove_all_clients": "All clients",
+  "toolbar_file_remove_by_id": "By ID",
+  "toolbar_file_edit": "Edit",
+  "toolbar_file_item": "Item",
+  "toolbar_file_client": "Client",
+  "toolbar_items": "Items",
+  "toolbar_items_load": "Load",
+  "toolbar_auction": "Auction",
+  "toolbar_auction_stop": "Stop",
+  "toolbar_auction_reset": "Reset",
+  "toolbar_auction_finish": "Finish",
+  "toolbar_language": "Language",
+  "toolbar_language_ro": "Romanian",
+  "toolbar_language_en": "English",
+  // General info text
+  "general_info_title": "General information",
+  "general_info_item_id": "Item ID",
+  "general_info_item_name": "Item name",
+  "general_info_item_description": "Item description",
+  // Auction info text
+  "auction_info_title": "Auction information",
+  "auction_info_base_price": "Base price",
+  "auction_info_highest_bid": "Highest bid",
+  "auction_info_top_client": "Top client number",
+  // Words & phrases
+  "info_unavailable": "Unavailable",
+  "info_soon": "Soon",
+  "info_view": "View",
+  "currency_unit": "RON",
+  // Item selection guide text
+  "item_preselectMessage1": "Select an item from the \"Items\" category before proceeding",
+  "item_preselectMessage2": "If there are no items to select, create one using \"File\"",
+  // Dialog popups
+  "dialog_description_title": "Description",
+  "dialog_warning": "Warning",
+  "dialog_error": "Error",
+  "dialog_info": "Information",
+  "dialog_remove_all_items": "Are you sure you want to remove all items? Once removed, they cannot be recovered",
+  "dialog_no_items_remove": "There are no items to remove",
+  "dialog_items_removed": "All items have been successfully removed!",
+  "dialog_remove_all_clients": "Are you sure you want to remove all clients? Once removed, they cannot be recovered",
+  "dialog_no_clients_remove": "There are no clients to remove",
+  "dialog_clients_removed": "All clients have been successfully removed!",
+  "dialog_client_removed_id": "Client with the ID %id% has been removed!",
+  "load_item_without_internet": "Couldn't establish an internet connection'. The item will be loaded without an image",
+  "language_changed": "Language has been changed!",
+  "dialog_ask_stop_auction": "Are you sure you want to stop the auction?",
+  "dialog_ask_reset_auction": "Are you sure you want to reset the auction?",
+  "dialog_ask_finish_auction": "Are you sure you want to finish the auction?",
+  "dialog_no_auction": "Auction hasn't started for you to do this",
+  // Client list text
+  "client_searchbox_placeholder": "Search client by auction number..",
+  "client_list_index": "No",
+  "client_list_id": "Client\r\nID",
+  "client_list_auction_number": "Auction\r\nnumber",
+  "client_list_first_name": "First name",
+  "client_list_last_name": "Last name",
+  "client_list_bid_amount": "Bid\r\namount",
+  "client_list_budget": "Budget",
+  // Auction text
+  "auction_started": "Auction has started!",
+  "auction_stopped": "Auction was stopped!",
+  "auction_reset": "Auction was reset!",
+  "auction_finished": "Auction was finished! Do you want to view the statistics?"
+}

@@ -1,0 +1,25 @@
+// ENGLISH LOCALE
+
+{
+  "create_form_title": "Create a new client",
+  "edit_form_title": "Edit client",
+  "client_first_name_label": "First name",
+  "client_last_name_label": "Last name",
+  "client_auction_number_label": "Client auction number",
+  "client_budget_label": "Declared budget",
+  "create_submit_button": "Create",
+  "edit_submit_button": "Edit",
+  "dialog_client_created": "Client has been created successfully!",
+  "dialog_client_edited": "Client has been edited successfully!",
+  "auction_number_guide": "This integer needs to be unique and positive and will serve as a method to identify and link the virtual client to the one in the auction room. Take into consideration that this number is not the same as the client ID, which is only used by the app",
+  "budget_guide": "This float will be used to validate if the price bid by the client during an auction is within their budget. If you don't know the budget, you can leave this field empty",
+  "error_empty_field": "This field cannot be empty",
+  "error_first_name_too_long": "First name cannot be longer than %max% characters",
+  "error_last_name_too_long": "Last name cannot be longer than %max% characters",
+  "error_name_exists": "This name already belongs to an exisiting client",
+  "error_nan": "This field doesn't contain a positive integer",
+  "error_auction_number_less_zero": "Auction number cannot be less than zero",
+  "error_auction_number_exists": "Auction number already belongs to an existing client",
+  "error_nan_float": "This field doesn't contain a positive float",
+  "error_budget_less_zero": "Declared budget cannot be less than zero"
+}

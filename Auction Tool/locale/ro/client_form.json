@@ -1,0 +1,25 @@
+﻿// ROMANIAN LOCALE
+
+{
+  "create_form_title": "Creează un client nou",
+  "edit_form_title": "Editează client",
+  "client_first_name_label": "Nume",
+  "client_last_name_label": "Prenume",
+  "client_auction_number_label": "Număr personal în licitație",
+  "client_budget_label": "Buget declarat",
+  "create_submit_button": "Creează",
+  "edit_submit_button": "Editează",
+  "dialog_client_created": "Clientul a fost salvat cu succes!",
+  "dialog_client_edited": "Clientul a fost editat cu succes!",
+  "auction_number_guide": "Acest număr întreg trebuie să fie unic și va servi ca o metodă de identificare și abreviere a clientului virtual cu cel din sala de licitații. A se lua în considerare că acest număr nu este același lucru cu ID-ul clientului, care este folosit strict în aplicație",
+  "budget_guide": "Acest număr rațional va fi folosit pentru a valida dacă prețul propus de client în timpul unei licitații se află în bugetul acestuia. Dacă suma nu v-a fost comunicată de către client, lăsați acest câmp gol",
+  "error_empty_field": "Acest câmp nu poate fi lăsat gol",
+  "error_first_name_too_long": "Numele clientului nu poate depăși %max% caractere",
+  "error_last_name_too_long": "Prenumele clientului nu poate depăși %max% caractere",
+  "error_name_exists": "Acest nume și prenume aparțin deja altui client",
+  "error_nan": "Acest câmp nu conține un număr întreg pozitiv",
+  "error_auction_number_less_zero": "Numărul personal nu poate fi mai mic decât zero",
+  "error_auction_number_exists": "Acest număr aparține deja altui client",
+  "error_nan_float": "Acest câmp nu conține un număr rațional pozitiv",
+  "error_budget_less_zero": "Bugetul declarat nu poate fi mai mic decât zero"
+}

@@ -1,0 +1,11 @@
+﻿// ENGLISH LOCALE
+
+{
+  "item_form_title": "Search item by ID",
+  "client_form_title": "Search client by ID",
+  "id_column": "ID",
+  "item_name_column": "Item name",
+  "client_name_column": "Client name",
+  "selected_id_label": "Selected ID: %id%",
+  "submit_button": "Search"
+}

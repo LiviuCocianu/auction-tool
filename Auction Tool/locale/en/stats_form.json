@@ -1,0 +1,18 @@
+﻿// ENGLISH LOCALE
+
+{
+  // Form text
+  "title": "Auction Statistics",
+  "auction_start_label": "Started at:",
+  "auction_end_label": "Ended at:",
+  "auction_item_label": "Auctioned item ID:",
+  "total_clients_label": "Total participant count:",
+  "activity_rate_label": "Activity rate:",
+  "highest_bet_label": "Highest bid:",
+  "total_biddings_label": "Total biddings:",
+  "bid_std_dev_label": "Bid standard deviation:",
+  // Field formats
+  "time_format": "dd-MM-yyyy HH:mm:ss",
+  "id_format": "#%id%",
+  "currency_format": "%amount% %curr%"
+}

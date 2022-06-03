@@ -4,29 +4,22 @@ using System.IO;
 using System.Windows.Forms;
 
 namespace Auction_Tool {
-    public partial class DeleteByIdForm : Form, ISubmitter {
+    public partial class DeleteByIdForm : Form, ISubmitter, ILocalizable {
         private MainForm main;
         private For type;
+        private Dictionary<string, string> localeJSON;
+
+        public string LocaleFileName => "delete_form";
+
+        public Dictionary<string, string> LocaleJSON { get => localeJSON; set => localeJSON = value; }
 
         public DeleteByIdForm(MainForm main, For type) {
             InitializeComponent();
             this.main = main;
             this.type = type;
 
-            switch(type) {
-                case For.AuctionItem:
-                    Text = "Elimină articol";
-                    deleteTitle.Text = "Elimină articol după ID";
-                    idLabel.Text = "ID articol";
-                    delete_btn.Text = "Elimină articol";
-                    break;
-                case For.AuctionClient:
-                    Text = "Elimină client";
-                    deleteTitle.Text = "Elimină client după ID";
-                    idLabel.Text = "ID client";
-                    delete_btn.Text = "Elimină client";
-                    break;
-            }
+            LocaleJSON = Utils.getJsonLang(main.DefaultLang, LocaleFileName);
+            localize();
         }
 
         public bool checkValidity() {
@@ -42,18 +35,25 @@ namespace Auction_Tool {
                 else if (type == For.AuctionClient)
                     AuctionClient.delete(id);
 
-                DialogResult res = MessageBox.Show($"{(type == For.AuctionItem ? "Articolul" : "Clientul")} " +
-                    $"cu ID-ul {id} a fost eliminat", type == For.AuctionItem ? "Articol eliminat" : "Client eliminat",
+                string txt = type == For.AuctionItem
+                    ? LocaleJSON["dialog_item_removed"].Replace("%id%", id.ToString())
+                    : LocaleJSON["dialog_client_removed"].Replace("%id%", id.ToString());
+
+                DialogResult res = MessageBox.Show(txt, main.LocaleJSON["dialog_info"],
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 if (res == DialogResult.OK || res == DialogResult.Cancel) {
-                    this.Close();
+                    Close();
 
                     if(type == For.AuctionItem) {
                         main.refreshToolbarItems();
 
-                        // Dacă articolul dat spre ștergere era în mod curent pe ecran
-                        // atunci resetăm câmpurile cu informații
+                        /*
+                         * RO: Dacă articolul dat spre ștergere era în mod curent pe ecran
+                         *     atunci resetăm câmpurile cu informații
+                         * EN: If the removed item was displayed on the screen
+                         *     then we reset the info fields
+                         */
                         if (int.Parse(main.auctionItemID_out.Text) == id)
                             main.displayNoItem();
                     } else if(type == For.AuctionClient) {
@@ -86,7 +86,10 @@ namespace Auction_Tool {
                     }
 
                     if(!found) {
-                        errorProvider.SetError(id_num, $"Acest ID nu aparține niciunui {(type == For.AuctionItem ? "articol" : "client")}");
+                        if(type == For.AuctionItem)
+                            errorProvider.SetError(id_num, LocaleJSON["error_item_id_not_exists"]);
+                        else
+                            errorProvider.SetError(id_num, LocaleJSON["error_client_id_not_exists"]);
                         return false;
                     }
                 }
@@ -98,6 +101,24 @@ namespace Auction_Tool {
 
         private void delete_btn_Click(object sender, EventArgs e) {
             Submit();
+        }
+
+        public void localize() {
+            switch (type) {
+                case For.AuctionItem:
+                    deleteTitle.Text = LocaleJSON["item_form_title"];
+                    idLabel.Text = LocaleJSON["item_id_label"];
+                    break;
+                case For.AuctionClient:
+                    deleteTitle.Text = LocaleJSON["client_form_title"];
+                    idLabel.Text = LocaleJSON["client_id_title"];
+                    break;
+            }
+
+            submit_btn.Text = LocaleJSON["submit_button"];
+
+            if (!main.LocalizedForms.Contains(this))
+                main.LocalizedForms.Add(this);
         }
     }
 }

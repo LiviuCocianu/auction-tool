@@ -1,0 +1,15 @@
+﻿// ENGLISH LOCALE
+
+{
+  "form_title": "Set the price bid by the client",
+  "prev_bet_label": "Previous bet:",
+  "budget_label": "Available budget:",
+  "new_bid_label": "New bid price",
+  "submit_button": "Set",
+  "error_nan": "This field doesn't contain a positive float",
+  "error_less_zero": "New bid cannot be less than 0",
+  "error_less_base_price": "New bid must be bigger than the item base price",
+  "error_less_bid": "New bid must be bigger than previously bid price",
+  "error_less_highest": "New bid must be bigger than the highest bid",
+  "error_budget": "New bid shouldn't exceed client's budget"
+}

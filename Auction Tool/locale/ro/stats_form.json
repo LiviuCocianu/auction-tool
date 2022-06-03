@@ -1,0 +1,18 @@
+﻿// ROMANIAN LOCALE
+
+{
+  // Form text
+  "title": "Statistici licitație",
+  "auction_start_label": "Începută la:",
+  "auction_end_label": "Încheiată la:",
+  "auction_item_label": "ID articol licitat:",
+  "total_clients_label": "Număr total de participanți:",
+  "activity_rate_label": "Rată de activitate:",
+  "highest_bet_label": "Sumă câștigătoare:",
+  "total_biddings_label": "Sumă totală investită:",
+  "bid_std_dev_label": "Abatere standard propuneri:",
+  // Field formats
+  "time_format": "dd-MM-yyyy HH:mm:ss",
+  "id_format": "#%id%",
+  "currency_format": "%amount% %curr%"
+}

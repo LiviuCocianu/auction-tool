@@ -4,29 +4,26 @@ using System.IO;
 using System.Windows.Forms;
 
 namespace Auction_Tool {
-    public partial class CreateEditClientForm : Form, ISubmitter {
+    public partial class CreateEditClientForm : Form, ISubmitter, ILocalizable {
         private MainForm main;
         private Operation op;
         private AuctionClient toEdit;
+        private Dictionary<string, string> localeJSON;
+
+        public string LocaleFileName { get => "client_form"; }
+        public Dictionary<string, string> LocaleJSON { get => localeJSON; set => localeJSON = value; }
 
         public CreateEditClientForm(MainForm main) {
             InitializeComponent();
             this.main = main;
+
+            LocaleJSON = Utils.getJsonLang(main.DefaultLang, LocaleFileName);
+            localize();
         }
 
         public CreateEditClientForm(MainForm main, Operation op) : this(main) {
             this.op = op;
-
-            switch (op) {
-                case Operation.Create:
-                    title.Text = "Creează un client nou";
-                    submit_btn.Text = "Creează";
-                    break;
-                case Operation.Edit:
-                    title.Text = "Editează client";
-                    submit_btn.Text = "Editează";
-                    break;
-            }
+            localize(op);
         }
 
         public CreateEditClientForm(MainForm main, AuctionClient toEdit) : this(main, Operation.Edit) {
@@ -35,7 +32,6 @@ namespace Auction_Tool {
             lastName_tb.Text = toEdit.LastName;
             auctionNumber_tb.Text = toEdit.AuctionNumber.ToString();
             clientBudget_tb.Text = toEdit.AuctionBudget.ToString();
-            saveHistory_ckb.Checked = toEdit.SavesHistory;
         }
 
         public bool checkValidity() {
@@ -52,12 +48,10 @@ namespace Auction_Tool {
                         int auctionNumber = int.Parse(auctionNumber_tb.Text);
                         float clientBudget = string.IsNullOrEmpty(clientBudget_tb.Text)
                                                 ? float.MaxValue : float.Parse(clientBudget_tb.Text);
-                        bool savesHistory = saveHistory_ckb.Checked;
 
                         AuctionClient client = new AuctionClient(
                             firstName, lastName,
-                            auctionNumber, clientBudget,
-                            savesHistory ? new ClientHistory() : null
+                            auctionNumber, clientBudget
                         );
                         client.serialize();
 
@@ -66,13 +60,13 @@ namespace Auction_Tool {
                         main.refreshClientList(false);
 
                         DialogResult choice = MessageBox.Show(
-                            "Clientul a fost salvat cu succes!",
-                            "Client creat",
+                            LocaleJSON["dialog_client_created"],
+                            main.LocaleJSON["dialog_info"],
                             MessageBoxButtons.OK, MessageBoxIcon.Information
                         );
 
                         if (choice == DialogResult.OK || choice == DialogResult.Cancel) 
-                            this.Close();
+                            Close();
                         break;
                     case Operation.Edit:
                         firstName = firstName_tb.Text.Trim();
@@ -80,19 +74,17 @@ namespace Auction_Tool {
                         auctionNumber = int.Parse(auctionNumber_tb.Text);
                         clientBudget = string.IsNullOrEmpty(clientBudget_tb.Text)
                                                 ? float.MaxValue : float.Parse(clientBudget_tb.Text);
-                        savesHistory = saveHistory_ckb.Checked;
 
                         client = new AuctionClient(
                             firstName, lastName,
-                            auctionNumber, clientBudget,
-                            savesHistory ? new ClientHistory() : null
+                            auctionNumber, clientBudget
                         ) { Id = toEdit.Id };
 
                         AuctionClient.Cache.Collection = client.saveThis();
 
                         choice = MessageBox.Show(
-                            "Clientul a fost editat cu succes!",
-                            "Client editat",
+                            LocaleJSON["dialog_client_edited"],
+                            main.LocaleJSON["dialog_info"],
                             MessageBoxButtons.OK, MessageBoxIcon.Information
                         );
 
@@ -107,27 +99,23 @@ namespace Auction_Tool {
         }
 
         private void auctionNumberInfo_Click(object sender, EventArgs e) {
-            MessageBox.Show("Acest număr întreg trebuie să fie unic și va servi ca o metodă de identificare " +
-                "și abreviere a clientului virtual cu cel din sala de licitații. A se lua în considerare că acest număr nu este " +
-                "același lucru cu ID-ul clientului, care este folosit strict în aplicație",
-                "Ajutor", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(LocaleJSON["auction_number_guide"],
+                main.LocaleJSON["dialog_info"], MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void clientBudgetInfo_Click(object sender, EventArgs e) {
-            MessageBox.Show("Acest număr rațional va fi folosit pentru a valida dacă prețul propus de client " +
-                "în timpul unei licitații se află în bugetul acestuia. Dacă suma nu v-a fost comunicată de către client, " +
-                "lăsați acest câmp gol",
-                "Ajutor", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(LocaleJSON["budget_guide"],
+                main.LocaleJSON["dialog_info"], MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private bool firstNameValid() {
             const int nameCharLimit = 50;
 
             if (string.IsNullOrEmpty(firstName_tb.Text)) {
-                errorProvider.SetError(firstName_tb, "Acest câmp nu poate fi lăsat gol");
+                errorProvider.SetError(firstName_tb, LocaleJSON["error_empty_field"]);
                 return false;
             } else if (firstName_tb.Text.Length > nameCharLimit) {
-                errorProvider.SetError(firstName_tb, $"Numele clientului nu poate depăși {nameCharLimit} caractere");
+                errorProvider.SetError(firstName_tb, LocaleJSON["error_first_name_too_long"].Replace("%max%", nameCharLimit.ToString()));
                 return false;
             } else {
                 errorProvider.SetError(firstName_tb, null);
@@ -139,10 +127,10 @@ namespace Auction_Tool {
             const int nameCharLimit = 50;
 
             if (string.IsNullOrEmpty(lastName_tb.Text)) {
-                errorProvider.SetError(lastName_tb, "Acest câmp nu poate fi lăsat gol");
+                errorProvider.SetError(lastName_tb, LocaleJSON["error_empty_field"]);
                 return false;
             } else if (lastName_tb.Text.Length > nameCharLimit) {
-                errorProvider.SetError(lastName_tb, $"Prenumele clientului nu poate depăși {nameCharLimit} caractere");
+                errorProvider.SetError(lastName_tb, LocaleJSON["error_last_name_too_long"].Replace("%max%", nameCharLimit.ToString()));
                 return false;
             } else {
                 errorProvider.SetError(lastName_tb, null);
@@ -169,7 +157,7 @@ namespace Auction_Tool {
                             if (op == Operation.Edit && firstName_tb.Text == toEdit.FirstName
                                 && lastName_tb.Text == toEdit.LastName) return true;
 
-                            errorProvider.SetError(lastName_tb, "Acest nume și prenume aparțin deja altui client");
+                            errorProvider.SetError(lastName_tb, LocaleJSON["error_name_exists"]);
                             return false;
                         }
                     }
@@ -188,10 +176,10 @@ namespace Auction_Tool {
             bool converted = int.TryParse(auctionNumber_tb.Text, out num);
 
             if (!converted) {
-                errorProvider.SetError(auctionNumber_tb, "Acest câmp nu conține un număr întreg pozitiv");
+                errorProvider.SetError(auctionNumber_tb, LocaleJSON["error_nan"]);
                 return false;
             } else if (num < 0) {
-                errorProvider.SetError(auctionNumber_tb, "Prețul de bază nu poate fi mai mic decât 0");
+                errorProvider.SetError(auctionNumber_tb, LocaleJSON["error_auction_number_less_zero"]);
                 return false;
             } else if (File.Exists($"{MainForm.WorkPath}\\clients.dat")) {
                 List<AuctionClient> clienti = AuctionClient.deserialize();
@@ -201,7 +189,7 @@ namespace Auction_Tool {
                         if(client.AuctionNumber == num) {
                             if (op == Operation.Edit && num == toEdit.AuctionNumber) return true;
 
-                            errorProvider.SetError(auctionNumber_tb, "Acest număr aparține deja altui client");
+                            errorProvider.SetError(auctionNumber_tb, LocaleJSON["error_auction_number_exists"]);
                             return false;
                         }
                     }
@@ -225,10 +213,10 @@ namespace Auction_Tool {
                 errorProvider.SetError(clientBudget_tb, null);
                 return true;
             } else if(!converted) {
-                errorProvider.SetError(clientBudget_tb, "Acest câmp nu conține un număr rațional pozitiv");
+                errorProvider.SetError(clientBudget_tb, LocaleJSON["error_nan_float"]);
                 return false;
             } else if(budget < 0) {
-                errorProvider.SetError(clientBudget_tb, "Suma disponibilă declarată nu poate fi mai mică decât 0");
+                errorProvider.SetError(clientBudget_tb, LocaleJSON["error_budget_less_zero"]);
                 return false;
             } else {
                 errorProvider.SetError(clientBudget_tb, null);
@@ -238,6 +226,31 @@ namespace Auction_Tool {
 
         private void submit_btn_Click(object sender, EventArgs e) {
             Submit();
+        }
+
+        public void localize(Operation op) {
+            switch (op) {
+                case Operation.Create:
+                    title.Text = LocaleJSON["create_form_title"];
+                    submit_btn.Text = LocaleJSON["create_submit_button"];
+                    break;
+                case Operation.Edit:
+                    title.Text = LocaleJSON["edit_form_title"];
+                    submit_btn.Text = LocaleJSON["edit_submit_button"];
+                    break;
+            }
+
+            firstName.Text = LocaleJSON["client_first_name_label"];
+            lastName.Text = LocaleJSON["client_last_name_label"];
+            auctionNumber.Text = LocaleJSON["client_auction_number_label"];
+            clientBudget.Text = LocaleJSON["client_budget_label"];
+
+            if (!main.LocalizedForms.Contains(this))
+                main.LocalizedForms.Add(this);
+        }
+
+        public void localize() {
+            localize(Operation.Create);
         }
     }
 }

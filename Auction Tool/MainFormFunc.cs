@@ -9,10 +9,11 @@ using System.Windows.Forms;
 namespace Auction_Tool {
     partial class MainForm {
         private bool promptWorkpath() {
-            while(true) {
+            LocaleJSON = Utils.getJsonLang(defaultLang, LocaleFileName);
+
+            while (true) {
                 FolderBrowserDialog dial = new FolderBrowserDialog();
-                dial.Description = "Înainte de a folosi aplicația, selectează locația unde vrei să salvezi datele." +
-                    " Vei fi rugat să faci acest lucru de fiecare dată când deschizi aplicația!";
+                dial.Description = LocaleJSON["prompt_workpath_message"];
 
                 DialogResult choice = dial.ShowDialog();
 
@@ -20,9 +21,8 @@ namespace Auction_Tool {
                     WorkPath = dial.SelectedPath;
                     return true;
                 } else if (choice == DialogResult.Cancel) {
-                    DialogResult errChoice = MessageBox.Show("Aplicația nu poate fi folosită fără o locație pentru date! " +
-                        "Vă rugăm să introduceți locația!",
-                        "Eroare", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+                    DialogResult errChoice = MessageBox.Show(LocaleJSON["required_workpath_error"],
+                        LocaleJSON["dialog_error"], MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
 
                     if (errChoice == DialogResult.Cancel) {
                         return false;
@@ -36,13 +36,13 @@ namespace Auction_Tool {
         }
 
         public void displayNoItem() {
-            auctionItemID_out.Text = "Indisponibil";
-            auctionItemName_out.Text = "Indisponibil";
+            auctionItemID_out.Text = LocaleJSON["info_unavailable"];
+            auctionItemName_out.Text = LocaleJSON["info_unavailable"];
             auctionItemDesc_link.Tag = null;
-            basePrice_out.Text = "Indisponibil";
-            highestBid_out.Text = "Indisponibil";
+            basePrice_out.Text = LocaleJSON["info_unavailable"];
+            highestBid_out.Text = LocaleJSON["info_unavailable"];
             highestBid_out.Tag = 0f;
-            topBidderNo_out.Text = "Indisponibil";
+            topBidderNo_out.Text = LocaleJSON["info_unavailable"];
             topBidderNo_out.Tag = null;
 
             toolTip1.RemoveAll();
@@ -64,9 +64,9 @@ namespace Auction_Tool {
                 $"{(art.Name.Length > 21 ? art.Name.Substring(0, 22) : art.Name)}" +
                 $"{(art.Name.Length > 22 ? "..." : "")}";
             auctionItemDesc_link.Tag = art;
-            basePrice_out.Text = $"{art.BasePrice} lei";
-            highestBid_out.Text = "0 lei";
-            topBidderNo_out.Text = "În curând";
+            basePrice_out.Text = $"{art.BasePrice} {LocaleJSON["currency_unit"]}";
+            highestBid_out.Text = $"0 {LocaleJSON["currency_unit"]}";
+            topBidderNo_out.Text = LocaleJSON["info_soon"];
             toolTip1.SetToolTip(auctionItemName_out, art.Name);
             if (art.Description.Length < 65)
                 toolTip1.SetToolTip(auctionItemDesc_link, art.Description);
@@ -81,12 +81,12 @@ namespace Auction_Tool {
                         itemImage_pb.Image = Image.FromStream(stream);
                     }
                 } catch (WebException) {
-                    MessageBox.Show("Nu s-a putut conecta la internet. Articolul va fi încărcat fără imagine",
-                        "Avertisment", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(LocaleJSON["load_item_without_internet"],
+                        LocaleJSON["dialog_warning"], MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
+            } else {
+                itemImage_pb.Image = Properties.Resources.no_image;
             }
-
-            AuctionInstance.start();
         }
 
         private void updateToolbarItems() {
@@ -105,13 +105,13 @@ namespace Auction_Tool {
         }
 
         public void refreshToolbarItems() {
-            itemTB_load.DropDownItems.Clear();
+            itemsTB_load.DropDownItems.Clear();
             updateToolbarItems();
         }
 
         public void addItemToToolbar(AuctionItem item) {
             ToolStripMenuItem tsmItem = new ToolStripMenuItem();
-            int index = itemTB_load.DropDownItems.Count + 1;
+            int index = itemsTB_load.DropDownItems.Count + 1;
 
             tsmItem.Name = $"itemTB_item{index}";
             tsmItem.Text = $"{index}. {item.Name}";
@@ -121,12 +121,16 @@ namespace Auction_Tool {
             tsmItem.Tag = item;
             tsmItem.Click += new EventHandler(toolbarItemElement_Click);
 
-            itemTB_load.DropDownItems.Add(tsmItem);
+            itemsTB_load.DropDownItems.Add(tsmItem);
         }
 
         public bool isItemDisplayed(AuctionItem articol) {
             if (auctionItemDesc_link.Tag == null) return false;
             return ((AuctionItem)auctionItemDesc_link.Tag).Id == articol.Id;
+        }
+
+        public bool isAnyItemDisplayed() {
+            return auctionItemDesc_link.Tag != null;
         }
 
         /*
@@ -177,7 +181,17 @@ namespace Auction_Tool {
             updateClientList(cache);
         }
 
-        public void adaugaElementClient(AuctionClient client) {
+        public void showClientSearchResults(string searchText) {
+            clientList_panel.Controls.Clear();
+
+            AuctionClient.Cache.Collection.ForEach(client => {
+                if(client.AuctionNumber.ToString().Contains(searchText)) {
+                    addClientToList(client);
+                }
+            });
+        }
+
+        public void addClientToList(AuctionClient client) {
             addClientToList(clientList_panel.Controls.Count + 1, client);
         }
 
@@ -301,6 +315,89 @@ namespace Auction_Tool {
 
         public bool isClientListVisible() {
             return Controls.ContainsKey("clientList_panel");
+        }
+
+        /*
+         * RO: Trece limba întregii aplicații la limba dată prin parametru
+         * EN: Shifts the application language to the given lang
+         */
+        public void shiftAllLocalesTo(Lang lang) {
+            defaultLang = lang;
+            foreach(ILocalizable locale in LocalizedForms) {
+                // RO: Preia translațiile pentru noua limbă
+                // EN: Load the translations for the new language
+                locale.LocaleJSON = Utils.getJsonLang(lang, locale.LocaleFileName);
+                locale.localize();
+            }
+        }
+
+        public void localize() {
+            Text = LocaleJSON["app_title"];
+            // File toolbar translation
+            fileToolbar.Text = LocaleJSON["toolbar_file"];
+            fileTB_create.Text = LocaleJSON["toolbar_file_create"];
+            fileTB_create_item.Text = LocaleJSON["toolbar_file_item"];
+            fileTB_create_client.Text = LocaleJSON["toolbar_file_client"];
+            fileTB_remove.Text = LocaleJSON["toolbar_file_remove"];
+            fileTB_remove_item.Text = LocaleJSON["toolbar_file_item"];
+            fileTB_remove_client.Text = LocaleJSON["toolbar_file_client"];
+            fileTB_remove_item_all.Text = LocaleJSON["toolbar_file_remove_all_items"];
+            fileTB_remove_item_ID.Text = LocaleJSON["toolbar_file_remove_by_id"];
+            fileTB_remove_client_all.Text = LocaleJSON["toolbar_file_remove_all_clients"];
+            fileTB_remove_client_ID.Text = LocaleJSON["toolbar_file_remove_by_id"];
+            fileTB_edit.Text = LocaleJSON["toolbar_file_edit"];
+            fileTB_edit_item.Text = LocaleJSON["toolbar_file_item"];
+            fileTB_edit_client.Text = LocaleJSON["toolbar_file_client"];
+            langToolbar.Text = LocaleJSON["toolbar_language"];
+            langTB_RO.Text = LocaleJSON["toolbar_language_ro"];
+            langTB_EN.Text = LocaleJSON["toolbar_language_en"];
+
+            // Items toolbar translation
+            itemsToolbar.Text = LocaleJSON["toolbar_items"];
+            itemsTB_load.Text = LocaleJSON["toolbar_items_load"];
+
+            // Auction toolbar translation
+            auctionToolbar.Text = LocaleJSON["toolbar_auction"];
+            auctionTB_stop.Text = LocaleJSON["toolbar_auction_stop"];
+            auctionTB_reset.Text = LocaleJSON["toolbar_auction_reset"];
+            auctionTB_finish.Text = LocaleJSON["toolbar_auction_finish"];
+
+            // Info panels translation
+            generalInfo_title.Text = LocaleJSON["general_info_title"];
+            auctionItemID.Text = $"{LocaleJSON["general_info_item_id"]}:";
+            auctionItemName.Text = $"{LocaleJSON["general_info_item_name"]}:";
+            auctionItemDesc.Text = $"{LocaleJSON["general_info_item_description"]}:";
+            auctionItemDesc_link.Text = LocaleJSON["info_view"];
+            auctionInfo_title.Text = LocaleJSON["auction_info_title"];
+            basePrice.Text = $"{LocaleJSON["auction_info_base_price"]}:";
+            highestBid.Text = $"{LocaleJSON["auction_info_highest_bid"]}:";
+            topBidderNo.Text = $"{LocaleJSON["auction_info_top_client"]}:";
+
+            if(!isAnyItemDisplayed()) {
+                auctionItemID_out.Text = LocaleJSON["info_unavailable"];
+                auctionItemName_out.Text = LocaleJSON["info_unavailable"];
+                basePrice_out.Text = LocaleJSON["info_unavailable"];
+                highestBid_out.Text = LocaleJSON["info_unavailable"];
+                topBidderNo_out.Text = LocaleJSON["info_unavailable"];
+            }
+
+            // Item selection guide translation
+            preItemSelect1.Text = LocaleJSON["item_preselectMessage1"];
+            preItemSelect2.Text = LocaleJSON["item_preselectMessage2"];
+
+            // Client list translation
+            clientSearch_tb.Text = LocaleJSON["client_searchbox_placeholder"];
+            searchPlaceholder = LocaleJSON["client_searchbox_placeholder"];
+            tableIndexNo.Text = LocaleJSON["client_list_index"];
+            tableClientID.Text = LocaleJSON["client_list_id"];
+            tableAuctionNumber.Text = LocaleJSON["client_list_auction_number"];
+            tableClientFirstName.Text = LocaleJSON["client_list_first_name"];
+            tableClientLastName.Text = LocaleJSON["client_list_last_name"];
+            tableClientBidAmount.Text = LocaleJSON["client_list_bid_amount"];
+            tableClientBudget.Text = LocaleJSON["client_list_budget"];
+
+            if(!LocalizedForms.Contains(this))
+                LocalizedForms.Add(this);
         }
     }
 }

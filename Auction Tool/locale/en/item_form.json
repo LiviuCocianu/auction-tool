@@ -1,0 +1,22 @@
+﻿// ENGLISH LOCALE
+
+{
+  "create_form_title": "Create a new item",
+  "edit_form_title": "Edit item",
+  "item_name_label": "Item name",
+  "item_description_label": "Item description",
+  "base_price_label": "Base price (in %curr%)",
+  "item_image_url_label": "Item image URL (optional)",
+  "create_submit_button": "Create",
+  "edit_submit_button": "Edit",
+  "dialog_item_created": "Item has been created successfully!",
+  "dialog_item_edited": "Item has been edited successfully!",
+  "error_empty_field": "This field cannot be empty",
+  "error_name_too_long": "Item name cannot be longer than %max% characters",
+  "error_name_exists": "This name already belongs to an existing item",
+  "error_desc_too_long": "Item description cannot be longer than %max% characters",
+  "error_nan": "This field doesn't contain a positive float",
+  "error_base_price_less_zero": "Base price cannot be less or equal to zero",
+  "error_improper_url_form": "URL must be of type HTTP or HTTPS",
+  "error_invalid_url": "This field doesn't contain a valid URL"
+}

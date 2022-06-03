@@ -1,0 +1,22 @@
+﻿// ROMANIAN LOCALE
+
+{
+  "create_form_title": "Creează un articol nou",
+  "edit_form_title": "Editează articol",
+  "item_name_label": "Denumire articol",
+  "item_description_label": "Descriere articol",
+  "base_price_label": "Preț de bază (în %curr%)",
+  "item_image_url_label": "URL fotografie articol (opțional)",
+  "create_submit_button": "Creează",
+  "edit_submit_button": "Editează",
+  "dialog_item_created": "Articolul a fost salvat cu succes!",
+  "dialog_item_edited": "Articolul a fost editat cu succes!",
+  "error_empty_field": "Acest câmp nu poate fi lăsat gol",
+  "error_name_too_long": "Denumirea articolului nu poate depăși %max% caractere",
+  "error_name_exists": "Această denumire aparține deja altui articol",
+  "error_desc_too_long": "Descrierea articolului nu poate depăși %max% caractere",
+  "error_nan": "Acest câmp nu conține un număr rațional pozitiv",
+  "error_base_price_less_zero": "Prețul de bază nu poate fi mai mic sau egal cu 0",
+  "error_improper_url_form": "Acest URL trebuie să fie de forma HTTP sau HTTPS",
+  "error_invalid_url": "Textul introdus nu are forma unui URL valid"
+}

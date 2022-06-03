@@ -1,0 +1,13 @@
+﻿// ROMANIAN LOCALE
+
+{
+  "item_form_title": "Șterge articol după ID",
+  "client_form_title": "Ștergere client după ID",
+  "item_id_label": "ID articol",
+  "client_id_label": "ID client",
+  "submit_button": "Ștergere",
+  "dialog_item_removed": "Articolul cu ID-ul %id% a fost șters!",
+  "dialog_client_removed": "Clientul cu ID-ul %id% a fost șters!",
+  "error_item_id_not_exists": "Acest ID nu aparține niciunui articol",
+  "error_client_id_not_exists": "Acest ID nu aparține niciunui client"
+}

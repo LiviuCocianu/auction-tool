@@ -28,7 +28,7 @@
             this.idLabel = new System.Windows.Forms.Label();
             this.deleteTitle = new System.Windows.Forms.Label();
             this.id_num = new System.Windows.Forms.NumericUpDown();
-            this.delete_btn = new System.Windows.Forms.Button();
+            this.submit_btn = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.id_num)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
@@ -65,15 +65,15 @@
             this.id_num.Size = new System.Drawing.Size(239, 22);
             this.id_num.TabIndex = 2;
             // 
-            // delete_btn
+            // submit_btn
             // 
-            this.delete_btn.Location = new System.Drawing.Point(29, 124);
-            this.delete_btn.Name = "delete_btn";
-            this.delete_btn.Size = new System.Drawing.Size(122, 32);
-            this.delete_btn.TabIndex = 3;
-            this.delete_btn.Text = "Șterge articol";
-            this.delete_btn.UseVisualStyleBackColor = true;
-            this.delete_btn.Click += new System.EventHandler(this.delete_btn_Click);
+            this.submit_btn.Location = new System.Drawing.Point(29, 124);
+            this.submit_btn.Name = "submit_btn";
+            this.submit_btn.Size = new System.Drawing.Size(122, 32);
+            this.submit_btn.TabIndex = 3;
+            this.submit_btn.Text = "Șterge";
+            this.submit_btn.UseVisualStyleBackColor = true;
+            this.submit_btn.Click += new System.EventHandler(this.delete_btn_Click);
             // 
             // errorProvider
             // 
@@ -84,13 +84,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(296, 177);
-            this.Controls.Add(this.delete_btn);
+            this.Controls.Add(this.submit_btn);
             this.Controls.Add(this.id_num);
             this.Controls.Add(this.deleteTitle);
             this.Controls.Add(this.idLabel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DeleteByIdForm";
-            this.Text = "Șterge articol";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             ((System.ComponentModel.ISupportInitialize)(this.id_num)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
@@ -103,7 +103,7 @@
         private System.Windows.Forms.Label idLabel;
         private System.Windows.Forms.Label deleteTitle;
         private System.Windows.Forms.NumericUpDown id_num;
-        private System.Windows.Forms.Button delete_btn;
+        private System.Windows.Forms.Button submit_btn;
         private System.Windows.Forms.ErrorProvider errorProvider;
     }
 }

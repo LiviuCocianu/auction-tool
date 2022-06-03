@@ -1,0 +1,13 @@
+﻿// ENGLISH LOCALE
+
+{
+  "item_form_title": "Delete item by ID",
+  "client_form_title": "Delete client by ID",
+  "item_id_label": "Item ID",
+  "client_id_label": "Client ID",
+  "submit_button": "Delete",
+  "dialog_item_removed": "Item with ID %id% has been deleted!",
+  "dialog_client_removed": "Client with ID %id% has been deleted!",
+  "error_item_id_not_exists": "This ID doesn't belong to any item",
+  "error_client_id_not_exists": "This ID doesn't belong to any client"
+}

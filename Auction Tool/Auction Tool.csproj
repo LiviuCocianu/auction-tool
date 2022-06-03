@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuctionItem.cs" />
+    <Compile Include="AuctionStatistics.cs" />
     <Compile Include="ClientBetForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,7 +96,6 @@
       <DependentUpon>DeleteByIdForm.cs</DependentUpon>
     </Compile>
     <Compile Include="IIdentifiable.cs" />
-    <Compile Include="ClientHistory.cs" />
     <Compile Include="Auction.cs" />
     <Compile Include="ILocalizable.cs" />
     <Compile Include="MainForm.cs">
@@ -107,6 +107,12 @@
     <Compile Include="ISubmitter.cs" />
     <Compile Include="MainFormFunc.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PrintableAuctionStats.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PrintableAuctionStats.Designer.cs">
+      <DependentUpon>PrintableAuctionStats.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -137,6 +143,9 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PrintableAuctionStats.resx">
+      <DependentUpon>PrintableAuctionStats.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -145,7 +154,20 @@
     <EmbeddedResource Include="EditByIdForm.resx">
       <DependentUpon>EditByIdForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="lang\ro\main_form.json" />
+    <EmbeddedResource Include="locale\ro\main_form.json" />
+    <EmbeddedResource Include="locale\en\main_form.json" />
+    <EmbeddedResource Include="locale\en\bet_form.json" />
+    <EmbeddedResource Include="locale\ro\bet_form.json" />
+    <EmbeddedResource Include="locale\en\client_form.json" />
+    <EmbeddedResource Include="locale\ro\client_form.json" />
+    <EmbeddedResource Include="locale\ro\item_form.json" />
+    <EmbeddedResource Include="locale\en\item_form.json" />
+    <EmbeddedResource Include="locale\ro\delete_form.json" />
+    <EmbeddedResource Include="locale\en\delete_form.json" />
+    <EmbeddedResource Include="locale\ro\edit_form.json" />
+    <EmbeddedResource Include="locale\en\edit_form.json" />
+    <EmbeddedResource Include="locale\ro\stats_form.json" />
+    <EmbeddedResource Include="locale\en\stats_form.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -205,6 +227,17 @@
   <ItemGroup>
     <None Include="Resources\all.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\lang_ro.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lang_en.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\guide_button.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

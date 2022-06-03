@@ -1,0 +1,15 @@
+﻿// ROMANIAN LOCALE
+
+{
+  "form_title": "Setează suma propusă de client",
+  "prev_bet_label": "Sumă propusă anterior:",
+  "budget_label": "Buget disponibil:",
+  "new_bid_label": "Noua sumă propusă",
+  "submit_button": "Setează",
+  "error_nan": "Acest câmp nu conține un număr rațional pozitiv",
+  "error_less_zero": "Suma nouă nu poate fi mai mică decât 0",
+  "error_less_base_price": "Suma nouă trebuie să fie mai mare decat prețul de bază al articolului",
+  "error_less_bid": "Suma nouă trebuie să fie mai mare decât suma propriu propusă anterior",
+  "error_less_highest": "Suma nouă trebuie să fie mai mare decât suma propusă de ceilalți clienți",
+  "error_budget": "Suma nouă nu se află în bugetul clientului"
+}

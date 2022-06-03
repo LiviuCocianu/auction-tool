@@ -1,0 +1,11 @@
+﻿// ROMANIAN LOCALE
+
+{
+  "item_form_title": "Caută articol după ID",
+  "client_form_title": "Caută client după ID",
+  "id_column": "ID",
+  "item_name_column": "Denumire articol",
+  "client_name_column": "Nume client",
+  "selected_id_label": "ID selectat: %id%",
+  "submit_button": "Caută"
+}

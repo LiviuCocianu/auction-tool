@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -8,11 +9,14 @@ namespace Auction_Tool {
     public partial class MainForm : Form, ILocalizable {
         private float[] clientElemPercs;
 
+        // Class-specific variables
+        private static List<ILocalizable> localizedForms = new List<ILocalizable>();
         private string searchPlaceholder;
-
         private static string workPath = "";
         private Auction auctionInstance;
-        private Lang defaultLang = Lang.RO;
+
+        // Locale-specific variables
+        private Lang defaultLang;
         private Dictionary<string, string> langJson;
 
         public static string WorkPath {
@@ -30,24 +34,45 @@ namespace Auction_Tool {
             set { defaultLang = value; }
         }
 
-        private Dictionary<string, string> LangJSON {
+        public string LocaleFileName { get => "main_form"; }
+
+        public Dictionary<string, string> LocaleJSON {
             get { return langJson; }
             set { langJson = value; }
         }
 
+        public List<ILocalizable> LocalizedForms {
+            get { return localizedForms; }
+            set { localizedForms = value; }
+        }
+
         private AuctionClient selectedClient;
 
+        public MainForm(Lang lang) : base() {
+            DefaultLang = lang;
+        }
+
         public MainForm() {
+            DefaultLang = Lang.EN;
+
+            // RO: Verificăm dacă localele sunt sincronizate
+            // EN: Check if locales are in sync
+            Tuple<bool, string> validation = Utils.areLocalesInSync();
+            if (!validation.Item1) {
+                throw new Exception($"Language file paths for file '{validation.Item2}' are not equal to each other." +
+                    $"\nCheck all language folders for this file and if their JSON keys are equal");
+            }
+
             bool succes = promptWorkpath();
             AuctionInstance = new Auction(this);
-
+            
             InitializeComponent();
 
             // RO: Tradu textele din aplicație în limba implicită
             // EN: Translate the app texts in the default language 
-            localize(defaultLang);
+            localize();
 
-            searchPlaceholder = LangJSON["client_searchbox_placeholder"];
+            searchPlaceholder = LocaleJSON["client_searchbox_placeholder"];
 
             /*
              * RO:
@@ -71,11 +96,45 @@ namespace Auction_Tool {
             updateToolbarItems();
             updateClientList(false);
 
-            toolTip1.SetToolTip(auctionItemName_out, LangJSON["info_unavailable"]);
+            toolTip1.SetToolTip(auctionItemName_out, LocaleJSON["info_unavailable"]);
 
             if (!succes) Close();
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
+            bool pressed = false;
+
+            switch(keyData) {
+                case (Keys.Shift | Keys.S):
+                    pressed = true;
+                    if (isAnyItemDisplayed())
+                        AuctionInstance.stop();
+                    else
+                        MessageBox.Show(LocaleJSON["dialog_no_auction"], LocaleJSON["dialog_error"],
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case (Keys.Shift | Keys.R):
+                    pressed = true;
+                    if (isAnyItemDisplayed())
+                        AuctionInstance.reset();
+                    else
+                        MessageBox.Show(LocaleJSON["dialog_no_auction"], LocaleJSON["dialog_error"],
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case (Keys.Shift | Keys.F):
+                    pressed = true;
+                    if (isAnyItemDisplayed())
+                        AuctionInstance.finish();
+                    else
+                        MessageBox.Show(LocaleJSON["dialog_no_auction"], LocaleJSON["dialog_error"],
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+            }
+
+            return pressed;
+        }
+
+        // File toolbar text colors
         private void fileToolbar_Click(object sender, EventArgs e) {
             this.fileToolbar.ForeColor = Color.Black;
         }
@@ -92,6 +151,7 @@ namespace Auction_Tool {
             this.fileToolbar.ForeColor = Color.Black;
         }
 
+        // Items toolbar text colors
         private void itemsToolbar_Click(object sender, EventArgs e) {
             this.itemsToolbar.ForeColor = Color.Black;
         }
@@ -106,6 +166,40 @@ namespace Auction_Tool {
 
         private void itemsToolbar_MouseHover(object sender, EventArgs e) {
             this.itemsToolbar.ForeColor = Color.Black;
+        }
+
+        // Auction toolbar text colors
+        private void auctionToolbar_Click(object sender, EventArgs e) {
+            this.auctionToolbar.ForeColor = Color.Black;
+        }
+
+        private void auctionToolbar_DropDownClosed(object sender, EventArgs e) {
+            this.auctionToolbar.ForeColor = Color.White;
+        }
+
+        private void auctionToolbar_MouseLeave(object sender, EventArgs e) {
+            this.auctionToolbar.ForeColor = Color.White;
+        }
+
+        private void auctionToolbar_MouseHover(object sender, EventArgs e) {
+            this.auctionToolbar.ForeColor = Color.Black;
+        }
+
+        // Language toolbar text colors
+        private void langToolbar_Click(object sender, EventArgs e) {
+            this.langToolbar.ForeColor = Color.Black;
+        }
+
+        private void langToolbar_DropDownClosed(object sender, EventArgs e) {
+            this.langToolbar.ForeColor = Color.White;
+        }
+
+        private void langToolbar_MouseLeave(object sender, EventArgs e) {
+            this.langToolbar.ForeColor = Color.White;
+        }
+
+        private void langToolbar_MouseHover(object sender, EventArgs e) {
+            this.langToolbar.ForeColor = Color.Black;
         }
 
         private void clientSearch_tb_MouseClick(object sender, MouseEventArgs e) {
@@ -141,6 +235,7 @@ namespace Auction_Tool {
             if (clicked.Tag != null) {
                 AuctionItem item = (AuctionItem)(clicked.Tag);
                 displayItem(item);
+                AuctionInstance.start();
             }
         }
 
@@ -149,7 +244,7 @@ namespace Auction_Tool {
 
             if (clicked.Tag != null) {
                 AuctionItem curent = (AuctionItem)clicked.Tag;
-                MessageBox.Show(curent.Description, LangJSON["dialog_description_title"], MessageBoxButtons.OK);
+                MessageBox.Show(curent.Description, LocaleJSON["dialog_description_title"], MessageBoxButtons.OK);
             }
         }
 
@@ -170,19 +265,19 @@ namespace Auction_Tool {
         }
 
         private void fileRemoveAllItems_Click(object sender, EventArgs e) {
-            DialogResult choice = MessageBox.Show(LangJSON["dialog_remove_all_items"],
-                LangJSON["dialog_warning"], MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult choice = MessageBox.Show(LocaleJSON["dialog_remove_all_items"],
+                LocaleJSON["dialog_warning"], MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (choice == DialogResult.Yes) {
                 if(!File.Exists($"{WorkPath}\\items.dat")) {
-                    MessageBox.Show(LangJSON["dialog_no_items_remove"], LangJSON["dialog_error"],
+                    MessageBox.Show(LocaleJSON["dialog_no_items_remove"], LocaleJSON["dialog_error"],
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
                 AuctionItem.deleteAll();
 
-                DialogResult res = MessageBox.Show(LangJSON["dialog_items_removed"], LangJSON["dialog_info"],
+                DialogResult res = MessageBox.Show(LocaleJSON["dialog_items_removed"], LocaleJSON["dialog_info"],
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 if (res == DialogResult.OK || res == DialogResult.Cancel) {
@@ -198,19 +293,19 @@ namespace Auction_Tool {
         }
 
         private void fileRemoveClientID_Click(object sender, EventArgs e) {
-            DialogResult choice = MessageBox.Show(LangJSON["dialog_remove_all_clients"],
-                LangJSON["dialog_warning"], MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult choice = MessageBox.Show(LocaleJSON["dialog_remove_all_clients"],
+                LocaleJSON["dialog_warning"], MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (choice == DialogResult.Yes) {
                 if (!File.Exists($"{WorkPath}\\clients.dat")) {
-                    MessageBox.Show(LangJSON["dialog_no_clients_remove"], LangJSON["dialog_error"],
+                    MessageBox.Show(LocaleJSON["dialog_no_clients_remove"], LocaleJSON["dialog_error"],
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
                 AuctionClient.deleteAll();
 
-                DialogResult choiceTwo = MessageBox.Show(LangJSON["dialog_clients_removed"], LangJSON["dialog_info"],
+                DialogResult choiceTwo = MessageBox.Show(LocaleJSON["dialog_clients_removed"], LocaleJSON["dialog_info"],
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 if (choiceTwo == DialogResult.OK || choiceTwo == DialogResult.Cancel) {
@@ -234,8 +329,8 @@ namespace Auction_Tool {
             AuctionClient.delete(selectedClient.Id);
 
             DialogResult choice = MessageBox.Show(
-                LangJSON["dialog_client_removed_id"].Replace("%id%", selectedClient.Id.ToString()),
-                LangJSON["dialog_info"],
+                LocaleJSON["dialog_client_removed_id"].Replace("%id%", selectedClient.Id.ToString()),
+                LocaleJSON["dialog_info"],
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             if (choice == DialogResult.OK || choice == DialogResult.Cancel) {
@@ -285,42 +380,53 @@ namespace Auction_Tool {
         }
 
         private void auctionTB_stop_Click(object sender, EventArgs e) {
-            AuctionInstance.stop();
+            if (isAnyItemDisplayed())
+                AuctionInstance.stop();
+            else
+                MessageBox.Show(LocaleJSON["dialog_no_auction"], LocaleJSON["dialog_error"],
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void auctionTB_reset_Click(object sender, EventArgs e) {
-            AuctionInstance.reset();
+            if (isAnyItemDisplayed())
+                AuctionInstance.reset();
+            else
+                MessageBox.Show(LocaleJSON["dialog_no_auction"], LocaleJSON["dialog_error"],
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        public void localize(Lang lang) {
-            Dictionary<string, string> json = Utils.getJsonLang(lang, "main_form");
-            LangJSON = json;
+        private void auctionTB_finish_Click(object sender, EventArgs e) {
+            if (isAnyItemDisplayed())
+                AuctionInstance.finish();
+            else
+                MessageBox.Show(LocaleJSON["dialog_no_auction"], LocaleJSON["dialog_error"],
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
 
-            fileToolbar.Text = json["toolbar_file"];
-            fileTB_create.Text = json["toolbar_file_create"];
-            fileTB_create_item.Text = json["toolbar_file_item"];
-            fileTB_create_client.Text = json["toolbar_file_client"];
-            fileTB_remove.Text = json["toolbar_file_remove"];
-            fileTB_remove_item.Text = json["toolbar_file_item"];
-            fileTB_remove_client.Text = json["toolbar_file_client"];
-            fileTB_remove_item_all.Text = json["toolbar_file_remove_all_items"];
-            fileTB_remove_item_ID.Text = json["toolbar_file_remove_by_id"];
-            fileTB_remove_client_all.Text = json["toolbar_file_remove_all_clients"];
-            fileTB_remove_client_ID.Text = json["toolbar_file_remove_by_id"];
-            fileTB_edit.Text = json["toolbar_file_edit"];
-            fileTB_edit_item.Text = json["toolbar_file_item"];
-            fileTB_edit_client.Text = json["toolbar_file_client"];
-            generalInfo_title.Text = json["general_info_title"];
-            auctionItemID.Text = $"{json["general_info_item_id"]}: {json["info_unavailable"]}";
-            auctionItemName.Text = $"{json["general_info_item_name"]}: {json["info_unavailable"]}";
-            auctionItemDesc.Text = $"{json["general_info_item_description"]}: ";
-            auctionItemDesc_link.Text = json["info_view"];
-            auctionInfo_title.Text = json["auction_info_title"];
-            basePrice.Text = $"{json["auction_info_base_price"]}: {json["info_unavailable"]}";
-            highestBid.Text = $"{json["auction_info_highest_bid"]}: {json["info_unavailable"]}";
-            topBidderNo.Text = $"{json["auction_info_top_client"]}: {json["info_unavailable"]}";
-            preItemSelect1.Text = json["item_preselectMessage1"];
-            preItemSelect2.Text = json["item_preselectMessage2"];
+        private void langTB_RO_Click(object sender, EventArgs e) {
+            shiftAllLocalesTo(Lang.RO);
+
+            MessageBox.Show(LocaleJSON["language_changed"], LocaleJSON["dialog_info"],
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void langTB_EN_Click(object sender, EventArgs e) {
+            shiftAllLocalesTo(Lang.EN);
+
+            MessageBox.Show(LocaleJSON["language_changed"], LocaleJSON["dialog_info"],
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void clientSearch_tb_TextChanged(object sender, EventArgs e) {
+            if(string.IsNullOrEmpty(clientSearch_tb.Text)) {
+                refreshClientList(true);
+                return;
+            }
+
+            bool converted = int.TryParse(clientSearch_tb.Text, out int num);
+            if (!converted) return;
+
+            showClientSearchResults(num.ToString());
         }
     }
 }

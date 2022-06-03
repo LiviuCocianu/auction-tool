@@ -1,7 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Auction_Tool {
@@ -60,10 +63,10 @@ namespace Auction_Tool {
             string cpy = file.Replace(".json", "");
 
             Stream stream = Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream($"Auction_Tool.lang.{lang.ToString().ToLower()}.{cpy}.json");
+                .GetManifestResourceStream($"Auction_Tool.locale.{lang.ToString().ToLower()}.{cpy}.json");
 
             if(stream == null) {
-                throw new Exception($"Couldn't create stream for file '{file}'");
+                throw new Exception($"Couldn't create stream for file '{cpy}' in {lang}. Check if it exists");
             }
 
             StreamReader sr = new StreamReader(stream);
@@ -72,6 +75,85 @@ namespace Auction_Tool {
 
 
             return json;
+        }
+
+        /*
+         * RO: Returnează un tuplu cu:
+         * - bool valid - Dacă validarea a avut succes
+         * - string fileName - În cazul în care valid=false, va fi localul invalid, altfel un string gol
+         * 
+         * EN: Returns a tuple containing:
+         * - bool valid - If the validation succeeds
+         * - string fileName - If valid=false, this will be the name of the invalid locale, else an empty string
+         */
+        public static Tuple<bool, string> areLocalesInSync() {
+            string[] fileNames = { "main_form", "bet_form", "client_form", "item_form",
+                "delete_form", "edit_form" };
+
+            foreach (string fileName in fileNames) {
+                List<Dictionary<string, string>> files = new List<Dictionary<string, string>>();
+
+                // RO: Colectăm localele în JSON pentru toate limbile într-o listă
+                // EN: We collect the JSON locales for all languages in a list
+                foreach (Lang lang in Enum.GetValues(typeof(Lang))) {
+                    files.Add(getJsonLang(lang, fileName));
+                }
+
+                if(files.Any(el => files.First().Count != el.Count)) {
+                    return new Tuple<bool, string>(false, fileName);
+                }
+
+                // RO: Dacă unul din locale nu are cheile egale cu celelalte
+                // EN: If one of the locales doesn't match keys with the others
+                if (files.Any(el => !files.First().Keys.SequenceEqual(el.Keys))) {
+                    return new Tuple<bool, string>(false, fileName);
+                }
+            }
+
+            return new Tuple<bool, string>(true, "");
+        }
+
+        public static float stdDev(float[] x) {
+            float ret = 0;
+            float mean = x.Aggregate(0f, (a, b) => a + b) / x.Length;
+            float squareSum = 0;
+
+            for (int i = 0; i < x.Length; i++) {
+                squareSum += (float) Math.Pow(x[i] - mean, 2);
+            }
+
+            return (float) Math.Sqrt(squareSum/x.Length);
+        }
+
+        public static Image resizeImage(Image imgToResize, Size size) {
+            int sourceWidth = imgToResize.Width;
+            int sourceHeight = imgToResize.Height;
+
+            float nPercent;
+            float nPercentW;
+            float nPercentH;
+
+            nPercentW = ((float)size.Width / (float)sourceWidth);
+            nPercentH = ((float)size.Height / (float)sourceHeight);
+
+            if (nPercentH < nPercentW)
+                nPercent = nPercentH;
+            else
+                nPercent = nPercentW;
+
+            int destWidth = (int)(sourceWidth * nPercent);
+            int destHeight = (int)(sourceHeight * nPercent);
+
+            Bitmap b = new Bitmap(destWidth, destHeight);
+            Graphics g = Graphics.FromImage(b);
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+            g.DrawImage(imgToResize, 0, 0, destWidth, destHeight);
+            g.Dispose();
+
+            return b;
         }
     }
 }
