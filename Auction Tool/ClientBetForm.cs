@@ -15,6 +15,7 @@ namespace Auction_Tool {
             this.main = main;
             this.client = client;
             InitializeComponent();
+            submit_btn.Focus();
 
             main.AuctionInstance.BetForm = this;
 
@@ -77,14 +78,21 @@ namespace Auction_Tool {
         }
 
         public void localize() {
+            string budgetVal = client.AuctionBudget == float.MaxValue ? "-" 
+                : $"{client.AuctionBudget} {main.LocaleJSON["currency_unit"]}";
+
             title.Text = LocaleJSON["form_title"];
             previousBid.Text = $"{LocaleJSON["prev_bet_label"]} {client.BidPrice} {main.LocaleJSON["currency_unit"]}";
-            clientBudget.Text = $"{LocaleJSON["budget_label"]} {client.AuctionBudget} {main.LocaleJSON["currency_unit"]}";
+            clientBudget.Text = $"{LocaleJSON["budget_label"]} {budgetVal}";
             newBid.Text = LocaleJSON["new_bid_label"];
             submit_btn.Text = LocaleJSON["submit_button"];
 
             if (!main.LocalizedForms.Contains(this))
                 main.LocalizedForms.Add(this);
+        }
+
+        private void newBid_tb_KeyDown(object sender, KeyEventArgs e) {
+            if(e.KeyCode == Keys.Enter) Submit();
         }
     }
 }

@@ -47,6 +47,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -73,6 +76,12 @@
   <ItemGroup>
     <Compile Include="AuctionItem.cs" />
     <Compile Include="AuctionStatistics.cs" />
+    <Compile Include="AuctionTimer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AuctionTimer.Designer.cs">
+      <DependentUpon>AuctionTimer.cs</DependentUpon>
+    </Compile>
     <Compile Include="ClientBetForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,6 +137,9 @@
       <DependentUpon>EditByIdForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils.cs" />
+    <EmbeddedResource Include="AuctionTimer.resx">
+      <DependentUpon>AuctionTimer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ClientBetForm.resx">
       <DependentUpon>ClientBetForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -238,6 +250,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\guide_button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\reset.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\finish.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

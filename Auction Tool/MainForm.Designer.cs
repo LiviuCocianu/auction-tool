@@ -98,7 +98,8 @@ namespace Auction_Tool {
             this.clientElement_ctx = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cli_ctx_remove = new System.Windows.Forms.ToolStripMenuItem();
             this.cli_ctx_edit = new System.Windows.Forms.ToolStripMenuItem();
-            this.cli_ctx_bet = new System.Windows.Forms.ToolStripMenuItem();
+            this.cli_ctx_bid = new System.Windows.Forms.ToolStripMenuItem();
+            this.auctionTimer = new Auction_Tool.AuctionTimer();
             this.menuStrip.SuspendLayout();
             this.generalInfo_pan.SuspendLayout();
             this.auctionItemId_pan.SuspendLayout();
@@ -286,7 +287,7 @@ namespace Auction_Tool {
             // 
             this.itemsTB_load.Image = ((System.Drawing.Image)(resources.GetObject("itemsTB_load.Image")));
             this.itemsTB_load.Name = "itemsTB_load";
-            this.itemsTB_load.Size = new System.Drawing.Size(139, 26);
+            this.itemsTB_load.Size = new System.Drawing.Size(224, 26);
             this.itemsTB_load.Text = "Încarcă";
             // 
             // auctionToolbar
@@ -306,22 +307,25 @@ namespace Auction_Tool {
             // 
             // auctionTB_stop
             // 
+            this.auctionTB_stop.Image = global::Auction_Tool.Properties.Resources.stop;
             this.auctionTB_stop.Name = "auctionTB_stop";
-            this.auctionTB_stop.Size = new System.Drawing.Size(159, 26);
+            this.auctionTB_stop.Size = new System.Drawing.Size(224, 26);
             this.auctionTB_stop.Text = "Oprește";
             this.auctionTB_stop.Click += new System.EventHandler(this.auctionTB_stop_Click);
             // 
             // auctionTB_reset
             // 
+            this.auctionTB_reset.Image = global::Auction_Tool.Properties.Resources.reset;
             this.auctionTB_reset.Name = "auctionTB_reset";
-            this.auctionTB_reset.Size = new System.Drawing.Size(159, 26);
+            this.auctionTB_reset.Size = new System.Drawing.Size(224, 26);
             this.auctionTB_reset.Text = "Resetează";
             this.auctionTB_reset.Click += new System.EventHandler(this.auctionTB_reset_Click);
             // 
             // auctionTB_finish
             // 
+            this.auctionTB_finish.Image = global::Auction_Tool.Properties.Resources.finish;
             this.auctionTB_finish.Name = "auctionTB_finish";
-            this.auctionTB_finish.Size = new System.Drawing.Size(159, 26);
+            this.auctionTB_finish.Size = new System.Drawing.Size(224, 26);
             this.auctionTB_finish.Text = "Termină";
             this.auctionTB_finish.Click += new System.EventHandler(this.auctionTB_finish_Click);
             // 
@@ -636,7 +640,7 @@ namespace Auction_Tool {
             this.clientSearch_tb.TabStop = false;
             this.clientSearch_tb.Text = "Caută ID client..";
             this.clientSearch_tb.MouseClick += new System.Windows.Forms.MouseEventHandler(this.clientSearch_tb_MouseClick);
-            this.clientSearch_tb.TextChanged += new System.EventHandler(this.clientSearch_tb_TextChanged);
+            this.clientSearch_tb.KeyDown += new System.Windows.Forms.KeyEventHandler(this.clientSearch_tb_KeyDown);
             this.clientSearch_tb.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.clientSearch_tb_KeyPress);
             this.clientSearch_tb.Leave += new System.EventHandler(this.clientSearch_tb_Leave);
             this.clientSearch_tb.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.clientSearch_tb_MouseDoubleClick);
@@ -837,6 +841,7 @@ namespace Auction_Tool {
             // searchIcon_pb
             // 
             this.searchIcon_pb.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.searchIcon_pb.Cursor = System.Windows.Forms.Cursors.Hand;
             this.searchIcon_pb.Image = global::Auction_Tool.Properties.Resources.search_icon_white;
             this.searchIcon_pb.Location = new System.Drawing.Point(3, 3);
             this.searchIcon_pb.Margin = new System.Windows.Forms.Padding(0);
@@ -846,6 +851,7 @@ namespace Auction_Tool {
             this.searchIcon_pb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.searchIcon_pb.TabIndex = 19;
             this.searchIcon_pb.TabStop = false;
+            this.searchIcon_pb.Click += new System.EventHandler(this.searchIcon_pb_Click);
             // 
             // clientElement_ctx
             // 
@@ -853,7 +859,7 @@ namespace Auction_Tool {
             this.clientElement_ctx.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cli_ctx_remove,
             this.cli_ctx_edit,
-            this.cli_ctx_bet});
+            this.cli_ctx_bid});
             this.clientElement_ctx.Name = "clientElement_context";
             this.clientElement_ctx.Size = new System.Drawing.Size(177, 82);
             // 
@@ -873,13 +879,24 @@ namespace Auction_Tool {
             this.cli_ctx_edit.Text = "Editează";
             this.cli_ctx_edit.Click += new System.EventHandler(this.contextEditItem_Click);
             // 
-            // cli_ctx_bet
+            // cli_ctx_bid
             // 
-            this.cli_ctx_bet.Image = global::Auction_Tool.Properties.Resources.bet;
-            this.cli_ctx_bet.Name = "cli_ctx_bet";
-            this.cli_ctx_bet.Size = new System.Drawing.Size(176, 26);
-            this.cli_ctx_bet.Text = "Propune sumă";
-            this.cli_ctx_bet.Click += new System.EventHandler(this.contextBet_Click);
+            this.cli_ctx_bid.Image = global::Auction_Tool.Properties.Resources.bet;
+            this.cli_ctx_bid.Name = "cli_ctx_bid";
+            this.cli_ctx_bid.Size = new System.Drawing.Size(176, 26);
+            this.cli_ctx_bid.Text = "Propune sumă";
+            this.cli_ctx_bid.Click += new System.EventHandler(this.contextBet_Click);
+            // 
+            // auctionTimer
+            // 
+            this.auctionTimer.AutoSize = true;
+            this.auctionTimer.BackColor = System.Drawing.Color.YellowGreen;
+            this.auctionTimer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.auctionTimer.Location = new System.Drawing.Point(899, 0);
+            this.auctionTimer.Name = "auctionTimer";
+            this.auctionTimer.SecondsElapsed = 0;
+            this.auctionTimer.Size = new System.Drawing.Size(120, 28);
+            this.auctionTimer.TabIndex = 19;
             // 
             // MainForm
             // 
@@ -888,6 +905,7 @@ namespace Auction_Tool {
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1019, 554);
+            this.Controls.Add(this.auctionTimer);
             this.Controls.Add(this.itemInfo_pan);
             this.Controls.Add(this.menuStrip);
             this.Controls.Add(this.preItemSelect_pan);
@@ -996,7 +1014,7 @@ namespace Auction_Tool {
         private ToolStripMenuItem fileTB_edit;
         private ToolStripMenuItem fileTB_edit_item;
         private ToolStripMenuItem fileTB_edit_client;
-        private ToolStripMenuItem cli_ctx_bet;
+        private ToolStripMenuItem cli_ctx_bid;
         private ToolStripMenuItem auctionToolbar;
         private ToolStripMenuItem auctionTB_stop;
         private ToolStripMenuItem auctionTB_reset;
@@ -1012,6 +1030,7 @@ namespace Auction_Tool {
         private Panel preItemSelect2_pan;
         private Panel preItemSelect1_pan;
         private ToolStripMenuItem auctionTB_finish;
+        private AuctionTimer auctionTimer;
     }
 }
 

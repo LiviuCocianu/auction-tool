@@ -155,5 +155,43 @@ namespace Auction_Tool {
 
             return b;
         }
+
+        public static string secondsToTimestamp(string format, int s) {
+            string replaced = (string) format.Clone();
+            int seconds, minutes, hours;
+
+            if(s < 60) {
+                seconds = s;
+                string sConv = seconds < 10 ? "0" + seconds : seconds.ToString();
+
+                replaced = replaced.Replace("HH", "00")
+                    .Replace("mm", "00")
+                    .Replace("ss", sConv);
+            } else {
+                minutes = s / 60;
+                seconds = s % 60;
+
+                string mConv = minutes < 10 ? "0" + minutes : minutes.ToString();
+                string sConv = seconds < 10 ? "0" + seconds : seconds.ToString();
+
+                if (minutes < 60) {
+                    replaced = replaced.Replace("HH", "00")
+                        .Replace("mm", mConv)
+                        .Replace("ss", sConv);
+                } else {
+                    hours = minutes / 60;
+                    minutes = minutes % 60;
+
+                    string hConv = hours < 10 ? "0" + hours : hours.ToString();
+                    mConv = minutes < 10 ? "0" + minutes : minutes.ToString();
+
+                    replaced = replaced.Replace("HH", hConv)
+                        .Replace("mm", mConv)
+                        .Replace("ss", sConv);
+                }
+            }
+
+            return replaced;
+        }
     }
 }

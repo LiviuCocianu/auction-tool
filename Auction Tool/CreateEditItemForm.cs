@@ -326,7 +326,7 @@ namespace Auction_Tool {
         }
 
         private bool descriptionValid() {
-            const int descCharLimit = 200;
+            const int descCharLimit = 500;
 
             if (string.IsNullOrEmpty(itemDesc_tb.Text)) {
                 errorProvider.SetError(itemDesc_tb, LocaleJSON["error_empty_field"]);

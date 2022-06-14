@@ -62,6 +62,8 @@ namespace Auction_Tool {
             MessageBox.Show(main.LocaleJSON["auction_started"], main.LocaleJSON["dialog_info"], 
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
             AuctionStartTime = DateTime.Now;
+
+            main.AuctionTimer.StartTiming();
         }
 
         public void stop() {
@@ -71,6 +73,7 @@ namespace Auction_Tool {
             if (choice == DialogResult.Yes) {
                 reset_();
                 main.displayNoItem();
+                main.AuctionTimer.StopTiming();
 
                 MessageBox.Show(main.LocaleJSON["auction_stopped"], main.LocaleJSON["dialog_info"],
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -83,6 +86,7 @@ namespace Auction_Tool {
 
             if (choice == DialogResult.Yes) {
                 reset_();
+                main.AuctionTimer.ResetTimer();
 
                 MessageBox.Show(main.LocaleJSON["auction_reset"], main.LocaleJSON["dialog_info"],
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -94,8 +98,12 @@ namespace Auction_Tool {
                 MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (choice == DialogResult.Yes) {
+                main.AuctionTimer.StopTiming();
+
                 DialogResult choice2 = MessageBox.Show(main.LocaleJSON["auction_finished"], main.LocaleJSON["dialog_info"],
                     MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                
 
                 if (choice2 == DialogResult.Yes) {
                     PrintableAuctionStats pas = new PrintableAuctionStats(main, new Size(816, 1056));
@@ -105,6 +113,7 @@ namespace Auction_Tool {
                 
                 reset_();
                 main.displayNoItem();
+                main.AuctionTimer.ResetTimer();
             }
         }
 
@@ -119,6 +128,8 @@ namespace Auction_Tool {
             HighestBet = 0;
             TopBidder = null;
             Bids.Clear();
+            AuctionClient.Cache.Collection.Clear();
+            AuctionClient.Cache.Collection = AuctionClient.deserialize();
             main.refreshClientList(true);
 
             if(BetForm != null) {

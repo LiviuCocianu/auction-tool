@@ -163,6 +163,17 @@ namespace Auction_Tool {
             Cache.Collection.Clear();
         }
 
+        public override int GetHashCode() {
+            int firstSum = 0;
+            int lastSum = 0;
+
+            foreach(int num in FirstName.ToCharArray())
+                firstSum += num;
+            foreach (int num in LastName.ToCharArray())
+                lastSum += num;
+
+            return int.Parse($"{firstSum}{lastSum}");
+        }
 
         public static class Cache {
             private static List<AuctionClient> clients = new List<AuctionClient>();

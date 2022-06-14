@@ -63,6 +63,7 @@
             this.newBid_tb.Name = "newBid_tb";
             this.newBid_tb.Size = new System.Drawing.Size(271, 22);
             this.newBid_tb.TabIndex = 2;
+            this.newBid_tb.KeyDown += new System.Windows.Forms.KeyEventHandler(this.newBid_tb_KeyDown);
             // 
             // newBid
             // 

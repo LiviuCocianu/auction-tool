@@ -48,6 +48,7 @@ namespace Auction_Tool {
             toolTip1.RemoveAll();
 
             hideClientList();
+            hideAuctionTimer();
 
             itemImage_pb.Image = Properties.Resources.no_image;
             itemImage_pb.InitialImage = Properties.Resources.no_image;
@@ -61,8 +62,8 @@ namespace Auction_Tool {
         public void displayItem(AuctionItem art) {
             auctionItemID_out.Text = art.Id.ToString();
             auctionItemName_out.Text = 
-                $"{(art.Name.Length > 21 ? art.Name.Substring(0, 22) : art.Name)}" +
-                $"{(art.Name.Length > 22 ? "..." : "")}";
+                $"{(art.Name.Length > 16 ? art.Name.Substring(0, 16 + 1) : art.Name)}" +
+                $"{(art.Name.Length > 16 ? "..." : "")}";
             auctionItemDesc_link.Tag = art;
             basePrice_out.Text = $"{art.BasePrice} {LocaleJSON["currency_unit"]}";
             highestBid_out.Text = $"0 {LocaleJSON["currency_unit"]}";
@@ -72,6 +73,7 @@ namespace Auction_Tool {
                 toolTip1.SetToolTip(auctionItemDesc_link, art.Description);
 
             showClientList();
+            showAuctionTimer();
 
             if (!string.IsNullOrEmpty(art.ImageURL)) {
                 var request = WebRequest.Create(art.ImageURL);
@@ -277,6 +279,14 @@ namespace Auction_Tool {
             clientList_panel.Controls.Add(elem);
         }
 
+        public void showAuctionTimer() {
+            auctionTimer.Show();
+        }
+
+        public void hideAuctionTimer() {
+            auctionTimer.Hide();
+        }
+
         public void showClientList() {
             if (!isClientListVisible()) {
                 clientListHeader_tlp.SuspendLayout();
@@ -351,6 +361,11 @@ namespace Auction_Tool {
             langToolbar.Text = LocaleJSON["toolbar_language"];
             langTB_RO.Text = LocaleJSON["toolbar_language_ro"];
             langTB_EN.Text = LocaleJSON["toolbar_language_en"];
+
+            // Context menu text
+            cli_ctx_remove.Text = LocaleJSON["context_remove"];
+            cli_ctx_edit.Text = LocaleJSON["context_edit"];
+            cli_ctx_bid.Text = LocaleJSON["context_bid"];
 
             // Items toolbar translation
             itemsToolbar.Text = LocaleJSON["toolbar_items"];

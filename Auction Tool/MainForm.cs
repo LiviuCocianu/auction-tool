@@ -29,6 +29,11 @@ namespace Auction_Tool {
             set { auctionInstance = value; }
         }
 
+        public AuctionTimer AuctionTimer {
+            get => auctionTimer;
+            set => auctionTimer = value;
+        }
+
         public Lang DefaultLang {
             get { return defaultLang; }
             set { defaultLang = value; }
@@ -67,6 +72,7 @@ namespace Auction_Tool {
             AuctionInstance = new Auction(this);
             
             InitializeComponent();
+            hideAuctionTimer();
 
             // RO: Tradu textele din aplicație în limba implicită
             // EN: Translate the app texts in the default language 
@@ -128,6 +134,13 @@ namespace Auction_Tool {
                     else
                         MessageBox.Show(LocaleJSON["dialog_no_auction"], LocaleJSON["dialog_error"],
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case (Keys.Shift | Keys.B):
+                    pressed = true;
+                    if(selectedClient != null) {
+                        ClientBetForm bet = new ClientBetForm(this, selectedClient);
+                        bet.Show();
+                    }
                     break;
             }
 
@@ -327,6 +340,7 @@ namespace Auction_Tool {
 
         private void clientElementn_MouseLeave(object sender, EventArgs e) {
             Control con = (Control)sender;
+            //selectedClient = null;
             con.BackColor = Color.WhiteSmoke;
         }
 
@@ -422,16 +436,27 @@ namespace Auction_Tool {
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void clientSearch_tb_TextChanged(object sender, EventArgs e) {
-            if(string.IsNullOrEmpty(clientSearch_tb.Text)) {
+        private void executeSearch() {
+            string inp = clientSearch_tb.Text;
+
+            if (string.IsNullOrEmpty(inp) || inp.Equals(searchPlaceholder)) {
                 refreshClientList(true);
                 return;
             }
 
-            bool converted = int.TryParse(clientSearch_tb.Text, out int num);
+            bool converted = int.TryParse(inp, out int num);
             if (!converted) return;
 
             showClientSearchResults(num.ToString());
+        }
+
+        private void searchIcon_pb_Click(object sender, EventArgs e) {
+            executeSearch();
+        }
+
+        private void clientSearch_tb_KeyDown(object sender, KeyEventArgs e) {
+            if(e.KeyCode == Keys.Enter)
+                executeSearch();
         }
 
         private void MainForm_DragEnter(object sender, DragEventArgs e) {

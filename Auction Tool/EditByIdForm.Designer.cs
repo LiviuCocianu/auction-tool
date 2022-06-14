@@ -48,7 +48,7 @@ namespace Auction_Tool {
             // 
             // submit_btn
             // 
-            this.submit_btn.Location = new System.Drawing.Point(31, 215);
+            this.submit_btn.Location = new System.Drawing.Point(31, 275);
             this.submit_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.submit_btn.Name = "submit_btn";
             this.submit_btn.Size = new System.Drawing.Size(123, 32);
@@ -71,7 +71,7 @@ namespace Auction_Tool {
             this.searchElem_lv.Margin = new System.Windows.Forms.Padding(4);
             this.searchElem_lv.MultiSelect = false;
             this.searchElem_lv.Name = "searchElem_lv";
-            this.searchElem_lv.Size = new System.Drawing.Size(372, 118);
+            this.searchElem_lv.Size = new System.Drawing.Size(372, 174);
             this.searchElem_lv.TabIndex = 7;
             this.searchElem_lv.UseCompatibleStateImageBehavior = false;
             this.searchElem_lv.View = System.Windows.Forms.View.Details;
@@ -90,7 +90,7 @@ namespace Auction_Tool {
             // selectedId
             // 
             this.selectedId.AutoSize = true;
-            this.selectedId.Location = new System.Drawing.Point(27, 185);
+            this.selectedId.Location = new System.Drawing.Point(28, 247);
             this.selectedId.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.selectedId.Name = "selectedId";
             this.selectedId.Size = new System.Drawing.Size(73, 16);
@@ -101,7 +101,7 @@ namespace Auction_Tool {
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(443, 263);
+            this.ClientSize = new System.Drawing.Size(443, 334);
             this.Controls.Add(this.selectedId);
             this.Controls.Add(this.searchElem_lv);
             this.Controls.Add(this.submit_btn);
